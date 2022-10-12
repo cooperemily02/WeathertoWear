@@ -28,6 +28,5 @@ pip install -r requirements.txt
   - Type `Python: Select Interpreter`
   - Put `.\backend\venv\Scripts\python.exe` *It should auto-complete, `Enter path...` Then `Find` and pick the right one with your mouse*
 
-- Done! if you want 
-
+- Done! if you want, make VSCode use `Git Bash` by default so you don't have to repeat that step.
 - (Note: There are obviously many ways to set it up, but this is a recommended & simple way)
