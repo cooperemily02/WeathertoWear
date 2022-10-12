@@ -21,6 +21,11 @@ CS320 Project
 - In VSCode (*Inside the project* now), open terminal (`CTRL+SHIFT+P`, search for "toggle terminal") (or just ``` CTRL+` ```)
 - Change the terminal to `Git Bash` (or `Windows Terminal` if you set that up above) 
 - Select `git bash`, *see [picture](vscode-list-terminals-place.png)*
+- At the time of writing, backend code is not in main, so do this:
+```
+git branch -f backend-starter origin/backend-starter # bring a remote branch to your machine.
+git checkout backend-starter # Now you have the starter backend code
+```
 - To install the requirements:
 ```
 cd backend
@@ -39,11 +44,11 @@ pip install -r requirements.txt
 </details>
 <details>
 
-<summary>Important Git stuff </summary>
+<summary>Important Git stuff To start working</summary>
 
 - To get a remote branch ```git branch -f SOME-BRANCH  origin/SOME-BRANCH```
 - To create a new branch: (**Consider what to branch off of, i.e if you need the latest backend code you may first checkout something other than main, then make your own**)
 ```git checkout -b GOOD-BRANCH-NAME```
-- The first time you try to ```git push``` a new branch, it will output something you need to copy/paste first.
+- The first time you try to ```git push``` a new branch, it will output something you need to copy/paste first. Then ```git push``` again 
 
 </details>
