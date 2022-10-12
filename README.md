@@ -49,6 +49,7 @@ pip install -r requirements.txt
 - To get a remote branch ```git branch -f SOME-BRANCH  origin/SOME-BRANCH```
 - To create a new branch: (**Consider what to branch off of, i.e if you need the latest backend code you may first checkout something other than main, then make your own**)
 ```git checkout -b GOOD-BRANCH-NAME```
-- The first time you try to ```git push``` a new branch, it will output something you need to copy/paste first. Then ```git push``` again 
+- The first time you try to ```git push``` a new branch, it will output something you need to copy/paste first. Then ```git push``` again
+- Avoid pushing directly to branches others work on, instead push to yours and create a pull request when you want others to review.
 
 </details>
