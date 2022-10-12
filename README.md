@@ -30,7 +30,7 @@ git checkout backend-starter # Now you have the starter backend code
 ```
 cd backend
 python -m venv venv # This installs a special python container, seperate from the one on the rest of your pc
-python . venv/Scripts/activate # This uses the special python we just installed (For mac: `venv/bin/activate`)
+. venv/Scripts/activate # This uses the special python we just installed (For mac: `venv/bin/activate`)
 pip install -r requirements.txt
 ```
 - To make VSCode use the right python:
