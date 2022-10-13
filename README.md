@@ -12,7 +12,22 @@ CS320 Project
   - Open VSCode
   - Clone Git Repository...
   - Paste ```https://github.com/cooperemily02/WeathertoWear.git```
-- (*Recommended but can be done whenever*, skip zsh part): [starship prompt for git bash](https://github.com/Kyza/linux-like-windows-terminal)
+- 
+  <details>
+    <summary>starship for git bash:</summary>
+    
+    Open `git bash`
+    ```
+    mkdir -p "$HOME/.local/bin"
+    curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir "$HOME/.local/bin"
+    nano ~/.bashrc
+    ```
+    This will open a little editor, paste the following:
+    ```
+    PATH=$PATH:/c/Users/saife/.local/bin
+    eval "$(starship init bash)"
+    ```
+  </details>
 </details>
 
 <details>
