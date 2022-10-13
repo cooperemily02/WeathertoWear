@@ -12,7 +12,6 @@ CS320 Project
   - Open VSCode
   - Clone Git Repository...
   - Paste ```https://github.com/cooperemily02/WeathertoWear.git```
-  - Mac (Note, to bring back the normal prompt later, delete the new line added in your `~/.zshrc`):
   ```
   brew install spaceship
   echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
