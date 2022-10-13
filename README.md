@@ -12,12 +12,18 @@ CS320 Project
   - Open VSCode
   - Clone Git Repository...
   - Paste ```https://github.com/cooperemily02/WeathertoWear.git```
-- Optional: Make your command prompt more useful:
-    - <details>
-    <summary>Windows: Starship for git bash</summary>
-    
-    Open `git bash`
-    ```
+  - Mac (Note, to bring back the normal prompt later, delete the new line added in your `~/.zshrc`):
+  ```
+  brew install spaceship
+  echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
+  ```
+</details>
+
+<details>
+<summary>(Optional) Prettier & useful Prompts:</summary>
+
+- Windows: Starship for git bash (run in `Git Bash`)
+  ```
     mkdir -p "$HOME/.local/bin"
     curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir "$HOME/.local/bin"
     nano ~/.bashrc
@@ -27,16 +33,13 @@ CS320 Project
     PATH=$PATH:/c/Users/saife/.local/bin
     eval "$(starship init bash)"
     ```
-    To save this, press `CTRL+X`, `Y`, `ENTER`
-  </details>
-  
-  - Mac (Note, to bring back the normal prompt later, delete the new line added in your `~/.zshrc`):
-  ```
-  brew install spaceship
-  echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
-  ```
+    To save this, press `CTRL+X`, `Y`, `ENTER` 
+- Mac: Spaceship prompt (Note, to bring back the normal prompt later, delete the new line added in your ~/.zshrc)
+```
+brew install spaceship
+echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
+```
 </details>
-
 <details>
 <summary>Setup Backend</summary>
 
