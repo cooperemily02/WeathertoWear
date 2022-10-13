@@ -1,20 +1,20 @@
 # WeathertoWear
 CS320 Project
 
-# Windows Setup (Mac mostly overlaps, skip git bash)
+# Setup
 
 <details>
-<summary>Essentials</summary>
+<summary>Recommended basics (IDE + Terminal)</summary>
 
 - Install VSCode https://code.visualstudio.com/
-- Install Git & Git Bash https://git-scm.com/downloads
+- (Windows) Install Git & Git Bash https://git-scm.com/downloads
 - Clone Project:
   - Open VSCode
   - Clone Git Repository...
   - Paste ```https://github.com/cooperemily02/WeathertoWear.git```
-- 
-  <details>
-    <summary>starship for git bash:</summary>
+- Optional: Make your command prompt more useful:
+    - <details>
+    <summary>Windows: Starship for git bash</summary>
     
     Open `git bash`
     ```
@@ -29,31 +29,36 @@ CS320 Project
     ```
     To save this, press `CTRL+X`, `Y`, `ENTER`
   </details>
+  
+  - Mac (Note, to bring back the normal prompt later, delete the new line added in your `~/.zshrc`):
+  ```
+  brew install spaceship
+  echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
+  ```
 </details>
 
 <details>
 <summary>Setup Backend</summary>
 
 - In VSCode (*Inside the project* now), open terminal (`CTRL+SHIFT+P`, search for "toggle terminal") (or just ``` CTRL+` ```)
-- Change the terminal to `Git Bash` (or `Windows Terminal` if you set that up above) 
-- Select `git bash`, *see [picture](vscode-list-terminals-place.png)*
-- At the time of writing, backend code is not in main, so do this:
-```
-git branch -f backend-starter origin/backend-starter # bring a remote branch to your machine.
-git checkout backend-starter # Now you have the starter backend code
-```
-- To install the requirements:
+- (Windows) Select `git bash`, *see [picture](vscode-list-terminals-place.png)*
+- **important** Virtual Environment Setup:
 ```
 cd backend
-python -m venv venv # This installs a special python container, seperate from the one on the rest of your pc
-. venv/Scripts/activate # This uses the special python we just installed (For mac: `venv/bin/activate`)
+python -m venv venv
+# (Windows) Activate the venv:
+. venv/Scripts/activate
+# (Mac/Linux) Activate the venv:
+. venv/bin/activate
+# (Both) Install reqs
 pip install -r requirements.txt
 ```
-- To make VSCode use the right python:
+- Now we have a virtual environment inside `backend/venv`, make sure your IDE uses it
+- To make VSCode use it:
   - On the left side-bar, click Extensions, search &  install `Python`
   - Command Palette `CTRL+SHIFT+P`
   - Type `Python: Select Interpreter`
-  - Put `.\backend\venv\Scripts\python.exe` *It should auto-complete, otherwise `Enter path...` Then `Find` and pick the right one with your mouse*
+  - Put `.\backend\venv\Scripts\python.exe` (Windows) or `./backend/venv/bin/python` (Mac/Linux) *It should auto-complete, otherwise `Enter path...` Then `Find` and pick the right one with your mouse*
 - **To start the backend server, run `api.py`**
   - (Make sure the IDE is setup to use the correct python, or that you activate the virtual env before typing `python api.py`)
 - Done! if you want, make VSCode use `Git Bash` by default so you don't have to repeat that step (See [picture](vscode-list-terminals-place.png).
@@ -63,7 +68,13 @@ pip install -r requirements.txt
 
 <summary>Important Git stuff To start working</summary>
 
-- To get a remote branch ```git branch -f SOME-BRANCH  origin/SOME-BRANCH```
+- To collaborate on new branches others made: 
+
+```
+git fetch
+git checkout THE-NEW-BRANCH
+```
+
 - To create a new branch: (**Consider what to branch off of, i.e if you need the latest backend code you may first checkout something other than main, then make your own**)
 ```git checkout -b GOOD-BRANCH-NAME```
 - The first time you try to ```git push``` a new branch, it will output something you need to copy/paste first. Then ```git push``` again
