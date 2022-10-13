@@ -54,7 +54,8 @@ pip install -r requirements.txt
   - Command Palette `CTRL+SHIFT+P`
   - Type `Python: Select Interpreter`
   - Put `.\backend\venv\Scripts\python.exe` *It should auto-complete, otherwise `Enter path...` Then `Find` and pick the right one with your mouse*
-
+- **To start the backend server, run `api.py`**
+  - (Make sure the IDE is setup to use the correct python, or that you activate the virtual env before typing `python api.py`)
 - Done! if you want, make VSCode use `Git Bash` by default so you don't have to repeat that step (See [picture](vscode-list-terminals-place.png).
 - (Note: There are obviously many ways to set it up, but this is a recommended & simple way)
 </details>
