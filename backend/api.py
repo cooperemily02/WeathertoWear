@@ -8,7 +8,7 @@ def hello_world():
   
 @app.route('/Dailyoutfits', methods = ['GET'])
 def Return_Outfits():
-
+#temp
 
     if(request.method == 'GET'):
         data = {
