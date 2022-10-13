@@ -27,6 +27,7 @@ CS320 Project
     PATH=$PATH:/c/Users/saife/.local/bin
     eval "$(starship init bash)"
     ```
+    To save this, press `CTRL+X`, `Y`, `ENTER`
   </details>
 </details>
 
