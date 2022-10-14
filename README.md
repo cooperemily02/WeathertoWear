@@ -12,10 +12,6 @@ CS320 Project
   - Open VSCode
   - Clone Git Repository...
   - Paste ```https://github.com/cooperemily02/WeathertoWear.git```
-  ```
-  brew install spaceship
-  echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
-  ```
 </details>
 
 <details>
@@ -42,10 +38,6 @@ echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
 <details>
 <summary>Setup Backend</summary>
 
-- To get the backend-starter code
-```
-git checkout backend-starter
-```
 - In VSCode (*Inside the project* now), open terminal (`CTRL+SHIFT+P`, search for "toggle terminal") (or just ``` CTRL+` ```)
 - (Windows) Select `git bash`, *see [picture](vscode-list-terminals-place.png)*
 - **important** Virtual Environment Setup:
