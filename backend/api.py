@@ -9,12 +9,14 @@ def hello_world():
 @app.route('/dummy/Dailyoutfits', methods = ['GET'])
 def Return_Outfits():
     if(request.method == 'GET'):
-        #"Outfit III" : ("Black rain coat", "White t-shirt" , "high waisted blue jeans", "rainboots"),
         data = {"outfits":
-        [[{'name': 'black jeans', 'tag':'bottom'},{'name': 'black rain coat', 'tag':'outerwear'},{'name': 'shoes', 'tag':'rain boots'},{'name': 'white t-shirt', 'tags':'top'}],
-        [{'name': 'black jeans', 'tag':'bottom'},{'name': 'black rain coat', 'tag':'outerwear'},{'name': 'shoes', 'tag':'rain boots'},{'name': 'black long sleeve', 'tags':'top'}],
-        [{'name': 'high waisted blue jeans', 'tag':'bottom'},{'name': 'black rain coat', 'tag':'outerwear'},{'name': 'shoes', 'tag':'rain boots'},{'name': 'black long sl', 'tags':'top'}]]
+        [
+            [{'name': 'black jeans', 'tag':'bottom'},{'name': 'black rain coat', 'tag':'outerwear'},{'name': 'shoes', 'tag':'rain boots'},{'name': 'white t-shirt', 'tags':'top'}],
+            [{'name': 'black jeans', 'tag':'bottom'},{'name': 'black rain coat', 'tag':'outerwear'},{'name': 'shoes', 'tag':'rain boots'},{'name': 'black long sleeve', 'tag':'top'}],
+            [{'name': 'high waisted blue jeans', 'tag':'bottom'},{'name': 'black rain coat', 'tag':'outerwear'},{'name': 'shoes', 'tag':'rain boots'},{'name': 'white t-shirt', 'tag':'top'}],
+            [{'name': 'high waisted blue jeans', 'tag':'bottom'},{'name': 'black rain coat', 'tag':'outerwear'},{'name': 'shoes', 'tag':'rain boots'},{'name': 'black long sleeve', 'tag':'top'}]
         ]
+        
         }
         return jsonify(data)
     
