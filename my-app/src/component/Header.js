@@ -13,23 +13,21 @@ function Header() {
       <Routes>
         <Route path="/" element={App} />
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
-        <Route path="/closet" element={Closet({
-          clothingItems: [{
-            name: "American Eagle Sweatpants",
-            tags: [
-              "bottom",
-              "cold"
-            ]
-          },
-          {
-            name: "Nike Shoes",
-            tags: [
-              "shoes",
-              "cold",
-              "warm"
-            ]
-          }]
-        })} />
+        <Route
+          path="/closet"
+          element={Closet({
+            clothingItems: [
+              {
+                name: "American Eagle Sweatpants",
+                tags: ["bottom", "cold"],
+              },
+              {
+                name: "Nike Shoes",
+                tags: ["shoes", "cold", "warm"],
+              },
+            ],
+          })}
+        />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>
     </Router>
