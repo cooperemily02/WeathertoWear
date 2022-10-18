@@ -16,28 +16,28 @@ def Return_Outfits():
     if request.method == 'GET':
         data = {'outfits': [
             [
-                {'name': 'black jeans', 'tag': 'bottom'},
-                {'name': 'black rain coat', 'tag': 'outerwear'},
-                {'name': 'shoes', 'tag': 'rain boots'},
-                {'name': 'white t-shirt', 'tags': 'top'}
+                {'name': 'black jeans', 'tags': ['bottom']},
+                {'name': 'black rain coat', 'tags': ['outerwear']},
+                {'name': 'shoes', 'tags': ['rain boots']},
+                {'name': 'white t-shirt', 'tags': ['top']}
             ],
             [
-                {'name': 'black jeans', 'tag': 'bottom'},
-                {'name': 'black rain coat', 'tag': 'outerwear'},
-                {'name': 'shoes', 'tag': 'rain boots'},
-                {'name': 'black long sleeve', 'tag': 'top'}
+                {'name': 'black jeans', 'tags': ['bottom']},
+                {'name': 'black rain coat', 'tags': ['outerwear']},
+                {'name': 'shoes', 'tags': ['rain boots']},
+                {'name': 'black long sleeve', 'tags': ['top']}
             ],
             [
-                {'name': 'high waisted blue jeans', 'tag': 'bottom'},
-                {'name': 'black rain coat', 'tag': 'outerwear'},
-                {'name': 'shoes', 'tag': 'rain boots'},
-                {'name': 'white t-shirt', 'tag': 'top'}
+                {'name': 'high waisted blue jeans', 'tags': ['bottom']},
+                {'name': 'black rain coat', 'tags': ['outerwear']},
+                {'name': 'shoes', 'tags': ['rain boots']},
+                {'name': 'white t-shirt', 'tags': ['top']}
             ],
             [
-                {'name': 'high waisted blue jeans', 'tag': 'bottom'},
-                {'name': 'black rain coat', 'tag': 'outerwear'},
-                {'name': 'shoes', 'tag': 'rain boots'},
-                {'name': 'black long sleeve', 'tag': 'top'}
+                {'name': 'high waisted blue jeans', 'tags': ['bottom']},
+                {'name': 'black rain coat', 'tags': ['outerwear']},
+                {'name': 'shoes', 'tags': ['rain boots']},
+                {'name': 'black long sleeve', 'tags': ['top']}
             ]
         ]}
 
@@ -48,12 +48,12 @@ def Return_Outfits():
 def Return_Closet():
     if request.method == 'GET':
         data = [
-            {'name': 'Black rain coat', 'tag': 'outerwear'},
-            {'name': 'White t-shirt', 'tag': 'top'},
-            {'name': 'black long sleeve', 'tag': 'top'},
-            {'name': 'black jeans', 'tag': 'bottom'},
-            {'name': 'high waisted blue jeans', 'tag': 'bottom'},
-            {'name': 'rainboots', 'tag': 'shoe'},
+            {'name': 'Black rain coat', 'tags': ['outerwear']},
+            {'name': 'White t-shirt', 'tags': ['top']},
+            {'name': 'black long sleeve', 'tags': ['top']},
+            {'name': 'black jeans', 'tags': ['bottom']},
+            {'name': 'high waisted blue jeans', 'tags': ['bottom']},
+            {'name': 'rainboots', 'tags': ['shoe']},
         ]
         return jsonify(data)
 
@@ -62,11 +62,11 @@ def Return_Closet():
 def Return_Laundry():
     if request.method == 'GET':
         data = [
-            {'name': 'blue rain coat', 'tag': 'outerwear'},
-            {'name': 'gray t-shirt', 'tag': 'top'},
-            {'name': 'white long sleeve', 'tag': 'top'},
-            {'name': 'brown jeans', 'tag': 'bottom'},
-            {'name': 'pink shorts', 'tag': 'bottom'}
+            {'name': 'blue rain coat', 'tags': ['outerwear']},
+            {'name': 'gray t-shirt', 'tags': ['top']},
+            {'name': 'white long sleeve', 'tags': ['top']},
+            {'name': 'brown jeans', 'tags': ['bottom']},
+            {'name': 'pink shorts', 'tags': ['bottom']}
         ]
         return jsonify(data)
 
