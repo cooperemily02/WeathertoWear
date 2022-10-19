@@ -73,6 +73,7 @@ pip install -r requirements.txt
 
 <details>
 <summary>Setup Frontend</summary>
+
 - From the `my-app` directory:
 
 ```
