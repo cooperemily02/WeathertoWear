@@ -15,8 +15,12 @@ item_tags = db.Table('item_tags',
 class ClothingItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-
+    # Notice how 'tags' is NOT a column. However, this defines the relationship & 
+    # lets us access item.tags (Which happens through a query in the background).
+    # the 'backref' lets us do the opposite: tag.items
+    tags = db.relationship('Tag', secondary=item_tags, backref='items')
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
     
