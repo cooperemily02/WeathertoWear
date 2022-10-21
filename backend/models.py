@@ -22,7 +22,7 @@ class ClothingItem(db.Model):
 
     #TODO: In 'serialize' return a dictionary matching how the frontend displays items
     @property
-    def serialize():
+    def serialize(self):
         pass
 
 class Tag(db.Model):
