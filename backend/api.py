@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from models import db
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dummy.db'
 
-from models import db # Now we can use the database in our endpoints!
+db.init_app(app) # Now we can use the database in our endpoints!
 
 
 @app.route('/')

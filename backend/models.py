@@ -1,7 +1,6 @@
-from api import app # This is an importing 'trick' to handle that both the api/models files need the other.
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 
 # This table relates items & tags to each other (many-to-many relationship)
