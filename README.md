@@ -74,6 +74,7 @@ pip install -r requirements.txt
 <details>
 <summary>Setup Frontend</summary>
 
+- Make sure `node` is installed. ([windows](https://nodejs.org/en/download/), [Mac](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x))
 - From the `my-app` directory:
 
 ```
