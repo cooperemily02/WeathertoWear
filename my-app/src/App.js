@@ -8,13 +8,6 @@ import { useState } from 'react'
 
 
 function App() {
-
-  fetch("/dummy/Dailyoutfits", {
-    method: "GET",
-    credentials: "include",
-  }).then((response) => response.json())
-    .then((data) => console.log(data));
-
   return Header();
 }
 

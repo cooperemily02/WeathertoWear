@@ -15,18 +15,7 @@ function Header() {
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
         <Route
           path="/closet"
-          element={Closet({
-            clothingItems: [
-              {
-                name: "American Eagle Sweatpants",
-                tags: ["bottom", "cold"],
-              },
-              {
-                name: "Nike Shoes",
-                tags: ["shoes", "cold", "warm"],
-              },
-            ],
-          })}
+          element={Closet()}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>

@@ -1,14 +1,32 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ClothingItem from "../component/ClothingItem";
 import Box from "@mui/material/Box";
 
-const Closet = (props) => {
-  let clothingItems = props.clothingItems;
+
+const Closet = () => {
+  let [clothingItems, setClothingItems] = useState([])
+  useEffect(() => {
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/dummy/Closet", {
+          method: "GET",
+          credentials: "include",
+        });
+        const json = await response.json();
+        setClothingItems(json)
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    fetchData();
+}, []);
   return (
     <>
-      <Typography variant="h2">Your Closet:</Typography>
+      <Typography variant="h3" sx = {{padding: "20px"}}>Your Closet:</Typography>
       <Box display="flex">
         <Grid
           container
@@ -18,6 +36,7 @@ const Closet = (props) => {
           padding="10px"
           spacing={2}
         >
+          {console.log(clothingItems)}
           {clothingItems.map((item) => {
             return (
               <Grid item xs>
@@ -31,3 +50,4 @@ const Closet = (props) => {
   );
 };
 export default Closet;
+
