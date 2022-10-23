@@ -45,7 +45,7 @@ function Navbar() {
   return (
     <AppBar position="static">
       <CssBaseline />
-      <Toolbar>
+      <Toolbar sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
         <Drawer />
         <div
           style={{
@@ -55,7 +55,7 @@ function Navbar() {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Typography variant="h4" className={classes.logo}>
+          <Typography sx={{fontFamily: 'Caudex'}} variant="h4" className={classes.logo}>
             Weather to Wear
           </Typography>
         </div>
