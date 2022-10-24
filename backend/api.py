@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dummy.db'
 
 db.init_app(app) # Now we can use the database in our endpoints!
+import models
 
 
 @app.route('/')
@@ -51,6 +52,7 @@ def Return_Outfits():
 
 @app.route('/dummy/Closet', methods=['GET'])
 def Return_Closet():
+    return [item.serialize for item in models.ClothingItem.query.all()]
     if request.method == 'GET':
         data = [
             {'name': 'Black rain coat', 'tags': ['outerwear']},
@@ -77,4 +79,4 @@ def Return_Laundry():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
