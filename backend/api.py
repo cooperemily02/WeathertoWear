@@ -78,7 +78,7 @@ def Return_Laundry():
         return jsonify(data)
 
 
-@app.route('/dummy/create_item/', methods=['POST'])
+@app.route('/dummy/create_item', methods=['POST'])
 def create_item():
     try:
         name, tag_names = request.json.get('name'), request.json.get('tags')
