@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import img from "../static/test-image.png";
+import img from "../static/W2W.png";
 
 function ClothingItem(props) {
   let item = props.item;
@@ -16,8 +16,11 @@ function ClothingItem(props) {
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
           </Typography>
+          <Typography gutterBottom variant="h6" sx={{textDecoration: 'underline'}}>
+            Tags
+          </Typography>
           {item.tags.map((tag) => {
-            return <ul>{tag}</ul>;
+            return <ul><Typography variant = "body">{tag}</Typography></ul>;
           })}
         </CardContent>
       </CardActionArea>
