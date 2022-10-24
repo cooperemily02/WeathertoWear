@@ -1,5 +1,4 @@
 # WeathertoWear
-
 CS320 Project
 
 # Setup
@@ -71,10 +70,22 @@ pip install -r requirements.txt
 - Done! if you want, make VSCode use `Git Bash` by default so you don't have to repeat that step (See [picture](vscode-list-terminals-place.png).
 - (Note: There are obviously many ways to set it up, but this is a recommended & simple way)
 </details>
+
 <details>
+<summary>Setup Frontend</summary>
 
+- Make sure `node` is installed. ([windows](https://nodejs.org/en/download/), [Mac](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x))
+
+```
+cd my-app
+npm install --force
+npm start
+```
+</details>
+
+<details>
 <summary>Important Git stuff To start working</summary>
-
+- Create a branch & associated pull request, so others can give feedback on your work.
 - To collaborate on new branches others made: 
 
 ```
