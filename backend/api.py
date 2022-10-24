@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from models import db
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./build', static_url_path='/')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dummy.db'
 
 db.init_app(app) # Now we can use the database in our endpoints!
@@ -14,7 +14,7 @@ import models
 
 @app.route('/')
 def hello_world():
-    return '<p>Hello, World!</p>'
+    return app.send_static_file('index.html')
 
 
 @app.route('/dummy/Dailyoutfits', methods=['GET'])
