@@ -70,22 +70,10 @@ pip install -r requirements.txt
 - Done! if you want, make VSCode use `Git Bash` by default so you don't have to repeat that step (See [picture](vscode-list-terminals-place.png).
 - (Note: There are obviously many ways to set it up, but this is a recommended & simple way)
 </details>
-
 <details>
-<summary>Setup Frontend</summary>
 
-- Make sure `node` is installed. ([windows](https://nodejs.org/en/download/), [Mac](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x))
-
-```
-cd my-app
-npm install --force
-npm start
-```
-</details>
-
-<details>
 <summary>Important Git stuff To start working</summary>
-- Create a branch & associated pull request, so others can give feedback on your work.
+
 - To collaborate on new branches others made: 
 
 ```
@@ -98,13 +86,4 @@ git checkout THE-NEW-BRANCH
 - The first time you try to ```git push``` a new branch, it will output something you need to copy/paste first. Then ```git push``` again
 - Avoid pushing directly to branches others work on, instead push to yours and create a pull request when you want others to review.
 
-</details>
-
-<details>
-
-<summary>To write to the database using CURL</summary>
-
-```
-curl -X POST "https://backend-rust-nine.vercel.app/dummy/create_item"  -H 'Content-Type: application/json' -d '{"name":"dummy item made through POST request","tags":["useless"]}'
-```
 </details>
