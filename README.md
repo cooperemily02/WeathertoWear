@@ -99,3 +99,12 @@ git checkout THE-NEW-BRANCH
 - Avoid pushing directly to branches others work on, instead push to yours and create a pull request when you want others to review.
 
 </details>
+
+<details>
+
+<summary>To write to the database using CURL</summary>
+
+```
+curl -X POST "http://localhost:5000/dummy/create_item"  -H 'Content-Type: application/json' -d '{"name":"dummy item made through POST request","tags":['useless']}'
+```
+</details>

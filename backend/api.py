@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, jsonify, request
+from flask import Flask, abort, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from models import db
 
@@ -76,6 +76,21 @@ def Return_Laundry():
             {'name': 'pink shorts', 'tags': ['bottom']}
         ]
         return jsonify(data)
+
+
+@app.route('/dummy/create_item/', methods=['POST'])
+def create_item():
+    try:
+        name, tag_names = request.json.get('name'), request.json.get('tags')
+    except IndexError:
+        abort(404)
+    
+    new_item = models.ClothingItem(name=name)
+    tag_model_objects = [models.Tag(name=tag_name) for tag_name in tag_names]
+    new_item.tags = tag_model_objects
+    db.session.add(new_item)
+    db.session.commit()
+    return {}
 
 
 if __name__ == '__main__':
