@@ -1,1 +1,3 @@
-cd backend && . venv/bin/activate || . venv/Scripts/activate && python api.py
+cd backend
+. venv/Scripts/activate || . venv/bin/activate
+python api.py
