@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Drawer from "./Drawer";
+import IconButton from '@mui/material/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -43,9 +44,12 @@ function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
       <CssBaseline />
-      <Toolbar sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
+      {/* <IconButton>
+            <CloseIcon />
+      </IconButton> */}
+      <Toolbar >
         <Drawer />
         <div
           style={{
