@@ -22,7 +22,11 @@ class ClothingItem(db.Model):
     #TODO: In 'serialize' return a dictionary matching how the frontend displays items
     @property
     def serialize(self):
-        pass
+        list_tags = []
+        for tag in self.tags:
+            list_tags.append(tag.name)
+
+        return {'name': self.name, 'tags': list_tags}
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
