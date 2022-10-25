@@ -1,6 +1,7 @@
 cd my-app
 npm install --force
 npm run build
+rm -rf ../backend/build
 mv ./build ../backend
 cd ..
 cd  backend
