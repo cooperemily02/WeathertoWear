@@ -1,5 +1,24 @@
-# WeathertoWear
-CS320 Project
+# Quick Start
+- Clone & cd
+
+```
+git clone https://github.com/cooperemily02/WeathertoWear.git
+cd WeathertoWear
+```
+
+- To build:
+
+```
+./one-step-build.sh
+```
+
+- To run (*after building*):
+
+```
+./one-step-run.sh
+```
+
+- Access the site at http://127.0.0.1:5000/
 
 # Setup
 
