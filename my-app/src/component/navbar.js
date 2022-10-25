@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Drawer from "./Drawer";
+import IconButton from '@mui/material/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -43,9 +44,12 @@ function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
       <CssBaseline />
-      <Toolbar>
+      {/* <IconButton>
+            <CloseIcon />
+      </IconButton> */}
+      <Toolbar >
         <Drawer />
         <div
           style={{
@@ -55,7 +59,7 @@ function Navbar() {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Typography variant="h4" className={classes.logo}>
+          <Typography sx={{fontFamily: 'Caudex'}} variant="h4" className={classes.logo}>
             Weather to Wear
           </Typography>
         </div>

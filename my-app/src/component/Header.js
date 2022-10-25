@@ -1,17 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./navbar";
-import App from "../App";
-import DailyOutfits from "../pages/dailyoutfits";
-import LaundryBin from "../pages/laundrybin";
+// import App from "../App";
+// import DailyOutfits from "../pages/dailyoutfits";
+// import LaundryBin from "../pages/laundrybin";
 import Closet from "../pages/closet";
+import Home from "../pages/home";
 
 function Header() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={App} />
+        <Route path="/" element={Home()} />
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
         <Route
           path="/closet"
