@@ -5,8 +5,21 @@ rm -rf ../backend/build
 mv ./build ../backend
 cd ..
 cd  backend
-python -m venv venv || python3 -m venv venv
-. venv/Scripts/activate || . venv/bin/activate
+
+if [ -x "$(command -v python3)" ]
+then
+  python3 -m venv venv
+else
+  python -m venv venv
+fi
+
+if [ -f "./venv/Scripts/activate" ]
+then
+  . venv/Scripts/activate
+else
+  . venv/bin/activate
+fi
+
 pip install -r requirements.txt
 python init_db.py
 cd ..
