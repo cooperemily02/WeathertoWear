@@ -77,6 +77,12 @@ def Return_Laundry():
         ]
         return jsonify(data)
 
+@app.route('/dummy/item/<int:id>')
+def item(id):
+    try:
+        return models.ClothingItem.query.get(id).serialize
+    except AttributeError:
+        Flask.abort(404)
 
 if __name__ == '__main__':
     app.run(debug=True)
