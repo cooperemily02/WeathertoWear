@@ -8,8 +8,9 @@ import { useState } from 'react'
 
 
 function App() {
+  const [userId, setUserId] = useState(1);
   return (
-    <Header />
+    <Header userId = {userId}/>
   );
 }
 
