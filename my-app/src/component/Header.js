@@ -9,11 +9,12 @@ import Home from "../pages/home";
 
 function Header(props) {
   const userId = props.userId;
+  const setUserId = props.setUserId
   return (
     <Router>
       <Navbar userId = {userId}/>
       <Routes>
-        <Route path="/" element={Home({userId: userId})} />
+        <Route path="/" element={Home({userId: userId, setUserId: setUserId})} />
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
         <Route
           path="/closet"
