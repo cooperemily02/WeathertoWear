@@ -6,26 +6,46 @@ const Home = (props) => {
     var userId = props.userId
     const [openSignUp, setOpenSignUp] = useState(false);
     const [openLogin, setOpenLogin] = useState(false);
-    const [enteredId, setEnteredId] = useState(-1)
+    const [enteredId, setEnteredId] = useState("");
 
 
-      const handleOpenSignUp = () => {
-        setOpenSignUp(true);
-      };
+    //Helper Functions
+    const handleOpenSignUp = () => {
+      setOpenSignUp(true);
+    };
 
-  const handleCloseSignUp = () => {
-    setOpenSignUp(false);
-  };
-  const handleOpenLogin = () => {
-    setOpenLogin(true);
-  };
+    const handleCloseSignUp = () => {
+      setOpenSignUp(false);
+    };
+    const handleOpenLogin = () => {
+      setOpenLogin(true);
+    };
 
-const handleCloseLogin = () => {
-    setOpenLogin(false);
-};
-  function setUserId(id) {
-    return ()=>props.setUserId(id)
-  }
+    const handleCloseLogin = () => {
+        setOpenLogin(false);
+    };
+    
+    function signUpUser(id) {
+      return ()=>fetchData()
+    }
+
+    function signInUser(id){
+      return () => props.setUserId(id)
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/dummy/userSignUp", {
+          method: "GET",
+          credentials: "include",
+        });
+        const json = await response.json();
+        console.log(json.userId)
+        props.setUserId(json.userId)
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
   
   const style = {
     position: 'absolute',
@@ -66,7 +86,7 @@ const handleCloseLogin = () => {
           Click the "generate user ID" button to generate a unique user ID.
         </Typography>
         {userId == -1 &&
-        <Button variant="contained" onClick = {setUserId(1)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Generate ID!</Button>
+        <Button variant="contained" onClick = {signUpUser(1)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Generate ID!</Button>
         }
         {
         userId != -1 && 
@@ -87,8 +107,8 @@ const handleCloseLogin = () => {
         </Typography>
         {userId == -1 &&
         <>
-        <TextField id="standard-basic" sx = {{justifyContent:"center", alignItems: "center", display: "flex"}} onChange={(e) => {setEnteredId(e.target.value)}} label="User ID" variant="standard" sx = {{marginTop: "10px"}}/>
-        <Button variant="contained" onClick = {setUserId(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
+        <TextField id="standard-basic" sx = {{justifyContent:"center", marginTop: "10px", alignItems: "center", display: "flex"}} onChange={(newValue) => setEnteredId(parseInt(newValue.target.value))} label="User ID" variant="standard"/>
+        <Button variant="contained" onClick = {signInUser(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
         </>
         }
         {
