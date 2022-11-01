@@ -84,8 +84,11 @@ def Return_Laundry():
 @app.route('/dummy/userSignUp', methods=['GET'])
 def Return_New_User():
     if request.method == 'GET':
+        newUser = models.User()
+        db.session.add(newUser)
+        db.session.commit()
         users = models.User.query.all()
-        return [item.serialize for item in models.User.query.all()]
+        return {"userId": len(users)}
 
 
 if __name__ == '__main__':
