@@ -34,11 +34,4 @@ class Tag(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    @property
-    def serialize(self):
-        users = []
-        for user in self:
-            users.append(user)
-
-        return {'user_id': len(users)}
     
