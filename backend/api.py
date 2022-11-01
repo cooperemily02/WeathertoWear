@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
 from models import db
 
 
@@ -76,6 +75,12 @@ def Return_Laundry():
             {'name': 'pink shorts', 'tags': ['bottom']}
         ]
         return jsonify(data)
+
+@app.route('/dummy/userSignUp', methods=['GET'])
+def Return_New_User():
+    if request.method == 'GET':
+        users = models.User.query.all()
+        return [item.serialize for item in models.User.query.all()]
 
 
 if __name__ == '__main__':
