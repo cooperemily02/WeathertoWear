@@ -85,6 +85,9 @@ fi
 
 # Install reqs
 pip install -r requirements.txt
+
+# Creates database tables
+python init_db.py
 ```
 # Windows & Mac frontend setup:
 - Make sure `node` is installed. ([windows](https://nodejs.org/en/download/), [Mac](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x))
