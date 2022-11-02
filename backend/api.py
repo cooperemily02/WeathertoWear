@@ -87,7 +87,6 @@ def Return_New_User():
         newUser = models.User()
         db.session.add(newUser)
         db.session.commit()
-        users = models.User.query.all()
         return {'userId': newUser.id}
         
 
