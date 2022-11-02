@@ -14,6 +14,11 @@ import models
 
 @app.route('/')
 def index():
+    # We don't want to use 'send_static' for development. 
+    # The index page in that case will be from the react server (port 3000 usually)
+    if __name__ == "__main__":
+        return "You are running in dev mode"
+    # This is used for deployments and/or one-step tester, not development
     return app.send_static_file('index.html')
 
 

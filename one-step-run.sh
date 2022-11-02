@@ -5,5 +5,5 @@ then
 else
     . venv/bin/activate
 fi
-python api.py
+flask run api.py
 
