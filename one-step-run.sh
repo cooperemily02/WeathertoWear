@@ -5,5 +5,5 @@ then
 else
     . venv/bin/activate
 fi
-flask run api.py
+export FLASK_APP=api.py && flask run
 
