@@ -1,4 +1,4 @@
-# Quick Start
+# Quick Start (*For testing only*. If you are developing, use the [dev setup](#development-setup))
 - Clone & cd
 
 ```
@@ -20,7 +20,7 @@ cd WeathertoWear
 
 - Access the site at http://127.0.0.1:5000/
 
-# Setup
+# Development Setup 
 
 <details>
 <summary>Recommended basics (IDE + Terminal)</summary>
@@ -54,51 +54,72 @@ brew install spaceship
 echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
 ```
 </details>
-<details>
-<summary>Setup Backend</summary>
 
-- In VSCode (*Inside the project* now), open terminal (`CTRL+SHIFT+P`, search for "toggle terminal") (or just ``` CTRL+` ```)
-- (Windows) Select `git bash`, *see [picture](vscode-list-terminals-place.png)*
-- **important** Virtual Environment Setup:
-- Windows:
-```
-cd backend
-python -m venv venv
-# (Windows) Activate the venv:
-. venv/Scripts/activate
-# (Both) Install reqs
-pip install -r requirements.txt
-```
-- Mac:
-```
-cd backend
-python -m venv venv
-# (Mac/Linux) Activate the venv:
-. venv/bin/activate
-# (Both) Install reqs
-pip install -r requirements.txt
-```
-- Now we have a virtual environment inside `backend/venv`, make sure your IDE uses it
-- To make VSCode use it:
-  - On the left side-bar, click Extensions, search &  install `Python`
-  - Command Palette `CTRL+SHIFT+P`
-  - Type `Python: Select Interpreter`
-  - Put `.\backend\venv\Scripts\python.exe` (Windows) or `./backend/venv/bin/python` (Mac/Linux) *It should auto-complete, otherwise `Enter path...` Then `Find` and pick the right one with your mouse*
-- **To start the backend server, run `api.py`**
-  - (Make sure the IDE is setup to use the correct python, or that you activate the virtual env before typing `python api.py`)
-- Done! if you want, make VSCode use `Git Bash` by default so you don't have to repeat that step (See [picture](vscode-list-terminals-place.png).
-- (Note: There are obviously many ways to set it up, but this is a recommended & simple way)
-</details>
 
 <details>
-<summary>Setup Frontend</summary>
+<summary>Initial Setup (first-time and when new packages are added)</summary>
 
+- **Windows: Use Git Bash** 
+  - Either open the `Git Bash` program, or follow below in VSCode
+  - In VSCode (*Inside the project* now), open terminal (`CTRL+SHIFT+P`, search for "toggle terminal") (or just ``` CTRL+` ```)
+  - Select `git bash`, *see [picture](vscode-list-terminals-place.png)*
+  - 
+# Windows & Mac backend setup:
+```
+cd backend
+# Create the venv
+if [ -x "$(command -v python3)" ]
+then
+  python3 -m venv venv
+else
+  python -m venv venv
+fi
+
+# Activate the venv:
+if [ -f "./venv/Scripts/activate" ]
+then
+  . venv/Scripts/activate
+else
+  . venv/bin/activate
+fi
+
+# Install reqs
+pip install -r requirements.txt
+```
+# Windows & Mac frontend setup:
 - Make sure `node` is installed. ([windows](https://nodejs.org/en/download/), [Mac](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x))
 
 ```
-cd my-app
+cd my-app/
 npm install --force
-npm start
+```
+</details>
+
+<details>
+<summary>Running code</summary>
+
+- You will want **multiple shells** to run both frontend/backend.
+- Both will auto-reload whenever a change is saved
+- Backend server:
+```
+./run-dev-backend.sh
+```
+- Frontend server:
+```
+./run-dev-frontend.sh
+```
+- Other python files
+```
+# activate the venv
+if [ -f "./venv/Scripts/activate" ]
+then
+    . venv/Scripts/activate
+else
+    . venv/bin/activate
+fi
+
+#run
+python OTHER-FILE
 ```
 </details>
 
