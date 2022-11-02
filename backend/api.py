@@ -13,6 +13,11 @@ import models
 
 @app.route('/')
 def index():
+    # We don't want to use 'send_static' for development. 
+    # The index page in that case will be from the react server (port 3000 usually)
+    if __name__ == "__main__":
+        return "You are running in dev mode! (This is good, if you are a dev)"
+    # This is used for deployments and/or one-step tester, not development
     return app.send_static_file('index.html')
 
 
@@ -82,9 +87,8 @@ def Return_New_User():
         newUser = models.User()
         db.session.add(newUser)
         db.session.commit()
-        users = models.User.query.all()
-        return {"userId": len(users)}
-
+        return {'userId': newUser.id}
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
