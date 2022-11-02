@@ -88,8 +88,8 @@ def Return_New_User():
         db.session.add(newUser)
         db.session.commit()
         users = models.User.query.all()
-        return {"userId": len(users)}
-
+        return {'userId': newUser.id}
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
