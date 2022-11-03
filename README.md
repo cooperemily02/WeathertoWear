@@ -63,38 +63,9 @@ echo "source $(brew --prefix)/opt/spaceship/spaceship.zsh" >>! ~/.zshrc
   - Either open the `Git Bash` program, or follow below in VSCode
   - In VSCode (*Inside the project* now), open terminal (`CTRL+SHIFT+P`, search for "toggle terminal") (or just ``` CTRL+` ```)
   - Select `git bash`, *see [picture](vscode-list-terminals-place.png)*
-  - 
-# Windows & Mac backend setup:
+- Setup scripts
 ```
-cd backend
-# Create the venv
-if [ -x "$(command -v python3)" ]
-then
-  python3 -m venv venv
-else
-  python -m venv venv
-fi
-
-# Activate the venv:
-if [ -f "./venv/Scripts/activate" ]
-then
-  . venv/Scripts/activate
-else
-  . venv/bin/activate
-fi
-
-# Install reqs
-pip install -r requirements.txt
-
-# Creates database tables
-python init_db.py
-```
-# Windows & Mac frontend setup:
-- Make sure `node` is installed. ([windows](https://nodejs.org/en/download/), [Mac](https://changelog.com/posts/install-node-js-with-homebrew-on-os-x))
-
-```
-cd my-app/
-npm install --force
+./dev-setup-script.sh
 ```
 </details>
 
