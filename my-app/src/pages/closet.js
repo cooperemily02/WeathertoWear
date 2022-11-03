@@ -5,8 +5,9 @@ import ClothingItem from "../component/ClothingItem";
 import Box from "@mui/material/Box";
 
 
-const Closet = () => {
+const Closet = (props) => {
   let [clothingItems, setClothingItems] = useState([])
+  const userId = props.userId
   useEffect(() => {
 
     const fetchData = async () => {
