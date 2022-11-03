@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./navbar";
 // import App from "../App";
@@ -7,12 +7,14 @@ import Navbar from "./navbar";
 import Closet from "../pages/closet";
 import Home from "../pages/home";
 
-function Header() {
+function Header(props) {
+  const userId = props.userId;
+  const setUserId = props.setUserId
   return (
     <Router>
-      <Navbar />
+      <Navbar userId = {userId}/>
       <Routes>
-        <Route path="/" element={Home()} />
+        <Route path="/" element={Home({userId: userId, setUserId: setUserId})} />
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
         <Route
           path="/closet"
