@@ -45,7 +45,8 @@ const Closet = (props) => {
   };
   
   const handleOnClick = () => {
-    let clothingItem = {name: enteredItemName, type: selectedType, weatherAttributes: selectedWeatherAttributes}
+    selectedWeatherAttributes.push(selectedType)
+    let clothingItem = {name: enteredItemName, attributes: selectedWeatherAttributes}
     fetch('/dummy/postOutfit', {
       method: 'POST',
       credentials: "include",
