@@ -10,9 +10,11 @@ import {Modal, Button, TextField, InputLabel, MenuItem, FormControl} from '@mui/
 import Select from 'react-select'
 
 
-const Closet = () => {
+const Closet = (props) => {
   let [clothingItems, setClothingItems] = useState([])
   const [addItemModal, openAddItem] = useState(false);
+
+  const userId = props.userId
 
   const handleAddItem = () =>{
     openAddItem(true)
@@ -44,6 +46,25 @@ const Closet = () => {
   
   const handleOnClick = () => {
     let clothingItem = {name: enteredItemName, type: selectedType, weatherAttributes: selectedWeatherAttributes}
+    fetch('/dummy/postOutfit', {
+      method: 'POST',
+      credentials: "include",
+      body: JSON.stringify({
+       user: userId,
+       item: clothingItem
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+       .then((response) => response.json())
+       .then((data) => {
+          console.log(data);
+          // Handle data
+       })
+       .catch((err) => {
+          console.log(err.message);
+       });
     console.log(clothingItem)
   }
 
