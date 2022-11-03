@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import { Button, Modal, Box, TextField } from "@mui/material";
+import { Link } from "react-router-dom"
 import HomeDashboard from "./HomeDashboard";
 
 const Home = (props) => {
@@ -109,7 +110,9 @@ const Home = (props) => {
         {userId == -1 &&
         <>
         <TextField id="standard-basic" sx = {{justifyContent:"center", marginTop: "10px", alignItems: "center", display: "flex"}} onChange={(newValue) => setEnteredId(parseInt(newValue.target.value))} label="User ID" variant="standard"/>
-        <Button variant="contained" onClick = {signInUser(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
+        <Link to = "/homeDashboard">
+          <Button variant="contained" href = "/homeDashboard" onClick = {signInUser(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
+        </Link>
         </>
         }
         {

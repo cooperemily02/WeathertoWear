@@ -6,6 +6,7 @@ import Navbar from "./navbar";
 // import LaundryBin from "../pages/laundrybin";
 import Closet from "../pages/closet";
 import Home from "../pages/home";
+import HomeDashboard from "../pages/HomeDashboard";
 
 function Header(props) {
   const userId = props.userId;
@@ -19,6 +20,10 @@ function Header(props) {
         <Route
           path="/closet"
           element={Closet()}
+        />
+        <Route
+          path="/homeDashboard"
+          element={HomeDashboard({userId: userId})}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>
