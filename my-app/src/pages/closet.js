@@ -26,7 +26,7 @@ const Closet = () => {
 }, []);
   return (
     <>
-      <Typography variant="h3" sx = {{padding: "20px"}}>Your Closet:</Typography>
+      <Typography variant="h3" sx = {{padding: "20px", textAlign:'center', fontFamily: 'Caudex'}}>Your Closet</Typography>
       <Box display="flex">
         <Grid
           container
