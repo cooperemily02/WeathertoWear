@@ -7,10 +7,9 @@ import React from "react";
 import { useState } from 'react'
 
 
-function App() {
+export default function App() {
+  const [userId, setUserId] = useState(-1);
   return (
-    <Header />
+    <Header userId = {userId} setUserId = {setUserId}/>
   );
 }
-
-export default App;

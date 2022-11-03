@@ -39,10 +39,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar() {
+function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const userId = props.userId
   return (
     <AppBar position="static" sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
       <CssBaseline />
@@ -50,7 +51,7 @@ function Navbar() {
             <CloseIcon />
       </IconButton> */}
       <Toolbar >
-        <Drawer />
+        <Drawer userId = {userId} />
         <div
           style={{
             position: "absolute",
