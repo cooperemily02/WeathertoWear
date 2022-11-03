@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
 from models import db
 
 
@@ -14,6 +13,11 @@ import models
 
 @app.route('/')
 def index():
+    # We don't want to use 'send_static' for development. 
+    # The index page in that case will be from the react server (port 3000 usually)
+    if __name__ == "__main__":
+        return "You are running in dev mode! (This is good, if you are a dev)"
+    # This is used for deployments and/or one-step tester, not development
     return app.send_static_file('index.html')
 
 
@@ -77,6 +81,14 @@ def Return_Laundry():
         ]
         return jsonify(data)
 
+@app.route('/dummy/userSignUp', methods=['GET'])
+def Return_New_User():
+    if request.method == 'GET':
+        newUser = models.User()
+        db.session.add(newUser)
+        db.session.commit()
+        return {'userId': newUser.id}
+        
 
 if __name__ == '__main__':
     app.run(debug=True)

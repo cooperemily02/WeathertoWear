@@ -24,13 +24,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function DrawerComponent() {
+function DrawerComponent(props) {
+  const userId = props.userId
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
     <>
-      <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)} sx={{color: 'black'}}>
+        {console.log(props)}
+      <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)} sx={{color: 'black'}} userId = {userId}>
         <List>
           <ListItem onClick={() => setOpenDrawer(false)} sx={{color: 'rgb(156, 180, 204)'}}>
             <ListItemText>
@@ -46,6 +48,8 @@ function DrawerComponent() {
               </Link>
             </ListItemText>
           </ListItem> */}
+          {userId!=-1 &&
+          <>
           <ListItem onClick={() => setOpenDrawer(false)}>
             <ListItemText>
               <Link to="/closet" class={classes.link}>
@@ -60,6 +64,8 @@ function DrawerComponent() {
               </Link>
             </ListItemText>
           </ListItem>
+          </>
+        }
         </List>
       </Drawer>
       <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
