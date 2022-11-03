@@ -47,6 +47,7 @@ const Home = (props) => {
       }
     };
   
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -107,7 +108,13 @@ const Home = (props) => {
         </Typography>
         {userId == -1 &&
         <>
-        <TextField id="standard-basic" sx = {{justifyContent:"center", marginTop: "10px", alignItems: "center", display: "flex"}} onChange={(newValue) => setEnteredId(parseInt(newValue.target.value))} label="User ID" variant="standard"/>
+        <TextField 
+          id= {parseInt(enteredId) !== NaN ? "standard-basic" : "outlined-error"}
+          type = "number"
+          sx = {{justifyContent:"center", marginTop: "10px", alignItems: "center", display: "flex"}} 
+          onChange={(newValue) => setEnteredId(parseInt(newValue.target.value))}
+          helperText = {"Enter a valid ID"}
+          variant="standard"/>
         <Button variant="contained" onClick = {signInUser(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
         </>
         }
