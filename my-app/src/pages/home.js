@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
-import { Button, Modal, Box, TextField } from "@mui/material";
+import { Button, Modal, Box, TextField, FormControl } from "@mui/material";
 
 const Home = (props) => {
     var userId = props.userId
     const [openSignUp, setOpenSignUp] = useState(false);
     const [openLogin, setOpenLogin] = useState(false);
     const [enteredId, setEnteredId] = useState("");
+    const [validId, setIsValidId] = useState(false)
 
 
     //Helper Functions
@@ -29,8 +30,19 @@ const Home = (props) => {
       return ()=>fetchData()
     }
 
-    function signInUser(id){
-      return () => props.setUserId(id)
+    function signInAttempt(id){
+      let valid = (enteredId!=="" && parseInt(enteredId)!==NaN && parseInt(enteredId)!==undefined && enteredId !== "" && (parseInt(enteredId)>0))
+      if (valid) {
+        return () => {
+          setIsValidId(true)
+          props.setUserId(id)
+        }
+      }
+      else {
+        return () => {
+          setIsValidId(false)
+        }
+      }
     }
 
     const fetchData = async () => {
@@ -109,13 +121,19 @@ const Home = (props) => {
         {userId == -1 &&
         <>
         <TextField 
-          id= {parseInt(enteredId) !== NaN ? "standard-basic" : "outlined-error"}
+          id= "standard-basic"
+          error = {validId}
           type = "number"
           sx = {{justifyContent:"center", marginTop: "10px", alignItems: "center", display: "flex"}} 
-          onChange={(newValue) => setEnteredId(parseInt(newValue.target.value))}
-          helperText = {"Enter a valid ID"}
-          variant="standard"/>
-        <Button variant="contained" onClick = {signInUser(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
+          onChange={(newValue) => {
+            setEnteredId(parseInt(newValue.target.value))
+            signInAttempt(newValue.target.value)
+          }}
+          helperText = {!validId && "Enter a valid ID"}
+          variant="standard"
+          required
+          />
+        <Button variant="contained" onClick = {signInAttempt(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
         </>
         }
         {
