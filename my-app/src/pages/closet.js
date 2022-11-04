@@ -25,15 +25,16 @@ const Closet = (props) => {
 
   const [enteredItemName, setItemName] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [selectedWeatherAttributes, setWeatherAttributes] = useState([]);
+  const [selectedAttributes, setAttributes] = useState([]);
 
 
-  const handleChangeWeatherAttributes= (attributes) => {
+  //This is run when the user changes the attributes on the multiselect dropdown for adding an item
+  const handleChangeAttributes= (attributes) => {
     let items = []
     attributes.map(item => {
       items.push(item.value)
     })
-    setWeatherAttributes(items)
+    setAttributes(items)
   };
 
   const handleChangeItemName = (name) =>{
@@ -45,9 +46,9 @@ const Closet = (props) => {
   };
   
   const handleOnClick = () => {
-    selectedWeatherAttributes.push(selectedType)
-    let clothingItem = {name: enteredItemName, attributes: selectedWeatherAttributes}
-    fetch('/dummy/postOutfit', {
+    selectedAttributes.push(selectedType)
+    let clothingItem = {name: enteredItemName, attributes: selectedAttributes}
+    fetch('/dummy/clothingItem', {
       method: 'POST',
       credentials: "include",
       body: JSON.stringify({
@@ -181,7 +182,7 @@ const Closet = (props) => {
           <Select
             closeMenuOnSelect={false}
             isMulti
-            onChange = {handleChangeWeatherAttributes}
+            onChange = {handleChangeAttributes}
             placeholder = {"Select one or more attributes"}
             options={optionsForWeather}
           />
