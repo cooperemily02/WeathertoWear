@@ -88,7 +88,25 @@ def Return_New_User():
         db.session.add(newUser)
         db.session.commit()
         return {'userId': newUser.id}
-        
+
+@app.route('/dummy/addClothingItem', methods=['GET'])
+def Return_New_Clothing_Item(dict):
+    if request.method == 'GET':
+        # created the clothing item in the DB based on the user input
+        clothing_item = models.ClothingItem()
+        item_dict = dict["item"]
+        clothing_item.name = item_dict["name"]
+        clothing_item.tags = item_dict["attributes"]
+
+        db.session.add(clothing_item)
+
+        user_id = dict["user"]
+        # finds the user in the database, based on the inputted user ID
+        user = db.session.query(models.User).filter_by(models.User.id == user_id).one_or_none()
+        # adds the clothing item to the clothing items table 
+        user.clothing_items.append(clothing_item)
+        db.session.commit()
+        return clothing_item.serialize        
 
 if __name__ == '__main__':
     app.run(debug=True)
