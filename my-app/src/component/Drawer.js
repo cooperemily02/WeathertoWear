@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
   link: {
     textDecoration: "none",
     color: 'rgb(116, 141, 166)',
-    fontSize: "75px",
+    fontSize: "30px",
     fontFamily: 'Caudex',
     "&:hover": {
       color: 'rgb(156, 180, 204)',
