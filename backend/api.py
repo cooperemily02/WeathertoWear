@@ -89,7 +89,7 @@ def Return_New_User():
         db.session.commit()
         return {'userId': newUser.id}
 
-@app.route('/dummy/getForecast<zipcode>', methods=['GET'])
+@app.route('/dummy/getForecast/<zipcode>', methods=['GET'])
 def Return_Forecast(zipcode: str):
     if request.method == 'GET':
         return weather.get_forecast(zipcode)
