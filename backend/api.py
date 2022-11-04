@@ -89,18 +89,22 @@ def Return_New_User():
         db.session.commit()
         return {'userId': newUser.id}
 
-@app.route('/dummy/addClothingItem', methods=['GET'])
-def Return_New_Clothing_Item(dict):
-    if request.method == 'GET':
+@app.route('/dummy/addClothingItem', methods=['POST'])
+def Return_New_Clothing_Item():
+    if request.method == 'POST':
+        # not sure exactly what I should call to get the input
+        item_dict = request.form.get('item')
+        user_id = request.form.get('user')
         # created the clothing item in the DB based on the user input
         clothing_item = models.ClothingItem()
-        item_dict = dict["item"]
         clothing_item.name = item_dict["name"]
-        clothing_item.tags = item_dict["attributes"]
+        # the front end has the type as the last attribute
+        length = len(item_dict)
+        clothing_item.tags = item_dict["attributes"][0: length - 1]
+        clothing_item.type = item_dict["attributes"][length - 1]
 
         db.session.add(clothing_item)
 
-        user_id = dict["user"]
         # finds the user in the database, based on the inputted user ID
         user = db.session.query(models.User).filter_by(models.User.id == user_id).one_or_none()
         # adds the clothing item to the clothing items table 
