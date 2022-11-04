@@ -10,12 +10,6 @@ item_tags = db.Table('item_tags',
     db.Column('item_id', db.Integer, db.ForeignKey('clothing_item.id'), primary_key=True)
 )
 
-# This table relates a closet & its items together with the items tags 
-closet_items = db.Table('closet_items', 
-    db.Column('item_id', db.Integer, db.ForeignKey('clothing_item.id'), primary_key=True),
-    db.Column('tags', db.Integer, db.ForeignKey('clothing_item.tags'), primary_key=True),
-)
-
 
 class ClothingItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,7 +35,3 @@ class Tag(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
-class Closet(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column('user_id', db.Integer, db.ForeignKey("user.id") )
-    clothing_items = db.relationship('ClothingItem', secondary = closet_items, backref= 'user')
