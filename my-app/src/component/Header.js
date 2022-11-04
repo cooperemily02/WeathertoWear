@@ -18,7 +18,7 @@ function Header(props) {
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
         <Route
           path="/closet"
-          element={Closet({userId: userId})}
+          element={Closet()}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>
