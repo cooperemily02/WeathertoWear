@@ -1,12 +1,11 @@
-import React from "react";
-import { Typography } from "@mui/material";
+import React, {useState} from "react";
+import Outfit from "../component/Outfit";
 
 export const HomeDashboard = (props) => {
-    return (
-        <>
-            <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 10}} >Hi, User {props.userId}</Typography>
-        </>
-    );
+    let zipcode = 1;
+    let [outfit, setOutfit] = useState({top: 'Nike tank top', bottom: 'blue lulu shorts', shoes: 'adidas sneakers', outerwear: 'denim jacket'});
+    console.log(outfit);
+    return (<Outfit zipcode={zipcode} userId={props.userId} />);
 };
 
 export default HomeDashboard;
