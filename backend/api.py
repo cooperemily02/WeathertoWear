@@ -92,9 +92,10 @@ def Return_New_User():
 
 @app.route('/dummy/addClothingItem', methods=['POST'])
 def Return_New_Clothing_Item():
-    # not sure exactly what I should call to get the input
-    item_dict = request.form.get('item')
-    user_id = request.form.get('user')
+    breakpoint()
+    # get_json is needed instead of 'form'
+    item_dict = request.get_json().get('item')
+    user_id = request.get_json().get('user')
 
     # created the clothing item in the DB based on the user input
     clothing_item = models.ClothingItem()
@@ -106,9 +107,10 @@ def Return_New_Clothing_Item():
     # finds the user in the database, based on the inputted user ID
     user = models.User().get(user_id)
     
-    # adds the clothing item to the clothing items table 
-    user.clothing_items.append(clothing_item)
-
+    #TODO: This endpoint takes in an item and a user. BUT, our model has multiple
+    # closets for each user. So find/create a default Closet for the user, and
+    # add the item there.
+    is_user_has_closet = len(user.closets) > 0
 
     db.session.add(clothing_item)
     db.session.commit()
