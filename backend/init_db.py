@@ -25,6 +25,10 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
     item2.tags.append(tag2)
     item3.tags.append(tag3)
 
+    # Add the items to the closets
+    closet1.items.extend([item1, item2])
+    closet2.items.extend([item3])
+
     db.session.add_all([item1, item2, item3]) # won't be written until the 'commit' line
     db.session.add_all([tag1, tag2, tag3])
     db.session.add_all([user1, user2])
@@ -34,6 +38,9 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
     # Accessing the data:
     items = models.ClothingItem.query.all()
     for item in items:
+        print(item.serialize)
+    print('Closet 1 items:')
+    for item in closet1.items:
         print(item.serialize)
 
     users = models.User.query.all()
