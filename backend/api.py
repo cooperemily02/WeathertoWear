@@ -111,7 +111,19 @@ def Return_New_Clothing_Item():
     # closets for each user. So find/create a default Closet for the user, and
     # add the item there.
     is_user_has_closet = len(user.closets) > 0
-
+    # if the user has a closet/default closet then add it there
+    if (is_user_has_closet): 
+        # we haven't talked about a default closet, use input from front end later?
+        closet = (user.closets)[0]
+        clothing_item.closet_id = closet.id
+        closet.items.append(clothing_item)
+    else:     
+        closet = models.Closet()
+        closet.user = user
+        closet.user_id = user.id
+        closet.id = 1
+        clothing_item.closet_id = closet.id
+        closet.items = [clothing_item]
     db.session.add(clothing_item)
     db.session.commit()
     
