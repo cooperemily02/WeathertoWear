@@ -39,4 +39,4 @@ class User(db.Model):
 class Closet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey("user.id") )
-    user = db.relationship('User', backref= 'Closet')
+    user = db.relationship('User', backref= 'closets')
