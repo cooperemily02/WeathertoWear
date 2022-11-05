@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, jsonify, request
 from models import db
+import weather
 
 
 app = Flask(__name__, static_folder='./build', static_url_path='/')
@@ -9,7 +10,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dummy.db'
 
 db.init_app(app) # Now we can use the database in our endpoints!
 import models
-
 
 @app.route('/')
 def index():
@@ -88,7 +88,12 @@ def Return_New_User():
         db.session.add(newUser)
         db.session.commit()
         return {'userId': newUser.id}
-        
+
+@app.route('/dummy/getForecast/<zipcode>', methods=['GET'])
+def Return_Forecast(zipcode: str):
+    if request.method == 'GET':
+        return weather.get_forecast(zipcode)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -7,9 +7,12 @@ WEATHER_API_KEY = "6d741a9fc1d14b66613a8bb0c8f7ceb3"
 
 def get_forecast(zipcode: str) -> dict:
     """
-    Returns 5-day forecast in 3hr intervals using
+    Get 5-day forecast in 3hr intervals using
     the OpenWeather api
-    Note: zipcode must be str bc ints cannot start with 0
+    
+    Returns:    {"timex": str, "tempx": int, "weatherx": str}
+                where x == time entry in forecast
+                e.g. 0 == time of call, 1 == 3+(time0)
     """
 
     url = (
@@ -26,13 +29,13 @@ def get_forecast(zipcode: str) -> dict:
     for i, day in enumerate(days):
         dt = day.get("dt")
         dt = str(datetime.datetime.fromtimestamp(dt))
-        forecast["day" + str(i)] = dt
-        forecast["temp" + str(i)] = day.get("main").get("temp")
+        forecast["time" + str(i)] = dt
+        temp = day.get("main").get("temp")
+        forecast["temp" + str(i)] = int((temp - 273.15) * (9/5) + 32)
         forecast["weather" + str(i)] = day.get("weather")[0].get("main")
         #TODO breaking here to get one 3-hr interval, fix for 1.0
         break
     return forecast
-
 
 
 # for testing
