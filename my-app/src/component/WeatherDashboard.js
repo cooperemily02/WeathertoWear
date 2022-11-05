@@ -1,17 +1,36 @@
 import React, {useEffect, useState} from "react";
-import { Paper, Typography, FormControl, RadioGroup, Radio, FormControlLabel } from "@mui/material";
+import { Paper, Typography, FormControl, RadioGroup, Radio, FormControlLabel, TextField, Button } from "@mui/material";
 import DigitalClock from "./DigitalClock";
 import img from '../static/dashboardPic.png'
 
 export const WeatherDashboard = (props) => {
-    const weather = {'day0': '2022-11-03 20:00:00', 'temp0': 287.54, 'weather0': 'Clear'}
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`/dummy/getForecast/${zipCode}`, {
+              method: "GET",
+              credentials: "include",
+            });
+            const json = await response.json();
+            setWeather(json)
+            setTemp(json.temp0)
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+    
+        fetchData();
+
+    const [weather, setWeather] = useState(NaN)
+    const [zipCode, setZipcode] = useState({})
     const changeTemp =  (i, t) => {
-        return t == 'f' ? ((Math.round((i-273.15)*9/5+32))) : Math.round((i - 273.15))
+        return t == 'f' ? Math.round(i) : Math.round(((i - 32)*(5/9)))
     }
-    const [tempType, setTempType] = useState('f')
+    const handleSetZipcode = (zipCode) => {
+        setZipcode(zipCode)
+    }
+    const [tempType, setTempType] = useState('c')
     const [temp, setTemp] = useState(changeTemp(weather.temp0, tempType))
     const handleChange = (v) => {
-        console.log(weather.temp0)
         setTempType(v.target.value)
         tempType == 'f' ? setTemp(changeTemp(weather.temp0, tempType)) : setTemp(changeTemp(weather.temp0, tempType))
     }
@@ -31,6 +50,20 @@ export const WeatherDashboard = (props) => {
                     <DigitalClock />
                     <img src={img} style = {{float: "left", width: "50%", padding: "5%"}}/>
                     <div style = {{float: "right", padding: "5%"}}>
+                        {isNaN(weather.temp0) && 
+                        <>
+                        <TextField id="outlined-basic" 
+                        label="Enter Zip Code" 
+                        variant="outlined" 
+                        onChange={(newValue) => handleSetZipcode(newValue.target.value)}
+                        />
+                        <div />
+                        <Button variant="contained" onClick = {fetchData} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Fetch Weather!</Button>
+
+                        </>
+                        }
+                        {!(isNaN(weather.temp0)) &&
+                        <>
                         <Typography variant = "h4" fontFamily = 'Caudex'><b>{temp}º </b></Typography>
                         <FormControl>
                             <RadioGroup
@@ -45,6 +78,8 @@ export const WeatherDashboard = (props) => {
                             </RadioGroup>
                          </FormControl>
                         <Typography variant = "h6" fontFamily = 'Caudex'> Today's Forcast Is: <b>{weather.weather0}</b> </Typography>
+                        </>
+                        }
                     </div>
                 </Paper>
             </div>
