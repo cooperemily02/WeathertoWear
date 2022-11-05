@@ -19,7 +19,7 @@ function Header(props) {
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
         <Route
           path="/closet"
-          element={Closet()}
+          element={Closet({userId: userId})}
         />
         <Route
           path="/homeDashboard"
