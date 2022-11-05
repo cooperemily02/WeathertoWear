@@ -27,7 +27,7 @@ class ClothingItem(db.Model):
         for tag in self.tags:
             list_tags.append(tag.name)
 
-        return {'name': self.name, 'tags': list_tags}
+        return {'name': self.name, 'tags': list_tags, 'closet_id': self.closet_id}
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
