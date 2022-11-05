@@ -92,7 +92,6 @@ def Return_New_User():
 
 @app.route('/dummy/addClothingItem', methods=['POST'])
 def Return_New_Clothing_Item():
-    breakpoint()
     # get_json is needed instead of 'form'
     item_dict = request.get_json().get('item')
     user_id = request.get_json().get('user')
