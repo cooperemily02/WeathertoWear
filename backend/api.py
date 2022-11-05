@@ -88,7 +88,32 @@ def Return_New_User():
         db.session.add(newUser)
         db.session.commit()
         return {'userId': newUser.id}
-        
+
+
+@app.route('/dummy/addClothingItem', methods=['POST'])
+def Return_New_Clothing_Item():
+    # not sure exactly what I should call to get the input
+    item_dict = request.form.get('item')
+    user_id = request.form.get('user')
+
+    # created the clothing item in the DB based on the user input
+    clothing_item = models.ClothingItem()
+    clothing_item.name = item_dict["name"]
+    
+    # the front end has the type as the last attribute
+    clothing_item.tags = item_dict["attributes"]
+
+    # finds the user in the database, based on the inputted user ID
+    user = models.User().get(user_id)
+    
+    # adds the clothing item to the clothing items table 
+    user.clothing_items.append(clothing_item)
+
+
+    db.session.add(clothing_item)
+    db.session.commit()
+    
+    return clothing_item.serialize        
 
 if __name__ == '__main__':
     app.run(debug=True)

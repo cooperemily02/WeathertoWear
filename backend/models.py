@@ -18,6 +18,7 @@ class ClothingItem(db.Model):
     # lets us access item.tags (Which happens through a query in the background).
     # the 'backref' lets us do the opposite: tag.items
     tags = db.relationship('Tag', secondary=item_tags, backref='items')
+    closet_id = db.Column(db.Integer, db.ForeignKey('closet.id'))
 
     #TODO: In 'serialize' return a dictionary matching how the frontend displays items
     @property
@@ -35,3 +36,8 @@ class Tag(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
+class Closet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey("user.id") )
+    user = db.relationship('User', backref= 'closets')
+    items = db.relationship('ClothingItem', backref='closet')
