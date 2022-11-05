@@ -100,11 +100,12 @@ def Return_New_Clothing_Item():
     clothing_item = models.ClothingItem()
     clothing_item.name = item_dict["name"]
     
-    # the front end has the type as the last attribute
-    clothing_item.tags = item_dict["attributes"]
+    # Construct Tag objects from the request (called attributes there), 
+    # And add them to the clothing_item
+    clothing_item.tags = [models.Tag(name=tag_name) for tag_name in item_dict['attributes']]
 
     # finds the user in the database, based on the inputted user ID
-    user = models.User().get(user_id)
+    user = models.User.query.get(user_id)
     
     #TODO: This endpoint takes in an item and a user. BUT, our model has multiple
     # closets for each user. So find/create a default Closet for the user, and
