@@ -3,11 +3,28 @@ import { Typography } from "@mui/material";
 import {Box, Grid, Button  } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import img from "../static/W2W.png";
+import top from "../static/top.png";
+import bottom from "../static/bottom.png";
+import shoes from "../static/shoes.jpg";
+import coat from "../static/coat.png";
 
 export const Outfit = (props) => {
     let [outfit, setOutfit] = useState({top: 'Nike tank top', bottom: 'blue lulu shorts', shoes: 'adidas sneakers', outerwear: 'denim jacket'});
     console.log(outfit);
+    const image = (key) => {
+        if (key === 'top'){
+            return top;
+        }
+        if (key == 'bottom'){
+            return bottom;
+        }
+        if (key == 'shoes'){
+            return shoes;
+        }
+        if (key === 'outerwear'){
+            return coat;
+        }
+    }
     if (props.zipcode == 0){
         return ( 
             <>
@@ -34,7 +51,7 @@ export const Outfit = (props) => {
                                 Object.keys(outfit).map((key, index) => (
                                     <Box display="flex" justifyContent="space-between" sx={{pt: 10}}>
                                         <Typography variant="h4"  sx={{color: 'white', fontFamily: 'Caudex', pt:15}} >{key.charAt(0).toUpperCase() + key.slice(1)}: {outfit[key]}</Typography>
-                                        <img src={img} alt={outfit.top} height="250" />
+                                        <img src={image(key)} alt={outfit[key]} height="250" />
                                     </Box>  
                                 ))
                             }   
