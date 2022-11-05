@@ -101,16 +101,16 @@ def Return_New_Clothing_Item():
     clothing_item.name = item_dict["name"]
     
     # the front end has the type as the last attribute
-    length = len(item_dict)
-    clothing_item.tags = item_dict["attributes"][0: length - 1]
-    clothing_item.type = item_dict["attributes"][length - 1]
-
-    db.session.add(clothing_item)
+    clothing_item.tags = item_dict["attributes"]
 
     # finds the user in the database, based on the inputted user ID
-    user = db.session.query(models.User).filter_by(models.User.id == user_id).one_or_none()
+    user = models.User().get(user_id)
+    
     # adds the clothing item to the clothing items table 
     user.clothing_items.append(clothing_item)
+
+
+    db.session.add(clothing_item)
     db.session.commit()
     
     return clothing_item.serialize        
