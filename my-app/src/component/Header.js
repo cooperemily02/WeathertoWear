@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./navbar";
 // import App from "../App";
 // import DailyOutfits from "../pages/dailyoutfits";
@@ -11,7 +11,7 @@ function Header(props) {
   const userId = props.userId;
   const setUserId = props.setUserId
   return (
-    <Router>
+    <>
       <Navbar userId = {userId} setUserId = {setUserId}/>
       <Routes>
         <Route path="/" element={Home({userId: userId, setUserId: setUserId})} />
@@ -22,7 +22,7 @@ function Header(props) {
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>
-    </Router>
+    </>
   );
 }
 

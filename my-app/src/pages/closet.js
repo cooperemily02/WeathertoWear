@@ -1,18 +1,15 @@
 import React, {useEffect, useState} from "react";
+import ClothingItem from "../component/ClothingItem";
+import { useNavigate } from "react-router-dom";
 
-import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper} from '@mui/material'
+import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
-
-
-import BasicSelect from "../component/textField";
-import ClothingItem from "../component/ClothingItem"
-import {Modal, Button, TextField, InputLabel, MenuItem, FormControl} from '@mui/material'
 import Select from 'react-select'
 
 
 const Closet = (props) => {
  
-
+  const navigate = useNavigate()
   const userId = props.userId
 
   const handleAddItem = () =>{
@@ -26,7 +23,6 @@ const Closet = (props) => {
   const [enteredItemName, setItemName] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttributes, setAttributes] = useState([]);
-  const [clothingItems, setClothingItems] = useState([])
   const [sortedClothingItems, setSortedClothingItems] = useState({tops: [], bottoms: [], shoes: [], outerwear: [], other: []})
   const [addItemModal, openAddItem] = useState(false);
   const [severity, setSeverity] = useState(undefined);
@@ -156,6 +152,9 @@ const Closet = (props) => {
   };
 
   useEffect(() => {
+    if(userId===-1){
+      navigate('/')
+    }
     fetchClothingItems();
 }, []);
   return (
