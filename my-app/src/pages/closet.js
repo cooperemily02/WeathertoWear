@@ -184,11 +184,11 @@ const Closet = (props) => {
       <Typography variant="h3" sx = {{paddingBottom: "1px", paddingTop: "20px", marginTop: "auto"}}>Your Closet:</Typography>
       </div>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
-      <Button variant="contained" onClick = {handleAddItem} sx = {{margin: "10px", backgroundColor: 'rgb(211, 206, 223)', color: 'rgb(105,105,105)', hover: { backgroundColor: 'rgb(255, 180, 180)'}}}>
+      <Button variant="contained" onClick = {handleAddItem} sx = {{margin: "10px", backgroundColor: 'rgb(211, 206, 223)', color: 'rgb(105,105,105)', hover: { backgroundColor: 'rgb(195, 184, 222)'}}}>
         Add Item
       </Button>
       </div>
-      <Paper elevation = {6} style = {{margin: "5px", width: "75%", display: "flex", marginInline: "auto", justifyContent: "center", alignItems: "center", textAlign: "center", paddingBottom: "5%", paddingInline: "10%"}}>
+      <Paper elevation = {6} style = {{backgroundColor: "#f5f5f5", margin: "5px", width: "75%", display: "flex", marginInline: "auto", justifyContent: "center", alignItems: "center", textAlign: "center", paddingBottom: "5%", paddingInline: "10%"}}>
         <Box sx = {{
           flexGrow: 1, 
           marginTop: "5%", 

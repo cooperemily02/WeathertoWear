@@ -28,11 +28,11 @@ function ClothingItem(props) {
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
           </Typography>
-          <Typography gutterBottom variant="h6" sx={{textDecoration: 'underline'}}>
+          <Typography gutterBottom variant="h6" sx={{textAlign: "left", textDecoration: 'underline'}}>
             Tags
           </Typography>
           {item.tags.map((tag) => {
-            return <ul><Typography variant = "body">{tag}</Typography></ul>;
+            return <ul style = {{textAlign: "left"}}><Typography variant = "body">{tag}</Typography></ul>;
           })}
         </CardContent>
       </CardActionArea>
