@@ -57,17 +57,20 @@ def Return_Outfits():
 
 @app.route('/dummy/Closet', methods=['GET'])
 def Return_Closet():
-    return [item.serialize for item in models.ClothingItem.query.all()]
-    if request.method == 'GET':
-        data = [
-            {'name': 'Black rain coat', 'tags': ['outerwear']},
-            {'name': 'White t-shirt', 'tags': ['top']},
-            {'name': 'black long sleeve', 'tags': ['top']},
-            {'name': 'black jeans', 'tags': ['bottom']},
-            {'name': 'high waisted blue jeans', 'tags': ['bottom']},
-            {'name': 'rainboots', 'tags': ['shoe']},
-        ]
-        return jsonify(data)
+    user_id = request.get_json().get('user')
+    user = models.User.query.get(user_id)
+    # code to take in a closet ID because each user can have multiple closets 
+    closet_id = request.get_json().get('closet')
+    closet = models.Closet.query.get(closet_id)
+    # OR return all closets?
+    # closets = user.closet
+    # clothing_items = []
+    # for closet in closets: 
+    #   for item in closet:
+    #       clothing_items.append(item.serialize)
+    # return clothing_items 
+
+    return [item.serialize for item in closet]
 
 
 @app.route('/dummy/Laundry', methods=['GET'])
