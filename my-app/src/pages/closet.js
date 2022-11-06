@@ -3,12 +3,16 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ClothingItem from "../component/ClothingItem";
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 
 
-const Closet = () => {
+const Closet = (props) => {
+  const navigate = useNavigate()
   let [clothingItems, setClothingItems] = useState([])
   useEffect(() => {
-
+    if(props.userId==-1){
+      navigate('/')
+    }
     const fetchData = async () => {
       try {
         const response = await fetch("/dummy/Closet", {
