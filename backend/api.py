@@ -59,18 +59,15 @@ def Return_Outfits():
 def Return_Closet():
     user_id = request.get_json().get('user')
     user = models.User.query.get(user_id)
-    # code to take in a closet ID because each user can have multiple closets 
-    closet_id = request.get_json().get('closet')
-    closet = models.Closet.query.get(closet_id)
-    # OR return all closets?
-    # closets = user.closet
-    # clothing_items = []
-    # for closet in closets: 
-    #   for item in closet:
-    #       clothing_items.append(item.serialize)
-    # return clothing_items 
 
-    return [item.serialize for item in closet]
+    # return items from all closets of the user
+    # TODO: re-design to return specific closet's items (later)
+    closets = user.closets
+    clothing_items = []
+    for closet in closets: 
+      for item in closet.items:
+          clothing_items.append(item.serialize)
+    return clothing_items 
 
 
 @app.route('/dummy/Laundry', methods=['GET'])
