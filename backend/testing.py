@@ -32,6 +32,25 @@ class MyTestCase(unittest.TestCase):
         )
         #TODO: add an assertion that the item was actually added (bit of a hassle because)
         self.assertEqual(response.status_code, 200)
+    
+    
+    def test_get_users_items(self):
+        request_data = {
+            'user': 1,
+        }
+        response = self.app.get(
+            'dummy/Closet',
+            data=json.dumps(request_data),
+            content_type='application/json'
+        )
+        # user with id=1 should have this item from a previous test
+        item_name_that_should_be_there_from_add_test = 'item to test add-item'
+        json_items = response.get_json()
+        self.assertTrue(
+            any(
+                item['name'] == item_name_that_should_be_there_from_add_test for item in json_items
+            )
+        )
 
 #running the class for testing, dont delete lines 21-22
 if __name__ == '__main__':
