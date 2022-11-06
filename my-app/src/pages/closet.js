@@ -1,18 +1,17 @@
 import React, {useEffect, useState} from "react";
-import AddIcon from '@mui/icons-material/Add';
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import ClothingItem from "../component/ClothingItem";
-import Box from "@mui/material/Box";
-import IconButton from '@mui/material/IconButton';
+
+import {Grid, Typography, Box, IconButton, Alert, Collapse} from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
+
+
 import BasicSelect from "../component/textField";
+import ClothingItem from "../component/ClothingItem"
 import {Modal, Button, TextField, InputLabel, MenuItem, FormControl} from '@mui/material'
 import Select from 'react-select'
 
 
 const Closet = (props) => {
-  let [clothingItems, setClothingItems] = useState([])
-  const [addItemModal, openAddItem] = useState(false);
+ 
 
   const userId = props.userId
 
@@ -23,9 +22,13 @@ const Closet = (props) => {
     openAddItem(false)
   }
 
+  const [openAlert, setOpenAlert] = React.useState(false);
   const [enteredItemName, setItemName] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttributes, setAttributes] = useState([]);
+  const [clothingItems, setClothingItems] = useState([])
+  const [addItemModal, openAddItem] = useState(false);
+  const [severity, setSeverity] = useState(undefined);
 
 
   //This is run when the user changes the attributes on the multiselect dropdown for adding an item
@@ -62,12 +65,17 @@ const Closet = (props) => {
        .then((response) => response.json())
        .then((data) => {
           console.log(data);
+          handleCloseModal()
+          setSeverity('success')
+          setOpenAlert(true)
           // Handle data
        })
        .catch((err) => {
+        handleCloseModal()
+        setSeverity('error')
+        setOpenAlert(true)
           console.log(err.message);
        });
-    console.log(clothingItem)
   }
 
 
@@ -128,6 +136,26 @@ const Closet = (props) => {
 }, []);
   return (
     <>
+     <Collapse in={openAlert}>
+        <Alert
+          severity = {severity}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpenAlert(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {severity == undefined || 'error' ? "Could not add item. Please try again or submit a trouble ticket." : "Item Successfully Added!"}
+        </Alert>
+      </Collapse>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
       <Typography variant="h3" sx = {{paddingBottom: "1px", paddingTop: "20px", marginTop: "auto"}}>Your Closet:</Typography>
       </div>
