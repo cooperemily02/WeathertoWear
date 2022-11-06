@@ -23,7 +23,7 @@ const Closet = (props) => {
   const [enteredItemName, setItemName] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttributes, setAttributes] = useState([]);
-  const [sortedClothingItems, setSortedClothingItems] = useState({tops: [], bottoms: [], shoes: [], outerwear: [], other: []})
+  const [sortedClothingItems, setSortedClothingItems] = useState({Tops: [], Bottoms: [], Shoes: [], Outerwear: [], Other: []})
   const [addItemModal, openAddItem] = useState(false);
   const [severity, setSeverity] = useState(undefined);
 
@@ -83,7 +83,6 @@ const Closet = (props) => {
     })
        .then((response) => response.json())
        .then((data) => {
-          console.log(data);
           fetchClothingItems()
           handleCloseModal()
           setSeverity('success')
@@ -140,22 +139,28 @@ const Closet = (props) => {
   const fetchClothingItems = async () => {
     try {
       const response = await fetch("/dummy/Closet", {
-        method: "GET",
+        method: "POST",
         credentials: "include",
+        body: JSON.stringify({
+          user: userId,
+         }),
+         headers: {
+           'Content-type': 'application/json; charset=UTF-8',
+         },
       });
       const json = await response.json();
-      //setClothingItems(json)
       sortClothingItems(json)
+      console.log("SCI" + sortedClothingItems)
     } catch (error) {
       console.log("error", error);
     }
   };
 
   useEffect(() => {
+    fetchClothingItems();
     if(userId===-1){
       navigate('/')
     }
-    fetchClothingItems();
 }, []);
   return (
     <>
@@ -193,9 +198,9 @@ const Closet = (props) => {
           }}>
           {console.log(Object.entries(sortedClothingItems))}
           {Object.entries(sortedClothingItems).map(([type, clothingItems]) => {
-            return <div>
-            <Typography variant="h4" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > <b>{type}</b> </Typography>
-            <hr style = {{marginInline: "20%"}}/>
+            return <div style = {{padding: "5px"}}>
+            <Typography variant="h4" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "8px"}} > <b>{type}</b> </Typography>
+            <hr style = {{marginInline: "20%", padding: "5px"}}/>
             <Grid container justifyContent = "center" spacing={5}>
               {clothingItems.map((item, index) => (
                 <Grid item xs={2} sm={4} md={4} key = {index}>
