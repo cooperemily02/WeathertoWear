@@ -25,10 +25,9 @@ export const Outfit = (props) => {
             return coat;
         }
     }
-    if (props.zipcode == 0){
+    if (props.zipcode == -1){
         return ( 
             <>
-                <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', py: 10}} >Hi, User {props.userId}</Typography>  
                 <Grid container justifyContent={"center"}>
                     <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)'}}>
                         <CardContent>
@@ -42,7 +41,6 @@ export const Outfit = (props) => {
     else {
         return (
             <>
-                <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', py: 10}} >Hi, User {props.userId}</Typography>
                 <Grid container justifyContent={"center"}>
                     <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)'}}>
                         <CardContent>
