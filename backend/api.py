@@ -94,7 +94,7 @@ def Return_Forecast(zipcode: str):
     if request.method == 'GET':
         return weather.get_forecast(zipcode)
 
-@app.route('/dummy/addClothingItem', methods=['POST'])
+@app.route('/dummy/clothingItem', methods=['POST'])
 def Return_New_Clothing_Item():
     # get_json is needed instead of 'form'
     item_dict = request.get_json().get('item')
