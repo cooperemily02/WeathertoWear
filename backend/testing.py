@@ -30,8 +30,29 @@ class MyTestCase(unittest.TestCase):
             data=json.dumps(request_data),
             content_type='application/json'
         )
-        #TODO: add an assertion that the item was actually added (bit of a hassle because)
-        self.assertEqual(response.status_code, 200)
+        with self.app:
+            response = self.app.post(
+                '/dummy/clothingItem',
+                data=json.dumps(request_data),
+                content_type='application/json'
+            )
+            json_item = response.get_json()
+            user_data = {
+                'user': 1,
+            }
+            # returning the user's closet 
+            closet_response = self.app.get(
+                'dummy/Closet',
+                data=json.dumps(user_data),
+                content_type='application/json'
+            )
+            closet_json = closet_response.get_json()
+            # item should now be in the closet 
+            self.assertTrue(
+                any(
+                    item == json_item for item in closet_json
+                )
+            )   
     
     
     def test_get_users_items(self):
