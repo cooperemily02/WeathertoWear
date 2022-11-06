@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Outfit from "../component/Outfit";
-import {Box, Grid, Button, Typography  } from "@mui/material";
+import { Typography } from "@mui/material";
 
 
 export const HomeDashboard = (props) => {
