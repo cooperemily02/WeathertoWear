@@ -143,7 +143,6 @@ const Home = (props) => {
         }
       </Box>
   </Modal>
-  <WeatherDashboard></WeatherDashboard>
     </>
     );
 };
