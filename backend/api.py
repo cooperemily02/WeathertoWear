@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dummy.db'
 db.init_app(app) # Now we can use the database in our endpoints!
 import models
 
+
 @app.route('/')
 def index():
     # We don't want to use 'send_static' for development. 
