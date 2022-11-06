@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-import {Grid, Typography, Box, IconButton, Alert, Collapse} from '@mui/material'
+import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 
 
@@ -27,9 +27,32 @@ const Closet = (props) => {
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttributes, setAttributes] = useState([]);
   const [clothingItems, setClothingItems] = useState([])
+  const [sortedClothingItems, setSortedClothingItems] = useState({tops: [], bottoms: [], shoes: [], outerwear: [], other: []})
   const [addItemModal, openAddItem] = useState(false);
   const [severity, setSeverity] = useState(undefined);
 
+
+  const sortClothingItems = (items) => {
+    const sortedItems = {Tops: [], Bottoms: [], Shoes: [], Outerwear: [], Other: []}
+    items.forEach(item => {
+      if (item.tags.includes("top")){
+        sortedItems.Tops.push(item)
+      }
+      else if (item.tags.includes("bottom")){
+        sortedItems.Bottoms.push(item)
+      }
+      else if (item.tags.includes("shoes")){
+        sortedItems.Shoes.push(item)
+      }
+      else if (item.tags.includes("outerwear")){
+        sortedItems.Outerwear.push(item)
+      }
+      else {
+        sortedItems.Other.push(item)
+      }
+    setSortedClothingItems(sortedItems)
+    })
+  }
 
   //This is run when the user changes the attributes on the multiselect dropdown for adding an item
   const handleChangeAttributes= (attributes) => {
@@ -125,7 +148,8 @@ const Closet = (props) => {
         credentials: "include",
       });
       const json = await response.json();
-      setClothingItems(json)
+      //setClothingItems(json)
+      sortClothingItems(json)
     } catch (error) {
       console.log("error", error);
     }
@@ -164,20 +188,28 @@ const Closet = (props) => {
         Add Item
       </Button>
       </div>
-      <div style = {{width: "50%", display: "flex", marginInline: "auto", justifyContent: "center", alignItems: "center", textAlign: "center"}}>
+      <Paper elevation = {6} style = {{margin: "5px", width: "75%", display: "flex", marginInline: "auto", justifyContent: "center", alignItems: "center", textAlign: "center", paddingBottom: "5%", paddingInline: "10%"}}>
         <Box sx = {{
           flexGrow: 1, 
           marginTop: "5%", 
           }}>
-          <Grid container justifyContent = "center" spacing={5}>
-            {clothingItems.map((item, index) => (
-              <Grid item xs={2} sm={4} md={4} key = {index}>
-                <ClothingItem item = {item}></ClothingItem>
-              </Grid>
-            ))}
+          {console.log(Object.entries(sortedClothingItems))}
+          {Object.entries(sortedClothingItems).map(([type, clothingItems]) => {
+            return <div>
+            <Typography variant="h4" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > <b>{type}</b> </Typography>
+            <hr style = {{marginInline: "20%"}}/>
+            <Grid container justifyContent = "center" spacing={5}>
+              {clothingItems.map((item, index) => (
+                <Grid item xs={2} sm={4} md={4} key = {index}>
+                  <ClothingItem item = {item}></ClothingItem>
+                </Grid>
+              ))}
           </Grid>
+
+          </div>
+          })}
         </Box>
-      </div>
+      </Paper>
 
       <Modal
       open={addItemModal}
