@@ -1,18 +1,17 @@
 import React, {useEffect, useState} from "react";
-import AddIcon from '@mui/icons-material/Add';
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import ClothingItem from "../component/ClothingItem";
-import Box from "@mui/material/Box";
-import IconButton from '@mui/material/IconButton';
+
+import {Grid, Typography, Box, IconButton, Alert, Collapse} from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
+
+
 import BasicSelect from "../component/textField";
+import ClothingItem from "../component/ClothingItem"
 import {Modal, Button, TextField, InputLabel, MenuItem, FormControl} from '@mui/material'
 import Select from 'react-select'
 
 
 const Closet = (props) => {
-  let [clothingItems, setClothingItems] = useState([])
-  const [addItemModal, openAddItem] = useState(false);
+ 
 
   const userId = props.userId
 
@@ -23,9 +22,13 @@ const Closet = (props) => {
     openAddItem(false)
   }
 
+  const [openAlert, setOpenAlert] = React.useState(false);
   const [enteredItemName, setItemName] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [selectedAttributes, setAttributes] = useState([]);
+  const [clothingItems, setClothingItems] = useState([])
+  const [addItemModal, openAddItem] = useState(false);
+  const [severity, setSeverity] = useState(undefined);
 
 
   //This is run when the user changes the attributes on the multiselect dropdown for adding an item
@@ -62,12 +65,18 @@ const Closet = (props) => {
        .then((response) => response.json())
        .then((data) => {
           console.log(data);
+          fetchClothingItems()
+          handleCloseModal()
+          setSeverity('success')
+          setOpenAlert(true)
           // Handle data
        })
        .catch((err) => {
+        handleCloseModal()
+        setSeverity('error')
+        setOpenAlert(true)
           console.log(err.message);
        });
-    console.log(clothingItem)
   }
 
 
@@ -97,7 +106,7 @@ const Closet = (props) => {
 
     { value: 'bottom', label: 'Bottom'},
     { value: 'top', label: 'Top'},
-    { value: 'jacket', label: 'Jacket'},
+    { value: 'outerwear', label: 'Outerwear'},
     { value: 'shoes', label: 'Shoes'},
   ]
   const optionsForWeather = [
@@ -109,52 +118,67 @@ const Closet = (props) => {
     { value: 'average_temp', label: 'Average Temperature' },
   ]
 
+  const fetchClothingItems = async () => {
+    try {
+      const response = await fetch("/dummy/Closet", {
+        method: "GET",
+        credentials: "include",
+      });
+      const json = await response.json();
+      setClothingItems(json)
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   useEffect(() => {
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/dummy/Closet", {
-          method: "GET",
-          credentials: "include",
-        });
-        const json = await response.json();
-        setClothingItems(json)
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-
-    fetchData();
+    fetchClothingItems();
 }, []);
   return (
     <>
+     <Collapse in={openAlert}>
+        <Alert
+          severity = {severity}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpenAlert(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {severity == 'success' ? "Item Successfully Added!" : "Could not add item. Please try again or submit a trouble ticket."}
+        </Alert>
+      </Collapse>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
       <Typography variant="h3" sx = {{paddingBottom: "1px", paddingTop: "20px", marginTop: "auto"}}>Your Closet:</Typography>
       </div>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
-      <Button variant="contained" onClick = {handleAddItem} sx = {{backgroundColor: 'rgb(211, 206, 223)', color: 'rgb(105,105,105)', hover: { backgroundColor: 'rgb(255, 180, 180)'}}}>
+      <Button variant="contained" onClick = {handleAddItem} sx = {{margin: "10px", backgroundColor: 'rgb(211, 206, 223)', color: 'rgb(105,105,105)', hover: { backgroundColor: 'rgb(255, 180, 180)'}}}>
         Add Item
       </Button>
       </div>
-      <Box display="flex">
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-start"
-          width="auto"
-          padding="10px"
-          spacing={2}
-        >
-          {console.log(clothingItems)}
-          {clothingItems.map((item) => {
-            return (
-              <Grid item xs>
-                <ClothingItem item={item} />
+      <div style = {{width: "50%", display: "flex", marginInline: "auto", justifyContent: "center", alignItems: "center", textAlign: "center"}}>
+        <Box sx = {{
+          flexGrow: 1, 
+          marginTop: "5%", 
+          }}>
+          <Grid container justifyContent = "center" spacing={5}>
+            {clothingItems.map((item, index) => (
+              <Grid item xs={2} sm={4} md={4} key = {index}>
+                <ClothingItem item = {item}></ClothingItem>
               </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
+            ))}
+          </Grid>
+        </Box>
+      </div>
+
       <Modal
       open={addItemModal}
       onClose={handleCloseModal}
