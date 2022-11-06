@@ -77,10 +77,10 @@ const Home = (props) => {
       <div style = {{paddingTop: "10%"}}>
         <div style = {{
           float: "left",
-          width: "50%",
-          height: "100%",
+          width: "auto",
+          height: "auto",
         }}>
-          <img src = {logo} width = {"50%"} style = {{ float: "right", borderRadius: "5%"}}/>
+          <img src = {logo} width = {"50%"} style = {{ float: "right", borderTopLeftRadius: "5%", borderBottomLeftRadius: "5%"}}/>
         </div>
         <div style = {{
           display: "grid",
@@ -91,20 +91,23 @@ const Home = (props) => {
             textAlign: "center",
             verticalAlign: "middle",
             width: "70%",
-            backgroundColor: "#f8d4dc",
+            backgroundColor: "#F2D7D9",
+            borderTopRightRadius: "5%",
+            borderBottomRightRadius: "5%",
+            borderBottomLeftRadius: "5%",
             padding: "5%"
             }}>
             <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "0px"}} >
               <b>Weather to Wear</b>
             </Typography> 
             <Typography variant="h6" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, padding: "5%"}} >
-              <b>Don't know what to wear? Sign up to generate outfits based on the clothes in your closet and the weather in your area.</b>
+              Don't know what to wear? Sign up to generate outfits based on the clothes in your closet and the weather in your area.
             </Typography> 
             <div>
               {userId === -1 &&
               <>
-              <Button variant="contained" onClick = {handleOpenSignUp} sx={{margin: "5px", justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}>Sign Up</Button>
-              <Button variant="contained" onClick = {handleOpenLogin} sx={{margin: "5px", justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Sign In</Button>
+              <Button variant="contained" onClick = {handleOpenSignUp} sx={{margin: "5px", justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}><b>Sign Up</b></Button>
+              <Button variant="contained" onClick = {handleOpenLogin} sx={{margin: "5px", justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}><b>Sign In</b></Button>
               </>
               }
             </div>
