@@ -12,7 +12,6 @@ import coat from "../static/coat.png"
 
 function ClothingItem(props) {
   const item = props.item;
-  const itemImg = img
   item.tags.forEach(tag => {
     if(tag === "top"){img = top}
     if(tag === "bottom"){img = bottom}
