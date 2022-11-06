@@ -26,7 +26,7 @@ class MyTestCase(unittest.TestCase):
             }
         }
         response = self.app.post(
-            '/dummy/addClothingItem',
+            '/dummy/clothingItem',
             data=json.dumps(request_data),
             content_type='application/json'
         )
