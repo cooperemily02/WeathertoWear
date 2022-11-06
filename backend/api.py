@@ -120,7 +120,7 @@ def Return_New_Clothing_Item():
         # we haven't talked about a default closet, use input from front end later?
         closet = (user.closets)[0]
         clothing_item.closet_id = closet.id
-        closet.items.extend(clothing_item)
+        closet.items.append(clothing_item)
     else:     
         closet = models.Closet()
         closet.user = user
