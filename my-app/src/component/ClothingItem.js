@@ -23,7 +23,7 @@ function ClothingItem(props) {
   return (
     <Card sx={{ maxWidth: 250 }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image={img} alt={item.name} />
+        <CardMedia component="img" height="100%" width="100%"image={img} alt={item.name} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
