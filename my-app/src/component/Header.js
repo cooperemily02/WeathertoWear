@@ -12,7 +12,7 @@ function Header(props) {
   const setUserId = props.setUserId
   return (
     <Router>
-      <Navbar userId = {userId}/>
+      <Navbar userId = {userId} setUserId = {setUserId}/>
       <Routes>
         <Route path="/" element={Home({userId: userId, setUserId: setUserId})} />
         {/* <Route path="/dailyoutfits" element={DailyOutfits} /> */}
