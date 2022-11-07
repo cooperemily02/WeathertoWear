@@ -38,8 +38,8 @@ class MyTestCase(unittest.TestCase):
         request_data = {
             'user': 1,
         }
-        response = self.app.get(
-            'dummy/Closet',
+        response = self.app.post(
+            '/dummy/Closet',
             data=json.dumps(request_data),
             content_type='application/json'
         )
