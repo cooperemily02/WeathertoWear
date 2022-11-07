@@ -52,6 +52,22 @@ class MyTestCase(unittest.TestCase):
             )
         )
 
+    def test_gen_outfit(self):
+        response = self.app.post(
+            '/gen-outfit',
+            data=json.dumps({'user': 1, 'zipcode': '01002'}),
+            content_type='application/json'
+        )
+
+        # TODO: re-design test
+        # For now, regardless of the weather, an outfit includes:
+        # top + bottom + shoes
+        resp_data = response.get_json()
+        self.assertTrue(any('top' in item['tags'] for item in resp_data))
+        self.assertTrue(any('bottom' in item['tags'] for item in resp_data))
+        self.assertTrue(any('shoes' in item['tags'] for item in resp_data))
+        
+
 #running the class for testing, dont delete lines 21-22
 if __name__ == '__main__':
     unittest.main()
