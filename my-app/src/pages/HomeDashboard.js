@@ -32,9 +32,13 @@ export const HomeDashboard = (props) => {
         };
         return (
         <>
-            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, User {props.userId}</Typography> 
+            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, User {props.userId}</Typography>
+            <div>
             <WeatherDashboard zipCode = {zipcode} setZipcode = {setZipcode} fetchGeneratedOutfit = {fetchGeneratedOutfit}/>
-            {zipcode !== -1 && <Outfit zipcode={parseInt(zipcode)} outfit = {outfit}/>}
+            {zipcode !== -1 && 
+            <Outfit zipcode={parseInt(zipcode)} outfit = {outfit}/>
+            }
+            </div> 
         </>
         );
     

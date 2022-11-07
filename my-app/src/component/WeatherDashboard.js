@@ -93,7 +93,7 @@ export const WeatherDashboard = (props) => {
 
     return (
         <>
-            <div style = {{justifyContent: "center", alignItems: "center", display: "flex", paddingTop: "5%"}}>
+            <div style = {{justifyContent: "center", alignItems: "center", display: "flex", paddingTop: "1%", paddingBottom: "5%"}}>
                 <Paper 
                 sx = {{
                     width: "50%",
