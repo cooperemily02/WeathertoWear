@@ -9,24 +9,24 @@ import shoes from "../static/shoes.jpg";
 import coat from "../static/coat.png";
 
 export const Outfit = (props) => {
-    let [outfit, setOutfit] = useState([{name: 'Nike tank top', attributes: []}, {name: 'blue lulu shorts', attributes: []}, {name: 'adidas sneakers', attributes: []}, {name: 'denim jacket', attributes: []}]);
-    console.log(outfit);
+    //let [outfit, setOutfit] = useState([{name: 'Nike tank top', attributes: []}, {name: 'blue lulu shorts', attributes: []}, {name: 'adidas sneakers', attributes: []}, {name: 'denim jacket', attributes: []}]);
+    const outfit = props.outfit
+    console.log(outfit)
     let namesOfPieces = [];
     for (let i = 0; i< outfit.length; i++){
         namesOfPieces.push(outfit[i].name);
     }
-    console.log(namesOfPieces);
-    const image = (piece) => {
-        if (piece === 'Nike tank top'){
+    const image = (tags) => {
+        if (tags.includes("top")){
             return top;
         }
-        if (piece == 'blue lulu shorts'){
+        else if (tags.includes("bottom")){
             return bottom;
         }
-        if (piece == 'adidas sneakers'){
+        else if (tags.includes("shoes")){
             return shoes;
         }
-        if (piece === 'denim jacket'){
+        else if (tags.includes("outerwear")){
             return coat;
         }
     }
@@ -44,11 +44,12 @@ export const Outfit = (props) => {
         );
     }
     else {
-        let outfitItems = namesOfPieces.map((piece) => {
+        let outfitItems = outfit.map((piece) => {
+            console.log(piece)
             return (
                 <Box display="flex" justifyContent="space-between" sx={{pt: 10}}>
-                    <Typography variant="h4"  sx={{color: 'white', fontFamily: 'Caudex', pt:15}} >{piece.charAt(0).toUpperCase() + piece.slice(1)}</Typography>
-                    <img src={image(piece)} alt={piece} height="250" />
+                    <Typography variant="h4"  sx={{color: 'white', fontFamily: 'Caudex', pt:15}} >{piece.name.charAt(0).toUpperCase() + piece.name.slice(1)}</Typography>
+                    <img src={image(piece.tags)} alt={piece} height="250" />
                 </Box> 
             );
         })

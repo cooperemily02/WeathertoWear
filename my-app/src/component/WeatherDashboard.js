@@ -16,6 +16,8 @@ import logo from '../static/W2W.png'
 
 
 export const WeatherDashboard = (props) => {
+        const zipCode = props.zipCode
+        const setZipcode = props.setZipcode
         const weatherToImg = {
             clouds: cloudyWeather,
             clear: niceWeather,
@@ -35,19 +37,16 @@ export const WeatherDashboard = (props) => {
             });
             const json = await response.json();
             setWeather(json)
-            console.log(json.weather0)
             handleSetImg(json.weather0, json.temp0)
             setTemp(json.temp0)
+            props.fetchGeneratedOutfit()
           } catch (error) {
             console.log("error", error);
           }
         };
 
-        fetchData();
-
     const [weather, setWeather] = useState(NaN)
     const [weatherImg, setImg] = useState(logo)
-    const [zipCode, setZipcode] = useState({})
     const changeTemp =  (i, t) => {
         return t == 'f' ? Math.round(i) : Math.round(((i - 32)*(5/9)))
     }
@@ -105,7 +104,7 @@ export const WeatherDashboard = (props) => {
                 >
                     <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather </Typography>
                     <DigitalClock />
-                    <img src={weatherImg} style = {{float: "left", width: "55%", padding: "5%"}}/>
+                    <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>
                     <div style = {{float: "right", padding: "5%"}}>
                         {isNaN(weather.temp0) && 
                         <>
