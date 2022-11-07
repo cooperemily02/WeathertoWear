@@ -26,6 +26,7 @@ def get_template_from_weather_str(weather_str):
         return DEFAULT_OUTFIT_TEMPLATE_RAINY
     return DEFAULT_OUTFIT_TEMPLATE
 
+
 def get_matching_outfit(outfit_template, items: Set['Item']):
     outfit = []
     for attr_set in outfit_template:
@@ -34,9 +35,15 @@ def get_matching_outfit(outfit_template, items: Set['Item']):
                 outfit.append(item)
                 items.remove(item) # Item has been added to outfit, so remove it from items
                 break # We are done with matching an item for the current attr_set
-            raise ValueError(f'Failed to find item matching: {attr_set}')
+        raise ValueError(f'Failed to find item matching: {attr_set}')
     return outfit
-                
+
+
+def pick_outfit(items: Set['Item'], weather_str):
+    return get_matching_outfit(
+        outfit_template=get_template_from_weather_str(weather_str),
+        items=items
+    )
 
 
 class Item:
