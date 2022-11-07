@@ -9,19 +9,24 @@ import shoes from "../static/shoes.jpg";
 import coat from "../static/coat.png";
 
 export const Outfit = (props) => {
-    let [outfit, setOutfit] = useState({top: 'Nike tank top', bottom: 'blue lulu shorts', shoes: 'adidas sneakers', outerwear: 'denim jacket'});
+    let [outfit, setOutfit] = useState([{name: 'Nike tank top', attributes: []}, {name: 'blue lulu shorts', attributes: []}, {name: 'adidas sneakers', attributes: []}, {name: 'denim jacket', attributes: []}]);
     console.log(outfit);
-    const image = (key) => {
-        if (key === 'top'){
+    let namesOfPieces = [];
+    for (let i = 0; i< outfit.length; i++){
+        namesOfPieces.push(outfit[i].name);
+    }
+    console.log(namesOfPieces);
+    const image = (piece) => {
+        if (piece === 'Nike tank top'){
             return top;
         }
-        if (key == 'bottom'){
+        if (piece == 'blue lulu shorts'){
             return bottom;
         }
-        if (key == 'shoes'){
+        if (piece == 'adidas sneakers'){
             return shoes;
         }
-        if (key === 'outerwear'){
+        if (piece === 'denim jacket'){
             return coat;
         }
     }
@@ -39,20 +44,21 @@ export const Outfit = (props) => {
         );
     }
     else {
+        let outfitItems = namesOfPieces.map((piece) => {
+            return (
+                <Box display="flex" justifyContent="space-between" sx={{pt: 10}}>
+                    <Typography variant="h4"  sx={{color: 'white', fontFamily: 'Caudex', pt:15}} >{piece.charAt(0).toUpperCase() + piece.slice(1)}</Typography>
+                    <img src={image(piece)} alt={piece} height="250" />
+                </Box> 
+            );
+        })
         return (
             <>
                 <Grid container justifyContent={"center"}>
                     <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)'}}>
                         <CardContent>
                             <Typography variant="h3" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', pt: 5}} >Here is your generated outfit for today: </Typography>
-                            {
-                                Object.keys(outfit).map((key, index) => (
-                                    <Box display="flex" justifyContent="space-between" sx={{pt: 10}}>
-                                        <Typography variant="h4"  sx={{color: 'white', fontFamily: 'Caudex', pt:15}} >{key.charAt(0).toUpperCase() + key.slice(1)}: {outfit[key]}</Typography>
-                                        <img src={image(key)} alt={outfit[key]} height="250" />
-                                    </Box>  
-                                ))
-                            }   
+                            {outfitItems}
                         </CardContent>
                     </Card>   
                 </Grid>  
