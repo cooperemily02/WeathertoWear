@@ -12,7 +12,6 @@ import coat from "../static/coat.png"
 
 function ClothingItem(props) {
   const item = props.item;
-  const itemImg = img
   item.tags.forEach(tag => {
     if(tag === "top"){img = top}
     if(tag === "bottom"){img = bottom}
@@ -23,16 +22,16 @@ function ClothingItem(props) {
   return (
     <Card sx={{ maxWidth: 250 }}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image={img} alt={item.name} />
+        <CardMedia component="img" height="100%" width="100%"image={img} alt={item.name} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {item.name}
           </Typography>
-          <Typography gutterBottom variant="h6" sx={{textDecoration: 'underline'}}>
+          <Typography gutterBottom variant="h6" sx={{textAlign: "left", textDecoration: 'underline'}}>
             Tags
           </Typography>
           {item.tags.map((tag) => {
-            return <ul><Typography variant = "body">{tag}</Typography></ul>;
+            return <ul style = {{textAlign: "left"}}><Typography variant = "body">{tag}</Typography></ul>;
           })}
         </CardContent>
       </CardActionArea>
