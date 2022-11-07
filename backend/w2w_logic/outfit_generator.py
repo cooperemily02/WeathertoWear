@@ -30,14 +30,18 @@ def get_template_from_weather_str(weather_str):
 def get_matching_outfit(outfit_template, items: Set['Item']):
     outfit = []
     for attr_set in outfit_template:
-        breakpoint()
+        is_found_match = False
         for item in items:
             if all(required_attr in item.attributes for required_attr in attr_set):
                 outfit.append(item)
                 items.remove(item) # Item has been added to outfit, so remove it from items
                 outfit_template.remove(attr_set) # attr_set has been matched
+                is_found_match = True
                 break # We are done with matching an item for the current attr_set
-        raise ValueError(f'Failed to find item matching: {attr_set}')
+        if is_found_match:
+            continue
+        else:
+            raise ValueError(f'Failed to find item matching: {attr_set}')
     return outfit
 
 
