@@ -9,8 +9,8 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
     user2 = models.User()
 
     #creating a closet for each user
-    closet1 = models.Closet(user_id = user1.id)
-    closet2 = models.Closet(user_id = user2.id)
+    closet1 = models.Closet(user=user1)
+    closet2 = models.Closet(user=user2)
 
     # General way to manipulate the database:
     item1 = models.ClothingItem(name="t-shirt")
@@ -40,7 +40,7 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
 
 
     # Add the items to the closets
-    closet1.items.extend([item1, item2])
+    closet1.items.extend([item1, item2, item3])
     closet2.items.extend([item3])
 
     db.session.add_all([item1, item2, item3]) # won't be written until the 'commit' line
@@ -56,6 +56,7 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
     print('Closet 1 items:')
     for item in closet1.items:
         print(item.serialize)
+    print(user1.get_all_items())
 
     users = models.User.query.all()
     # print(users)
