@@ -55,7 +55,7 @@ def Return_Outfits():
         return jsonify(data)
 
 
-@app.route('/dummy/Closet', methods=['GET'])
+@app.route('/dummy/Closet', methods=['POST'])
 def Return_Closet():
     user_id = request.get_json().get('user')
     user = models.User.query.get(user_id)
