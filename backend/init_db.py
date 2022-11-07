@@ -16,14 +16,28 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
     item1 = models.ClothingItem(name="t-shirt")
     item2 = models.ClothingItem(name="jeans")
     item3 = models.ClothingItem(name="boots")
+    item4 = models.ClothingItem(name= "jacket")
 
     tag1 = models.Tag(name='cotton')
     tag2 = models.Tag(name='dark wash')
     tag3 = models.Tag(name='rain-proof')
 
+    tag4 = models.Tag(name='top')
+    tag5 = models.Tag(name='bottom')
+    tag6 = models.Tag(name='shoes')
+    tag7 = models.Tag(name='outerwear')
+
+
+
+
     item1.tags.append(tag1)
+    item1.tags.append(tag4)
     item2.tags.append(tag2)
+    item2.tags.append(tag5)
     item3.tags.append(tag3)
+    item3.tags.append(tag6)
+    item4.tags.append(tag7)
+
 
     # Add the items to the closets
     closet1.items.extend([item1, item2])
