@@ -30,10 +30,10 @@ export const Outfit = (props) => {
             return coat;
         }
     }
-    if (props.zipcode == -1){
+    if (namesOfPieces == 0){
         return ( 
             <>
-                <Grid container justifyContent={"center"}>
+                <Grid container justifyContent={"center"} sx={{pt: 10}}>
                     <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)'}}>
                         <CardContent>
                             <Typography variant="h4" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', pt: 5}} >Please enter your zipcode above to see your generated outfit. </Typography>
@@ -55,7 +55,7 @@ export const Outfit = (props) => {
         })
         return (
             <>
-                <Grid container justifyContent={"center"}>
+                <Grid container justifyContent={"center"} sx={{pt: 10}}>
                     <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)'}}>
                         <CardContent>
                             <Typography variant="h3" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', pt: 5}} >Here is your generated outfit for today: </Typography>
