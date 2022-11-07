@@ -4,19 +4,18 @@ import models
 with app.app_context(): # context is needed so sqlalchemy knows where to create the database
     db.drop_all()
     db.create_all()
+    breakpoint()
 
     user1 = models.User()
     user2 = models.User()
 
-    #creating a closet for each user
-    closet1 = models.Closet(user=user1)
-    closet2 = models.Closet(user=user2)
 
     # General way to manipulate the database:
     item1 = models.ClothingItem(name="t-shirt")
     item2 = models.ClothingItem(name="jeans")
     item3 = models.ClothingItem(name="boots")
     item4 = models.ClothingItem(name= "jacket")
+
 
     tag1 = models.Tag(name='cotton')
     tag2 = models.Tag(name='dark wash')
@@ -39,9 +38,9 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
     item4.tags.append(tag7)
 
 
-    # Add the items to the closets
-    closet1.items.extend([item1, item2, item3])
-    closet2.items.extend([item3])
+    #creating a closet for each user
+    closet1 = models.Closet(user=user1, items=[item1, item2, item3])
+    closet2 = models.Closet(user=user2)
 
     db.session.add_all([item1, item2, item3]) # won't be written until the 'commit' line
     db.session.add_all([tag1, tag2, tag3])
@@ -50,13 +49,6 @@ with app.app_context(): # context is needed so sqlalchemy knows where to create 
     db.session.commit() # This writes the items to the database
 
     # Accessing the data:
-    items = models.ClothingItem.query.all()
-    for item in items:
+    print("user1's items")
+    for item in user1.get_all_items():
         print(item.serialize)
-    print('Closet 1 items:')
-    for item in closet1.items:
-        print(item.serialize)
-    print(user1.get_all_items())
-
-    users = models.User.query.all()
-    # print(users)
