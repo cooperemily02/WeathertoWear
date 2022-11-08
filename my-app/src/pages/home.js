@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Typography from "@mui/material/Typography";
 import logo from '../static/W2W.png'
 import background from '../static/transparentClothes.png' 
