@@ -4,46 +4,38 @@ import models
 with app.app_context(): # context is needed so sqlalchemy knows where to create the database
     db.drop_all()
     db.create_all()
+
+
     user1 = models.User()
-    user2 = models.User()
 
+    # tags i.e attributes
+    snowy = models.Tag(name='snowy')
+    rainy = models.Tag(name='rainy')
+    cotton = models.Tag(name='cotton')
+    shoes = models.Tag(name='shoes')
+    top = models.Tag(name='top')
+    bottom = models.Tag(name='bottom')
+    outerwear = models.Tag(name='outerwear')
 
-    # General way to manipulate the database:
-    item1 = models.ClothingItem(name="t-shirt")
-    item2 = models.ClothingItem(name="jeans")
-    item3 = models.ClothingItem(name="boots")
-    item4 = models.ClothingItem(name= "jacket")
+    # summer outfit
+    tshirt = models.ClothingItem(name="t-shirt", tags=[top, cotton])
+    shorts = models.ClothingItem(name="shorts", tags=[bottom])
+    sneakers = models.ClothingItem(name="sneakers", tags=[shoes])
 
+    # rainy/snowy outfit
+    rain_coat = models.ClothingItem(name= "rain coat", tags=[outerwear, rainy, snowy])
+    boots = models.ClothingItem(name= "rain boots", tags=[shoes, rainy, snowy])
+    leggings = models.ClothingItem(name= "leggings", tags=[bottom, rainy, snowy])
+    long_sleeve = models.ClothingItem(name='long-sleeve shirt', tags=[top, rainy, snowy])
 
-    tag1 = models.Tag(name='cotton')
-    tag2 = models.Tag(name='dark wash')
-    tag3 = models.Tag(name='rain-proof')
+    # add all to user1's closet
+    closet = models.Closet(
+        user=user1,
+        items=[tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve]
+    )
 
-    tag4 = models.Tag(name='top')
-    tag5 = models.Tag(name='bottom')
-    tag6 = models.Tag(name='shoes')
-    tag7 = models.Tag(name='outerwear')
-
-
-
-
-    item1.tags.append(tag1)
-    item1.tags.append(tag4)
-    item2.tags.append(tag2)
-    item2.tags.append(tag5)
-    item3.tags.append(tag3)
-    item3.tags.append(tag6)
-    item4.tags.append(tag7)
-
-
-    #creating a closet for each user
-    closet1 = models.Closet(user=user1, items=[item1, item2, item3])
-    closet2 = models.Closet(user=user2)
-
-    db.session.add_all([item1, item2, item3]) # won't be written until the 'commit' line
-    db.session.add_all([tag1, tag2, tag3])
-    db.session.add_all([user1, user2])
-    db.session.add_all([closet1, closet2])
+    # write to db
+    db.session.add_all([closet, user1])
     db.session.commit() # This writes the items to the database
 
     # Accessing the data:
