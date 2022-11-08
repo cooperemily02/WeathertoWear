@@ -42,6 +42,7 @@ const Home = (props) => {
         return () => {
           setIsValidId(true)
           props.setUserId(id)
+          handleCloseLogin()
         }
       }
       else {
