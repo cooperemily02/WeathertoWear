@@ -17,6 +17,11 @@ class MyTestCase(unittest.TestCase):
         result = sum(data)
         self.assertEqual(result, 6)
     
+    # This test is to see whether the add_item function does what it is 
+    # supposed to do. The function is called with input that is in the 
+    # format the front end has. The format of the test is to add an 
+    # item to a user's closet, and then to check if that item is now
+    # in the user's closet. 
     def test_add_item(self):
         request_data = {
             'user': 1,
@@ -25,15 +30,36 @@ class MyTestCase(unittest.TestCase):
                 'attributes': ['something']
             }
         }
-        response = self.app.post(
-            '/dummy/clothingItem',
-            data=json.dumps(request_data),
-            content_type='application/json'
-        )
-        #TODO: add an assertion that the item was actually added (bit of a hassle because)
-        self.assertEqual(response.status_code, 200)
+        with self.app:
+            # Calling the function with dummy data 
+            response = self.app.post(
+                '/dummy/clothingItem',
+                data=json.dumps(request_data),
+                content_type='application/json'
+            )
+            # storing the function returns 
+            json_item = response.get_json()
+            user_data = {
+                'user': 1,
+            }
+            # returning the user's closet just for testing purposes
+            closet_response = self.app.get(
+                'dummy/Closet',
+                data=json.dumps(user_data),
+                content_type='application/json'
+            )
+            closet_json = closet_response.get_json()
+            # item should now be in the closet 
+            self.assertTrue(
+                any(
+                    item == json_item for item in closet_json
+                )
+            )   
     
-    
+    # This test checks if the return_closet function works as intended. 
+    # This method is easier to check because the database is not being 
+    # modified; the function just needs to return the correct closet
+    # based on the user input on the front end. 
     def test_get_users_items(self):
         request_data = {
             'user': 1,
