@@ -9,7 +9,6 @@ import shoes from "../static/shoes.jpg";
 import coat from "../static/coat.png";
 
 export const Outfit = (props) => {
-    //let [outfit, setOutfit] = useState([{name: 'Nike tank top', attributes: []}, {name: 'blue lulu shorts', attributes: []}, {name: 'adidas sneakers', attributes: []}, {name: 'denim jacket', attributes: []}]);
     const outfit = props.outfit
     console.log(outfit)
     let namesOfPieces = [];
@@ -30,13 +29,13 @@ export const Outfit = (props) => {
             return coat;
         }
     }
-    if (namesOfPieces == 0){
+    if (outfit.length == 0 || props.fetchedOutfitData.hasOutfit == false){
         return ( 
             <>
                 <Grid container justifyContent={"center"} sx={{pt: 10}}>
                     <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)'}}>
                         <CardContent>
-                            <Typography variant="h4" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', pt: 5}} >Please enter your zipcode above to see your generated outfit. </Typography>
+                            <Typography variant="h4" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', pt: 5}} > Unable to generate an outfit. </Typography>
                         </CardContent>
                     </Card>
                 </Grid>

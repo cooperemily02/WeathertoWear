@@ -156,9 +156,11 @@ const Closet = (props) => {
   };
 
   useEffect(() => {
-    fetchClothingItems();
     if(userId===-1){
       navigate('/')
+    }
+    else {
+      fetchClothingItems();
     }
 }, [props.userId]);
   return (
