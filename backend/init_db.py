@@ -4,8 +4,7 @@ import models
 with app.app_context(): # context is needed so sqlalchemy knows where to create the database
     db.drop_all()
     db.create_all()
-    # breakpoint()
-
+    
     user1 = models.User()
     user2 = models.User()
 
