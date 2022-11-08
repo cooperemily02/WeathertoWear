@@ -155,5 +155,10 @@ def generate_outfit():
 
     return jsonify([orm_item.serialize for orm_item in orm_outfit])
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return index()
+
+
 if __name__ == '__main__':
     app.run(debug=True)
