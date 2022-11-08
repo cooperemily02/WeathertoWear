@@ -8,27 +8,20 @@ def DEFAULT_OUTFIT_TEMPLATE():
         set(['shoes'])
     ]
     
-def DEFAULT_OUTFIT_TEMPLATE_SNOWY():
-    return [
-        set(['top', 'snowy']),
-        set(['bottom', 'snowy']),
-        set(['shoes', 'snowy'])
-    ]
-
-def DEFAULT_OUTFIT_TEMPLATE_RAINY():
+def DEFAULT_OUTFIT_TEMPLATE_SNOWY_RAINY():
     return [
         set(['top', 'rainy']),
         set(['bottom', 'rainy']),
-        set(['shoes', 'rainy'])
+        set(['shoes', 'rainy']),
+        set(['outerwear'])
     ]
-
 
 # Right now, weather_str is supposed matches the weather.py file's output
 def get_template_from_weather_str(weather_str):
-    if ('snowy' in weather_str.lower()):
-        return DEFAULT_OUTFIT_TEMPLATE_SNOWY()
-    if ('rainy' in weather_str.lower()):
-        return DEFAULT_OUTFIT_TEMPLATE_RAINY()
+    if ('snow' in weather_str.lower()):
+        return DEFAULT_OUTFIT_TEMPLATE_SNOWY_RAINY()
+    if ('rain' in weather_str.lower()):
+        return DEFAULT_OUTFIT_TEMPLATE_SNOWY_RAINY()
     return DEFAULT_OUTFIT_TEMPLATE()
 
 
