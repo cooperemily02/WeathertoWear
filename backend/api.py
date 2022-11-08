@@ -3,6 +3,7 @@
 from flask import Flask, jsonify, request
 from models import db
 import weather
+from w2w_logic.outfit_generator import Item, pick_outfit
 
 
 app = Flask(__name__, static_folder='./build', static_url_path='/')
@@ -132,6 +133,27 @@ def Return_New_Clothing_Item():
     db.session.commit()
     
     return clothing_item.serialize        
+
+
+@app.route('/gen-outfit', methods=['POST'])
+def generate_outfit():
+    data = request.get_json()
+    zipcode, user_id = data['zipcode'], data['user']
+
+    user = models.User.query.get(user_id)
+    items = user.get_all_items()
+    weather_str = weather.get_forecast(zipcode)['weather0']
+
+    # This is used to map/re-map the logic function's input/output type 
+    # from/to the ORM models
+    logic_item_to_orm = {
+        Item(name=model_item.name, attributes=[attr.name for attr in model_item.tags]): model_item
+        for model_item in items
+    }
+    logic_outfit = pick_outfit(items=set(logic_item_to_orm.keys()), weather_str=weather_str)
+    orm_outfit = [logic_item_to_orm[logic_item] for logic_item in logic_outfit]
+
+    return [orm_item.serialize for orm_item in orm_outfit]
 
 if __name__ == '__main__':
     app.run(debug=True)

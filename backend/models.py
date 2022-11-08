@@ -35,6 +35,10 @@ class Tag(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+
+
+    def get_all_items(self):
+        return [item for closet in self.closets for item in closet.items]
     
 class Closet(db.Model):
     id = db.Column(db.Integer, primary_key=True)

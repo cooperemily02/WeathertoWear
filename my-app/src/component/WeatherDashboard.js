@@ -16,6 +16,10 @@ import logo from '../static/W2W.png'
 
 
 export const WeatherDashboard = (props) => {
+
+        const zipCode = props.zipCode
+        const setZipcode = props.setZipcode
+        const weather = props.weather
         const weatherToImg = {
             clouds: cloudyWeather,
             clear: niceWeather,
@@ -27,33 +31,20 @@ export const WeatherDashboard = (props) => {
             cold: coldWeather,
             other: {otherImg}
         }
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`/dummy/getForecast/${zipCode}`, {
-              method: "GET",
-              credentials: "include",
-            });
-            const json = await response.json();
-            setWeather(json)
-            console.log(json.weather0)
-            handleSetImg(json.weather0, json.temp0)
-            setTemp(json.temp0)
-          } catch (error) {
-            console.log("error", error);
-          }
-        };
 
-        fetchData();
-
-    const [weather, setWeather] = useState(NaN)
+        
     const [weatherImg, setImg] = useState(logo)
-    const [zipCode, setZipcode] = useState({})
+
+    useEffect(() => {
+        if((weather)!==false){
+        handleSetImg(weather.weather0, weather.temp0)
+        setTemp(weather.temp0)
+        }
+    }, [weather])
     const changeTemp =  (i, t) => {
         return t == 'f' ? Math.round(i) : Math.round(((i - 32)*(5/9)))
     }
-    const handleSetZipcode = (zipCode) => {
-        setZipcode(zipCode)
-    }
+
     const handleSetImg = (weather, temp) => {
         if(weather == 'Thunderstorm'){
             setImg(weatherToImg.thunderstorm)
@@ -94,7 +85,7 @@ export const WeatherDashboard = (props) => {
 
     return (
         <>
-            <div style = {{justifyContent: "center", alignItems: "center", display: "flex", paddingTop: "5%"}}>
+            <div style = {{justifyContent: "center", alignItems: "center", display: "flex", paddingTop: "1%", paddingBottom: "5%"}}>
                 <Paper 
                 sx = {{
                     width: "50%",
@@ -105,20 +96,8 @@ export const WeatherDashboard = (props) => {
                 >
                     <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather </Typography>
                     <DigitalClock />
-                    <img src={weatherImg} style = {{float: "left", width: "55%", padding: "5%"}}/>
+                    <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>
                     <div style = {{float: "right", padding: "5%"}}>
-                        {isNaN(weather.temp0) && 
-                        <>
-                        <TextField id="outlined-basic" 
-                        label="Enter Zip Code" 
-                        variant="outlined" 
-                        onChange={(newValue) => handleSetZipcode(newValue.target.value)}
-                        />
-                        <div />
-                        <Button variant="contained" onClick = {fetchData} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Fetch Weather!</Button>
-
-                        </>
-                        }
                         {!(isNaN(weather.temp0)) &&
                         <>
                         <Typography variant = "h4" fontFamily = 'Caudex'><b>{temp}º </b></Typography>

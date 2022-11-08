@@ -150,18 +150,19 @@ const Closet = (props) => {
       });
       const json = await response.json();
       sortClothingItems(json)
-      console.log("SCI" + sortedClothingItems)
     } catch (error) {
       console.log("error", error);
     }
   };
 
   useEffect(() => {
-    fetchClothingItems();
     if(userId===-1){
       navigate('/')
     }
-}, []);
+    else {
+      fetchClothingItems();
+    }
+}, [userId]);
   return (
     <>
      <Collapse in={openAlert}>
@@ -196,7 +197,6 @@ const Closet = (props) => {
           flexGrow: 1, 
           marginTop: "5%", 
           }}>
-          {console.log(Object.entries(sortedClothingItems))}
           {Object.entries(sortedClothingItems).map(([type, clothingItems]) => {
             return <div style = {{padding: "5px"}}>
             <Typography variant="h4" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "8px"}} > <b>{type}</b> </Typography>
@@ -213,7 +213,6 @@ const Closet = (props) => {
           })}
         </Box>
       </Paper>
-
       <Modal
       open={addItemModal}
       onClose={handleCloseModal}
