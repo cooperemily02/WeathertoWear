@@ -162,7 +162,7 @@ const Closet = (props) => {
     else {
       fetchClothingItems();
     }
-}, [props.userId]);
+}, [userId]);
   return (
     <>
      <Collapse in={openAlert}>

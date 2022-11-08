@@ -57,6 +57,7 @@ function Navbar(props) {
   };
   const handleClose = () => {
     props.setUserId(-1)
+    window.location.reload(false);
     setAnchorEl(null)
   };
   return (
