@@ -20,9 +20,9 @@ DEFAULT_OUTFIT_TEMPLATE_RAINY = [
 
 # Right now, weather_str is supposed matches the weather.py file's output
 def get_template_from_weather_str(weather_str):
-    if ('snowy' in weather_str):
+    if ('snowy' in weather_str.lower()):
         return DEFAULT_OUTFIT_TEMPLATE_SNOWY
-    if ('rainy' in weather_str):
+    if ('rainy' in weather_str.lower()):
         return DEFAULT_OUTFIT_TEMPLATE_RAINY
     return DEFAULT_OUTFIT_TEMPLATE
 
