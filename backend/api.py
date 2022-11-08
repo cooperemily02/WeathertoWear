@@ -68,7 +68,7 @@ def Return_Closet():
     for closet in closets: 
       for item in closet.items:
           clothing_items.append(item.serialize)
-    return clothing_items 
+    return jsonify(clothing_items)
 
 
 @app.route('/dummy/Laundry', methods=['GET'])
@@ -153,7 +153,7 @@ def generate_outfit():
     logic_outfit = pick_outfit(items=set(logic_item_to_orm.keys()), weather_str=weather_str)
     orm_outfit = [logic_item_to_orm[logic_item] for logic_item in logic_outfit]
 
-    return [orm_item.serialize for orm_item in orm_outfit]
+    return jsonify([orm_item.serialize for orm_item in orm_outfit])
 
 if __name__ == '__main__':
     app.run(debug=True)
