@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import Typography from "@mui/material/Typography";
+import logo from '../static/W2W.png'
+import background from '../static/transparentClothes.png' 
 import { Link } from "react-router-dom"
 import HomeDashboard from "./HomeDashboard";
 import { Button, Modal, Box, TextField, FormControl } from "@mui/material";
@@ -40,6 +42,7 @@ const Home = (props) => {
         return () => {
           setIsValidId(true)
           props.setUserId(id)
+          handleCloseLogin()
         }
       }
       else {
@@ -75,22 +78,61 @@ const Home = (props) => {
     boxShadow: 24,
     p: 4,
   };
+  const backgroundImageStyle={
+    backgroundImage: `url(${background})`,
+    height:'100vh',
+    marginTop:'0%',
+    fontSize:'50px',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+};
   
 
 
     return (
-    <> 
-      <Typography textAlign={'center'}>
-        {userId === -1 &&
-        <>
-        <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35}} >
-          Weather to Wear
-        </Typography> 
-        <Button variant="contained" onClick = {handleOpenSignUp} sx={{justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}>Sign Up</Button>
-        <Button variant="contained" onClick = {handleOpenLogin} sx={{justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Sign In</Button>
-        </>
-        }
-      </Typography>
+    <>
+    <div style = {backgroundImageStyle}>
+      <div style = {{paddingTop: "10%"}}>
+        <div style = {{
+          float: "left",
+          width: "auto",
+          height: "auto",
+        }}>
+          <img src = {logo} width = {"50%"} style = {{ float: "right", borderTopLeftRadius: "5%", borderBottomLeftRadius: "5%"}}/>
+        </div>
+        <div style = {{
+          display: "grid",
+
+      }}>
+          <div style = {{
+            float: "right",
+            textAlign: "center",
+            verticalAlign: "middle",
+            width: "70%",
+            backgroundColor: "#F2D7D9",
+            borderTopRightRadius: "5%",
+            borderBottomRightRadius: "5%",
+            borderBottomLeftRadius: "5%",
+            padding: "5%"
+            }}>
+            <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "0px"}} >
+              <b>Weather to Wear</b>
+            </Typography> 
+            <Typography variant="h6" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, padding: "5%"}} >
+              Don't know what to wear? Sign up to generate outfits based on the clothes in your closet and the weather in your area.
+            </Typography> 
+            <div>
+              {userId === -1 &&
+              <>
+              <Button variant="contained" onClick = {handleOpenSignUp} sx={{margin: "5px", justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}><b>Sign Up</b></Button>
+              <Button variant="contained" onClick = {handleOpenLogin} sx={{margin: "5px", justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}><b>Sign In</b></Button>
+              </>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
       <Modal
       open={openSignUp}
       onClose={handleCloseSignUp}
