@@ -36,7 +36,7 @@ function DrawerComponent(props) {
         <List>
           <ListItem onClick={() => setOpenDrawer(false)} sx={{color: 'rgb(156, 180, 204)'}}>
             <ListItemText>
-              <Link to="/" class={classes.link} sx={{color: 'rgb(156, 180, 204)'}}>
+              <Link to={userId == -1 ? "/" : "/homeDashboard"} class={classes.link} sx={{color: 'rgb(156, 180, 204)'}}>
                 Home
               </Link>
             </ListItemText>
@@ -54,13 +54,6 @@ function DrawerComponent(props) {
             <ListItemText>
               <Link to="/closet" class={classes.link}>
                 Closet
-              </Link>
-            </ListItemText>
-          </ListItem>
-          <ListItem onClick={() => setOpenDrawer(false)}>
-            <ListItemText>
-              <Link to="/laundrybin" class={classes.link}>
-                Laundry Bin
               </Link>
             </ListItemText>
           </ListItem>

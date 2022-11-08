@@ -1,7 +1,10 @@
 import React, {useState} from "react";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom"
+import HomeDashboard from "./HomeDashboard";
 import { Button, Modal, Box, TextField, FormControl } from "@mui/material";
 import WeatherDashboard from "../component/WeatherDashboard";
+
 
 const Home = (props) => {
     var userId = props.userId
@@ -76,13 +79,13 @@ const Home = (props) => {
 
 
     return (
-    <>
-      <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35}} >
-        Weather to Wear
-      </Typography> 
+    <> 
       <Typography textAlign={'center'}>
         {userId === -1 &&
         <>
+        <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35}} >
+          Weather to Wear
+        </Typography> 
         <Button variant="contained" onClick = {handleOpenSignUp} sx={{justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}>Sign Up</Button>
         <Button variant="contained" onClick = {handleOpenLogin} sx={{justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Sign In</Button>
         </>
@@ -134,7 +137,9 @@ const Home = (props) => {
           variant="standard"
           required
           />
-        <Button variant="contained" onClick = {signInAttempt(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
+        <Link to = "/homeDashboard">
+          <Button variant="contained" href = "/homeDashboard" onClick = {signInAttempt(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
+        </Link>
         </>
         }
         {
@@ -143,6 +148,9 @@ const Home = (props) => {
         }
       </Box>
   </Modal>
+      <Typography>
+        {userId !== -1 && <HomeDashboard userId={userId} />}
+      </Typography>
     </>
     );
 };
