@@ -23,39 +23,6 @@ def index():
     return app.send_static_file('index.html')
 
 
-@app.route('/dummy/Dailyoutfits', methods=['GET'])
-def Return_Outfits():
-    if request.method == 'GET':
-        data = {'outfits': [
-            [
-                {'name': 'black jeans', 'tags': ['bottom']},
-                {'name': 'black rain coat', 'tags': ['outerwear']},
-                {'name': 'shoes', 'tags': ['rain boots']},
-                {'name': 'white t-shirt', 'tags': ['top']}
-            ],
-            [
-                {'name': 'black jeans', 'tags': ['bottom']},
-                {'name': 'black rain coat', 'tags': ['outerwear']},
-                {'name': 'shoes', 'tags': ['rain boots']},
-                {'name': 'black long sleeve', 'tags': ['top']}
-            ],
-            [
-                {'name': 'high waisted blue jeans', 'tags': ['bottom']},
-                {'name': 'black rain coat', 'tags': ['outerwear']},
-                {'name': 'shoes', 'tags': ['rain boots']},
-                {'name': 'white t-shirt', 'tags': ['top']}
-            ],
-            [
-                {'name': 'high waisted blue jeans', 'tags': ['bottom']},
-                {'name': 'black rain coat', 'tags': ['outerwear']},
-                {'name': 'shoes', 'tags': ['rain boots']},
-                {'name': 'black long sleeve', 'tags': ['top']}
-            ]
-        ]}
-
-        return jsonify(data)
-
-
 @app.route('/dummy/Closet', methods=['POST'])
 def Return_Closet():
     user_id = request.get_json().get('user')
