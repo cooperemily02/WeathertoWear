@@ -204,7 +204,7 @@ const Closet = (props) => {
             <Grid container justifyContent = "center" spacing={5}>
               {clothingItems.map((item, index) => (
                 <Grid item xs={2} sm={4} md={4} key = {index}>
-                  <ClothingItem item = {item}></ClothingItem>
+                  <ClothingItem item = {item} optionsForType = {optionsForType} optionsForWeather = {optionsForWeather}></ClothingItem>
                 </Grid>
               ))}
           </Grid>
