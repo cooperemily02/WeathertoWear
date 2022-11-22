@@ -57,6 +57,13 @@ function DrawerComponent(props) {
               </Link>
             </ListItemText>
           </ListItem>
+          <ListItem onClick={() => setOpenDrawer(false)}>
+            <ListItemText>
+              <Link to="/laundry" class={classes.link}>
+                Laundry Bin
+              </Link>
+            </ListItemText>
+          </ListItem>
           </>
         }
         </List>
