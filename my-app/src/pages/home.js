@@ -4,8 +4,9 @@ import logo from '../static/W2W.png'
 import background from '../static/transparentClothes.png' 
 import { Link } from "react-router-dom"
 import HomeDashboard from "./HomeDashboard";
-import { Button, Modal, Box, TextField, FormControl } from "@mui/material";
+import { Button, Modal, Box, TextField, FormControl, Paper } from "@mui/material";
 import WeatherDashboard from "../component/WeatherDashboard";
+import { Grid } from "@mui/material";
 
 
 const Home = (props) => {
@@ -92,33 +93,26 @@ const Home = (props) => {
     return (
     <>
     <div style = {backgroundImageStyle}>
-      <div style = {{paddingTop: "10%"}}>
-        <div style = {{
-          float: "left",
-          width: "auto",
-          height: "auto",
-        }}>
-          <img src = {logo} width = {"50%"} style = {{ float: "right", borderTopLeftRadius: "5%", borderBottomLeftRadius: "5%"}}/>
-        </div>
-        <div style = {{
-          display: "grid",
-
-      }}>
+      <div style = {{paddingTop: "1%"}}>
           <div style = {{
-            float: "right",
+            justifyContent: "center",
             textAlign: "center",
             verticalAlign: "middle",
             width: "70%",
             backgroundColor: "#F2D7D9",
             borderTopRightRadius: "5%",
+            borderTopLeftRadius: "5%",
             borderBottomRightRadius: "5%",
             borderBottomLeftRadius: "5%",
-            padding: "5%"
-            }}>
+            margin: "5%",
+            marginLeft: "15%",
+            marginRight: "15%"
+          }}>
+            <img src = {logo} width = {"30%"}/>
             <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "0px"}} >
               <b>Weather to Wear</b>
             </Typography> 
-            <Typography variant="h6" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, padding: "5%"}} >
+            <Typography variant="h4" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, padding: "5%"}} >
               Don't know what to wear? Sign up to generate outfits based on the clothes in your closet and the weather in your area.
             </Typography> 
             <div>
@@ -130,7 +124,6 @@ const Home = (props) => {
               }
             </div>
           </div>
-        </div>
       </div>
     </div>
       <Modal
