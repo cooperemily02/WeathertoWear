@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import ClothingItem from "../component/ClothingItem";
 import { useNavigate } from "react-router-dom";
 
-import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
+import {Stack, Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Creatable from 'react-select/creatable';
 
 
@@ -103,7 +104,7 @@ const Closet = (props) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 700,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -218,6 +219,24 @@ const Closet = (props) => {
       onClose={handleCloseModal}
       >
       <Box sx = {style}>
+        <Stack direction = "row">
+        <Box
+          component="span"
+          sx={{
+            width: 300,
+            margin: "5%",
+            backgroundColor: 'black',
+            borderColor: 'red',
+            borderWidth: 'thick',
+            borderStyle: 'dashed'
+          }}>
+          <IconButton
+            onClick={{}}
+          >
+            <FileUploadIcon sx = {{color: 'red'}}/>
+          </IconButton>
+        </Box>
+        <Stack direction = "column">
         <Typography id="modal-modal-title" variant="h5" component="h2">
           Add Item
         </Typography>
@@ -247,7 +266,8 @@ const Closet = (props) => {
           />
         </div>
         <Button variant="contained" onClick = {handleOnClick} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Add Item To Closet</Button>
-        
+        </Stack>
+        </Stack>
       </Box>
   </Modal>
     </>
