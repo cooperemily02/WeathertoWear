@@ -7,6 +7,8 @@ import HomeDashboard from "./HomeDashboard";
 import { Button, Modal, Box, TextField, FormControl, Paper } from "@mui/material";
 import WeatherDashboard from "../component/WeatherDashboard";
 import { Grid } from "@mui/material";
+import SignIn from "../component/SignIn";
+import SignUp from "../component/SignUp";
 
 
 const Home = (props) => {
@@ -17,55 +19,57 @@ const Home = (props) => {
     const [validId, setIsValidId] = useState(false)
 
 
-    //Helper Functions
-    const handleOpenSignUp = () => {
-      setOpenSignUp(true);
-    };
+    // //Helper Functions
+    // const handleOpenSignUp = () => {
+    //   // // setOpenSignUp(true);
+    //   // alert("hi");
+    //   SignUp();
+    // };
 
-    const handleCloseSignUp = () => {
-      setOpenSignUp(false);
-    };
-    const handleOpenLogin = () => {
-      setOpenLogin(true);
-    };
+    // const handleCloseSignUp = () => {
+    //   setOpenSignUp(false);
+    // };
+    // const handleOpenLogin = () => {
+    //   SignIn();
+    // };
 
-    const handleCloseLogin = () => {
-        setOpenLogin(false);
-    };
+    // const handleCloseLogin = () => {
+    //     setOpenLogin(false);
+    // };
     
-    function signUpUser(id) {
-      return ()=>fetchData()
-    }
+    // function signUpUser(id) {
+    //   return ()=>fetchData()
+    // }
 
-    function signInAttempt(id){
-      let valid = (enteredId!=="" && parseInt(enteredId)!==NaN && parseInt(enteredId)!==undefined && enteredId !== "" && (parseInt(enteredId)>0))
-      if (valid) {
-        return () => {
-          setIsValidId(true)
-          props.setUserId(id)
-          handleCloseLogin()
-        }
-      }
-      else {
-        return () => {
-          setIsValidId(false)
-        }
-      }
-    }
+    // function signInAttempt(id){
+    //   let valid = (enteredId!=="" && parseInt(enteredId)!==NaN && parseInt(enteredId)!==undefined && enteredId !== "" && (parseInt(enteredId)>0))
+    //   if (valid) {
+    //     return () => {
+    //       setIsValidId(true)
+    //       props.setUserId(id)
+    //       handleCloseLogin()
+    //     }
+    //   }
+    //   else {
+    //     return () => {
+    //       setIsValidId(false)
+    //     }
+    //   }
+    // }
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/dummy/userSignUp", {
-          method: "GET",
-          credentials: "include",
-        });
-        const json = await response.json();
-        console.log(json.userId)
-        props.setUserId(json.userId)
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await fetch("/dummy/userSignUp", {
+    //       method: "GET",
+    //       credentials: "include",
+    //     });
+    //     const json = await response.json();
+    //     console.log(json.userId)
+    //     props.setUserId(json.userId)
+    //   } catch (error) {
+    //     console.log("error", error);
+    //   }
+    // };
   
 
   const style = {
@@ -116,17 +120,17 @@ const Home = (props) => {
               Don't know what to wear? Sign up to generate outfits based on the clothes in your closet and the weather in your area.
             </Typography> 
             <div>
-              {userId === -1 &&
-              <>
-              <Button variant="contained" onClick = {handleOpenSignUp} sx={{margin: "5px", justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}><b>Sign Up</b></Button>
-              <Button variant="contained" onClick = {handleOpenLogin} sx={{margin: "5px", justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}><b>Sign In</b></Button>
-              </>
-              }
+              <Link to = "/signUp">
+                <Button variant="contained" href = "/signUp" onClick = {SignUp} sx={{margin: "5px", justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}><b>Sign Up</b></Button>
+              </Link>
+              <Link to = "/signIn">
+                <Button variant="contained" href = "/signIn" onClick = {SignIn} sx={{margin: "5px", justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}><b>Sign In</b></Button>
+              </Link>
             </div>
           </div>
       </div>
     </div>
-      <Modal
+      {/* <Modal
       open={openSignUp}
       onClose={handleCloseSignUp}
       >
@@ -145,8 +149,8 @@ const Home = (props) => {
           <Typography sx = {{fontWeight: "bold", justifyContent:"center", alignItems: "center", display: "flex", padding: "10px"}}> Your generated ID is: {userId} </Typography>
         }
       </Box>
-  </Modal>
-  <Modal
+  </Modal> */}
+  {/* <Modal
       open={openLogin}
       onClose={handleCloseLogin}
       >
@@ -182,10 +186,10 @@ const Home = (props) => {
           <Typography sx = {{fontWeight: "bold", justifyContent:"center", alignItems: "center", display: "flex", padding: "10px"}}> Hello user {userId}, you are sucessfully logged in! </Typography>
         }
       </Box>
-  </Modal>
-      <Typography>
+  </Modal> */}
+      {/* <Typography>
         {userId !== -1 && <HomeDashboard userId={userId} />}
-      </Typography>
+      </Typography> */}
     </>
     );
 };

@@ -6,6 +6,8 @@ import Navbar from "./navbar";
 import Closet from "../pages/closet";
 import Home from "../pages/home";
 import HomeDashboard from "../pages/HomeDashboard";
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
 
 function Header(props) {
   const userId = props.userId;
@@ -22,6 +24,14 @@ function Header(props) {
         <Route
           path="/homeDashboard"
           element={HomeDashboard({userId: userId})}
+        />
+        <Route
+          path="/signUp"
+          element={SignUp()}
+        />
+        <Route
+          path="/signin"
+          element={SignIn()} 
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>
