@@ -50,3 +50,26 @@ class Closet(db.Model):
     user_id = db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
     user = db.relationship("User", backref="closets")
     items = db.relationship("ClothingItem", backref="closet")
+
+class OutfitTemplate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    user_id = db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship('User', backref='outfit_templates')
+    item_templates = db.relationship('ItemTemplate', lazy=True)
+
+
+item_template_tags = db.Table(
+    "item_template_tags",
+    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"), primary_key=True),
+    db.Column(
+        "item_template_id", db.Integer, db.ForeignKey("item_template.id"), primary_key=True
+    ),
+)
+
+class ItemTemplate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    tags = db.relationship('Tag', secondary=item_template_tags)
+    outfit_template_id = db.Column(db.Integer, db.ForeignKey('outfit_template.id'),
+        nullable=False)

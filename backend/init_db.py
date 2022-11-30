@@ -1,5 +1,6 @@
 from api import db, app
 import models
+from models import OutfitTemplate, ItemTemplate
 
 with app.app_context():  # context is needed so sqlalchemy knows where to create the database
     db.drop_all()
@@ -34,6 +35,15 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         user=user1,
         items=[tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve],
     )
+
+    # OUTFIT Template example:
+    # This outfit (& the items within it) should match any items that fit the tags
+    outfit_template = models.OutfitTemplate(name='Rainy Outfit', item_templates=[
+        ItemTemplate(name='rainy top', tags=[rainy, top]),
+        ItemTemplate(name='rainy bottom', tags=[rainy, bottom]),
+        ItemTemplate(name='rainy shoes', tags=[rainy, ]),
+    ])
+    user1.outfit_templates.append(outfit_template)
 
     # write to db
     db.session.add_all([closet, user1])
