@@ -41,7 +41,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     outfit_template = models.OutfitTemplate(name='Rainy Outfit', item_templates=[
         ItemTemplate(name='rainy top', tags=[rainy, top]),
         ItemTemplate(name='rainy bottom', tags=[rainy, bottom]),
-        ItemTemplate(name='rainy shoes', tags=[rainy, ]),
+        ItemTemplate(name='rainy shoes', tags=[rainy, shoes]),
     ])
     user1.outfit_templates.append(outfit_template)
 
