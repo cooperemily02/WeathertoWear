@@ -80,8 +80,10 @@ export const HomeDashboard = (props) => {
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
               <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData}/>
             }
-            {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
-                <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>
+            {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true &&
+              <div> 
+                <Typography variant="h5" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex'}}> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </Typography>
+              </div>
             }
             </div> 
         </>
