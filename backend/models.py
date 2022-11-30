@@ -17,6 +17,7 @@ item_tags = db.Table(
 class ClothingItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    img = db.Column(db.String(50), nullable=True)
     # Notice how 'tags' is NOT a column. However, this defines the relationship &
     # lets us access item.tags (Which happens through a query in the background).
     # the 'backref' lets us do the opposite: tag.items
@@ -29,8 +30,10 @@ class ClothingItem(db.Model):
         list_tags = []
         for tag in self.tags:
             list_tags.append(tag.name)
-
-        return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id}
+        out = {"name": self.name, "tags": list_tags, "closet_id": self.closet_id}
+        if self.img:
+            out["img"] = self.img
+        return out
 
 
 class Tag(db.Model):

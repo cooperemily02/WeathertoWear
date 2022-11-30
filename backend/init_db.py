@@ -17,7 +17,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     outerwear = models.Tag(name="outerwear")
 
     # summer outfit
-    tshirt = models.ClothingItem(name="t-shirt", tags=[top, cotton])
+    tshirt = models.ClothingItem(name="t-shirt", tags=[top, cotton], img = "https://i.imgur.com/lx9198r.jpeg")
     shorts = models.ClothingItem(name="shorts", tags=[bottom])
     sneakers = models.ClothingItem(name="sneakers", tags=[shoes])
 

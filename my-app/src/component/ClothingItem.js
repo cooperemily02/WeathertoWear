@@ -12,12 +12,17 @@ import coat from "../static/coat.png"
 
 function ClothingItem(props) {
   const item = props.item;
-  item.tags.forEach(tag => {
-    if(tag === "top"){img = top}
-    if(tag === "bottom"){img = bottom}
-    if(tag === "shoes"){img = shoes}
-    if(tag === "outerwear"){img = coat}
-  })
+  if ("img" in item){
+    img = item.img
+  }
+  else{
+    item.tags.forEach(tag => {
+      if(tag === "top"){img = top}
+      if(tag === "bottom"){img = bottom}
+      if(tag === "shoes"){img = shoes}
+      if(tag === "outerwear"){img = coat}
+    })
+  }
 
   return (
     <Card sx={{ maxWidth: 250 }}>
