@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import ClothingItem from "../component/ClothingItem";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +19,16 @@ const Closet = (props) => {
   const handleCloseModal = () => {
     openAddItem(false)
   }
+
+  const inputFile = useRef(null) 
+  const [imageOfItem, setImageOfItem] = useState(null)
+
+  const onImageChange = (event) => {
+  if (event.target.files && event.target.files[0]) {
+    setImageOfItem(URL.createObjectURL(event.target.files[0]));
+  }
+  }
+
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [enteredItemName, setItemName] = useState("");
@@ -70,7 +80,7 @@ const Closet = (props) => {
   
   const handleOnClick = () => {
     selectedAttributes.push(selectedType)
-    let clothingItem = {name: enteredItemName, attributes: selectedAttributes}
+    let clothingItem = {name: enteredItemName, attributes: selectedAttributes, /*image: imageOfItem*/}
     fetch('/dummy/clothingItem', {
       method: 'POST',
       credentials: "include",
@@ -97,6 +107,11 @@ const Closet = (props) => {
           console.log(err.message);
        });
   }
+
+  const onFileButtonClick = () => {
+    // `current` points to the mounted file input element
+   inputFile.current.click();
+  };
 
 
   const style = {
@@ -162,6 +177,7 @@ const Closet = (props) => {
     }
     else {
       fetchClothingItems();
+
     }
 }, [userId]);
   return (
@@ -220,7 +236,8 @@ const Closet = (props) => {
       >
       <Box sx = {style}>
         <Stack direction = "row">
-        <Box
+        <input type='file' accept="image/*" id='file' ref={inputFile} onChange={onImageChange} style={{display: 'none'}}/>
+        {!imageOfItem && <Box
           component="span"
           sx={{
             width: 300,
@@ -231,11 +248,29 @@ const Closet = (props) => {
             borderStyle: 'dashed'
           }}>
           <IconButton
-            onClick={{}}
+            onClick={onFileButtonClick}
           >
             <FileUploadIcon sx = {{color: 'red'}}/>
           </IconButton>
         </Box>
+        }
+        {imageOfItem && 
+        <Box
+          component="span"
+          sx={{
+            width: 300,
+            height: 300,
+            margin: "5%",
+            backgroundColor: 'black',
+            borderColor: 'red',
+            borderWidth: 'thick',
+            borderStyle: 'dashed',
+            justifyContent: 'center',
+            display: 'flex'
+          }}>
+            <img src = {imageOfItem} height = {"100%"}></img>
+        </Box>
+        }
         <Stack direction = "column">
         <Typography id="modal-modal-title" variant="h5" component="h2">
           Add Item
