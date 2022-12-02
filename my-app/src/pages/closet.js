@@ -268,7 +268,7 @@ const Closet = (props) => {
             justifyContent: 'center',
             display: 'flex'
           }}>
-            <img src = {imageOfItem} height = {"100%"}></img>
+             <img src = {imageOfItem} height = {"100%"} onClick = {onFileButtonClick} style = {{cursor: "pointer"}}></img>
         </Box>
         }
         <Stack direction = "column">
