@@ -5,6 +5,9 @@ import WeatherDashboard from '../component/WeatherDashboard'
 
 
 export const HomeDashboard = (props) => {
+    function isValidUSZip(sZip) {
+      return /^\d{5}(-\d{4})?$/.test(sZip);
+    }
     const [zipcode, setZipcode] = useState(-1)
     const [enteredZipcode, setEnteredZipcode] = useState("")
     const [fetchedOutfitData, setFetchedOutfitData] = useState({hasOutfit: false, fetchError: false})
@@ -40,10 +43,14 @@ export const HomeDashboard = (props) => {
       }
 
       const handleButtonClick = () => {
-        setZipcode(enteredZipcode)
-        console.log(zipcode)
-        fetchGeneratedOutfit()
-        fetchWeatherData()
+        if(isValidUSZip(enteredZipcode)){
+          setZipcode(enteredZipcode)
+          fetchGeneratedOutfit()
+          fetchWeatherData()
+        }
+        else{
+          alert("Entered ZipCode is invalid. Please try again.");
+        }
       }
       const fetchWeatherData = async () => {
         try {

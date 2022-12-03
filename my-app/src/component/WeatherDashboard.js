@@ -16,7 +16,6 @@ import logo from '../static/W2W.png'
 
 
 export const WeatherDashboard = (props) => {
-
         const zipCode = props.zipCode
         const setZipcode = props.setZipcode
         const weather = props.weather
