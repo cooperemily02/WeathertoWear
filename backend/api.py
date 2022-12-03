@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, flash
 from models import db
 import weather
+from werkzeug.security import generate_password_hash, check_password_hash
 from w2w_logic.outfit_generator import Item, pick_outfit
-
 
 app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
@@ -51,13 +51,31 @@ def Return_Laundry():
         return jsonify(data)
 
 
+# @app.route("/dummy/userSignUp", methods=["GET"])
+# def Return_New_User():
+#     if request.method == "GET":
+#         newUser = models.User()
+#         db.session.add(newUser)
+#         db.session.commit()
+#         return {"userId": newUser.id}
+
 @app.route("/dummy/userSignUp", methods=["GET"])
 def Return_New_User():
     if request.method == "GET":
-        newUser = models.User()
-        db.session.add(newUser)
-        db.session.commit()
-        return {"userId": newUser.id}
+        user = None
+        name = request.get_json().get("name")
+        password = request.get_json().get("password")
+        email = request.get_json().get("email")
+        # in line below filter by the id
+        user = models.User.query.filter_by(email).first()  # looks in databse and tries to get the first occurence of this name in it
+        if user is None:  # if the user is not in the database
+            hashed_pw = generate_password_hash(password)  # needed for login
+            newUser = models.User(name=name, pasword_hash=hashed_pw, email=email) #add the id portion here
+            db.session.add(newUser)
+            db.session.commit()
+            return {"user name": newUser.name, "userId": newUser.id}
+        else:
+            flash('User already exists')
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])

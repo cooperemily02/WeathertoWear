@@ -2,7 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-
 # This table relates items & tags to each other (many-to-many relationship)
 # Also notice how SQLAlchemy maps the 'ClothingItem' class to 'clothing_item'
 item_tags = db.Table(
@@ -40,9 +39,17 @@ class Tag(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
+    name = db.Column(db.String(20), nullable=False, unique=True)
+    password_hash = db.Column(db.String(20), nullable=False, unique=True)
+    email = db.Column(db.String(40), nullable=False, unique=True)
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
+
+
+#class SignUpUser(db.Model):
+    # id = db.Column(db.Integer, primary_key=True)
+    # name = db.Column(db.String(20), primary_key=True)
+    # password_hash = db.Column(db.String(20), nullable=False, unique=True)
 
 
 class Closet(db.Model):
