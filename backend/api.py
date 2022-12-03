@@ -4,7 +4,8 @@ from flask import Flask, jsonify, request
 from models import db
 import weather
 from w2w_logic.outfit_generator import Item, pick_outfit
-
+import os
+import json
 
 app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
@@ -68,14 +69,26 @@ def Return_Forecast(zipcode: str):
 
 @app.route("/dummy/clothingItem", methods=["POST"])
 def Return_New_Clothing_Item():
-    # get_json is needed instead of 'form'
-    item_dict = request.get_json().get("item")
-    user_id = request.get_json().get("user")
+    # form instead of json for image support
+    item_dict = json.loads(request.form.get("item"))
+    user_id = request.form.get("user")
 
     # created the clothing item in the DB based on the user input
     clothing_item = models.ClothingItem()
     clothing_item.name = item_dict["name"]
-
+    
+    # Proof of concept of accessing and saving files
+    file = request.files['file'] 
+    #print(file.filename)
+    # TODO put sotorage of file in clothing_item.img setter
+    upload_dir = "images"
+    if not os.path.isdir(upload_dir):
+        os.mkdir(upload_dir)
+    print((str(user_id) + file.filename))
+    print(os.path.join(upload_dir, (str(user_id) + file.filename)))
+    file.save(os.path.join(upload_dir, (str(user_id) + file.filename)))
+    clothing_item.img = (str(user_id) + file.filename)
+    
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
     clothing_item.tags = [

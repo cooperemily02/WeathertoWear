@@ -22,9 +22,11 @@ const Closet = (props) => {
 
   const inputFile = useRef(null) 
   const [imageOfItem, setImageOfItem] = useState(null)
+  const [uploadImageOfItem, setUploadImageOfItem] = useState(null)
 
   const onImageChange = (event) => {
   if (event.target.files && event.target.files[0]) {
+    setUploadImageOfItem(event.target.files[0])
     setImageOfItem(URL.createObjectURL(event.target.files[0]));
   }
   }
@@ -80,17 +82,16 @@ const Closet = (props) => {
   
   const handleOnClick = () => {
     selectedAttributes.push(selectedType)
-    let clothingItem = {name: enteredItemName, attributes: selectedAttributes, /*image: imageOfItem*/}
+    let clothingItem = {name: enteredItemName, attributes: selectedAttributes, image: imageOfItem, file: imageOfItem, filename: "1"}
+    const data = new FormData();
+    data.append('file', uploadImageOfItem);//, "filename");
+    data.append("item", JSON.stringify(clothingItem));
+    data.append("user", userId);
+
     fetch('/dummy/clothingItem', {
       method: 'POST',
       credentials: "include",
-      body: JSON.stringify({
-       user: userId,
-       item: clothingItem
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
+      body: data,
     })
        .then((response) => response.json())
        .then((data) => {
