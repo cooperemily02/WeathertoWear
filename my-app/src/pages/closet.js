@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import ClothingItem from "../component/ClothingItem";
 import { useNavigate } from "react-router-dom";
 
-import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
+import {Stack, Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Creatable from 'react-select/creatable';
 
 
@@ -18,6 +19,16 @@ const Closet = (props) => {
   const handleCloseModal = () => {
     openAddItem(false)
   }
+
+  const inputFile = useRef(null) 
+  const [imageOfItem, setImageOfItem] = useState(null)
+
+  const onImageChange = (event) => {
+  if (event.target.files && event.target.files[0]) {
+    setImageOfItem(URL.createObjectURL(event.target.files[0]));
+  }
+  }
+
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [enteredItemName, setItemName] = useState("");
@@ -69,7 +80,7 @@ const Closet = (props) => {
   
   const handleOnClick = () => {
     selectedAttributes.push(selectedType)
-    let clothingItem = {name: enteredItemName, attributes: selectedAttributes}
+    let clothingItem = {name: enteredItemName, attributes: selectedAttributes, /*image: imageOfItem*/}
     fetch('/dummy/clothingItem', {
       method: 'POST',
       credentials: "include",
@@ -97,13 +108,18 @@ const Closet = (props) => {
        });
   }
 
+  const onFileButtonClick = () => {
+    // `current` points to the mounted file input element
+   inputFile.current.click();
+  };
+
 
   const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 700,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -161,6 +177,7 @@ const Closet = (props) => {
     }
     else {
       fetchClothingItems();
+
     }
 }, [userId]);
   return (
@@ -204,7 +221,7 @@ const Closet = (props) => {
             <Grid container justifyContent = "center" spacing={5}>
               {clothingItems.map((item, index) => (
                 <Grid item xs={2} sm={4} md={4} key = {index}>
-                  <ClothingItem item = {item}></ClothingItem>
+                  <ClothingItem item = {item} optionsForType = {optionsForType} optionsForWeather = {optionsForWeather}></ClothingItem>
                 </Grid>
               ))}
           </Grid>
@@ -218,6 +235,43 @@ const Closet = (props) => {
       onClose={handleCloseModal}
       >
       <Box sx = {style}>
+        <Stack direction = "row">
+        <input type='file' accept="image/*" id='file' ref={inputFile} onChange={onImageChange} style={{display: 'none'}}/>
+        {!imageOfItem && <Box
+          component="span"
+          sx={{
+            width: 300,
+            margin: "5%",
+            backgroundColor: 'black',
+            borderColor: 'red',
+            borderWidth: 'thick',
+            borderStyle: 'dashed'
+          }}>
+          <IconButton
+            onClick={onFileButtonClick}
+          >
+            <FileUploadIcon sx = {{color: 'red'}}/>
+          </IconButton>
+        </Box>
+        }
+        {imageOfItem && 
+        <Box
+          component="span"
+          sx={{
+            width: 300,
+            height: 300,
+            margin: "5%",
+            backgroundColor: 'black',
+            borderColor: 'red',
+            borderWidth: 'thick',
+            borderStyle: 'dashed',
+            justifyContent: 'center',
+            display: 'flex'
+          }}>
+             <img src = {imageOfItem} height = {"100%"} onClick = {onFileButtonClick} style = {{cursor: "pointer"}}></img>
+        </Box>
+        }
+        <Stack direction = "column">
         <Typography id="modal-modal-title" variant="h5" component="h2">
           Add Item
         </Typography>
@@ -247,7 +301,8 @@ const Closet = (props) => {
           />
         </div>
         <Button variant="contained" onClick = {handleOnClick} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Add Item To Closet</Button>
-        
+        </Stack>
+        </Stack>
       </Box>
   </Modal>
     </>
