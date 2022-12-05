@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import HomeDashboard from '../pages/HomeDashboard';
-import { data } from 'jquery';
-import { DateProfileGenerator } from '@fullcalendar/react';
+//import { data } from 'jquery';
+//import { DateProfileGenerator } from '@fullcalendar/react';
 
 const theme = createTheme();
 
@@ -27,22 +27,22 @@ export default function SignUp(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = data.get('name');
-    const email = data.get('email');
-    const password = data.get('password');
+    const name = data.get('name').toString();
+    const email = data.get('email').toString();
+    const password = data.get('password').toString();
     // console.log(name);
     // console.log(email);
     // console.log(password)
-
+    const createdUser = {
+      name: name,
+      password: password,
+      email: email
+    }
     try{
       const response = await fetch("/dummy/userSignUp", {
         method: 'POST',
         credentials: "include",
-        body: JSON.stringify({
-          name: name,
-          password: password,
-          email: email
-        }),
+        body: JSON.stringify(createdUser),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
         },
@@ -53,8 +53,8 @@ export default function SignUp(props) {
       console.log("hi error", error);
     }
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: data.email,
+      password: data.password,
     });
   };
 

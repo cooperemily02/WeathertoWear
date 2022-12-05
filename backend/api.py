@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, flash, jsonify, request
 from werkzeug.security import generate_password_hash
-
+import json
 import models
 import weather
 from models import db
@@ -64,21 +64,22 @@ def Return_Laundry():
 def Return_New_User():
     if request.method == "POST":
         user = None
-        data = request.get_json()
-        name = data["name"]
-        password = data["password"]
-        email = data["email"]
+        print("JSON" + json.dumps(request.get_json()))
+        name = request.get_json().get("name")
+        password = request.get_json().get("password")
+        email = request.get_json().get("email")
         # id = request.get_json().get("id") 
         # in line below filter by the id
-        user = models.User.query.filter_by(email)  # looks in databse and tries to get the first occurence of this name in it
+        user = models.User.query.filter_by(email = email).first() # looks in databse and tries to get the first occurence of this name in it
         if user is None:  # if the user is not in the database
-            hashed_pw = generate_password_hash(password)  # needed for login
-            newUser = models.User(name=name, password=hashed_pw, email=email) #add the id portion here
+            # hashed_pw = generate_password_hash(password)  # needed for login
+            newUser = models.User(name=name, password_hash = password, email = email) #add the id portion here
             db.session.add(newUser)
             db.session.commit()
             return {"userName": newUser.name, "userId": newUser.id}
         else:
-            flash('User already exists')
+            print('Error: User already exists')
+            return {}
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])

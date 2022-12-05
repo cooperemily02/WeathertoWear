@@ -46,7 +46,7 @@ class Tag(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False, unique=True)
+    name = db.Column(db.String(20), nullable=False, unique=False)
     password_hash = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(40), nullable=False, unique=True)
     def get_all_items(self):
