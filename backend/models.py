@@ -79,6 +79,10 @@ class OutfitTemplate(db.Model):
     name = db.Column(db.String(50), nullable=False)
     item_templates = db.relationship("ItemTemplate")
 
+    # A *single* user should not have multiple templates with the same name.
+    # (but name is not unique, as different users could easily pick the same name)
+    __table_args__ = (db.UniqueConstraint('name', 'user_id'), )
+
     @property
     def serialize(self):
         return {'name': self.name}
