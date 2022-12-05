@@ -8,12 +8,8 @@ import { useState } from 'react'
 
 
 export default function App() {
-  const [user, setUser] = useState({userName: "Bob", userId: 0});
-  // const [name, setName] = useState();
-  // const [password, setPassword] = useState();
-  // const [email, setEmail] = useState();
-  console.log("sup");
-  console.log(user);
+  const [user, setUser] = useState({userName: "", userId: 0});
+  // console.log(user);
   return (
     <Header user={user} setUser={setUser}/>
   );

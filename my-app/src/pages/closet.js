@@ -12,10 +12,6 @@ const Closet = (props) => {
   const navigate = useNavigate()
   const userId = props.user.userId
   const name = props.user.userName
-  console.log("userId");
-  console.log(userId);
-  console.log("name");
-  console.log(name);
 
   const handleAddItem = () =>{
     openAddItem(true)

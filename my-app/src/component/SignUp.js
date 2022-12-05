@@ -12,8 +12,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme();
 
 export default function SignUp(props) {
-  console.log("hayyyyyy")
-  console.log(props);
   var user = props.user;
   var setUser = props.setUser;
 
