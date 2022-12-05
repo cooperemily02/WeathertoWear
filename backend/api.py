@@ -1,16 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, jsonify, request
-from models import db
-import weather
-from w2w_logic.outfit_generator import Item, pick_outfit
+from flask import Flask, flash, jsonify, request
+from werkzeug.security import generate_password_hash
 
+import models
+import weather
+from models import db
+from w2w_logic.outfit_generator import Item, pick_outfit
 
 app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
 
 db.init_app(app)  # Now we can use the database in our endpoints!
-import models
 
 
 @app.route("/")
@@ -51,13 +52,33 @@ def Return_Laundry():
         return jsonify(data)
 
 
-@app.route("/dummy/userSignUp", methods=["GET"])
+# @app.route("/dummy/userSignUp", methods=["GET"])
+# def Return_New_User():
+#     if request.method == "GET":
+#         newUser = models.User()
+#         db.session.add(newUser)
+#         db.session.commit()
+#         return {"userId": newUser.id}
+
+@app.route("/dummy/userSignUp", methods=["POST"])
 def Return_New_User():
-    if request.method == "GET":
-        newUser = models.User()
-        db.session.add(newUser)
-        db.session.commit()
-        return {"userId": newUser.id}
+    if request.method == "POST":
+        user = None
+        data = request.get_json()
+        name = data["name"]
+        password = data["password"]
+        email = data["email"]
+        # id = request.get_json().get("id") 
+        # in line below filter by the id
+        user = models.User.query.filter_by(email)  # looks in databse and tries to get the first occurence of this name in it
+        if user is None:  # if the user is not in the database
+            hashed_pw = generate_password_hash(password)  # needed for login
+            newUser = models.User(name=name, password=hashed_pw, email=email) #add the id portion here
+            db.session.add(newUser)
+            db.session.commit()
+            return {"userName": newUser.name, "userId": newUser.id}
+        else:
+            flash('User already exists')
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])

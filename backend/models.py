@@ -38,9 +38,17 @@ class Tag(db.Model):
     name = db.Column(db.String(50), nullable=False)
 
 
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+
+#     def get_all_items(self):
+#         return [item for closet in self.closets for item in closet.items]
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
+    name = db.Column(db.String(20), nullable=False, unique=True)
+    password_hash = db.Column(db.String(20), nullable=False, unique=True)
+    email = db.Column(db.String(40), nullable=False, unique=True)
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
 

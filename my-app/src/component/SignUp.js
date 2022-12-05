@@ -12,36 +12,88 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import HomeDashboard from '../pages/HomeDashboard';
+import { data } from 'jquery';
+import { DateProfileGenerator } from '@fullcalendar/react';
 
 const theme = createTheme();
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
+export default function SignUp(props) {
+  console.log("hayyyyyy")
+  console.log(props);
+  var user = props.user;
+  var setUser = props.setUser;
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const name = data.get('name');
+    const email = data.get('email');
+    const password = data.get('password');
+    // console.log(name);
+    // console.log(email);
+    // console.log(password)
+
+    try{
+      const response = await fetch("/dummy/userSignUp", {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify({
+          name: name,
+          password: password,
+          email: email
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      const json = await response.json();
+      setUser(json);
+    } catch (error) {
+      console.log("hi error", error);
+    }
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
   };
 
-//   const fetchData = async () => {
-//     try {
-//       const response = await fetch("/dummy/userSignUp", {
-//         method: "GET",
-//         credentials: "include",
-//       });
-//       const json = await response.json();
-//       console.log(json.userId)
-//       props.setUserId(json.userId)
-//     } catch (error) {
-//       console.log("error", error);
-//     }
-//   };
+  function signUpUser(id) {
+    console.log("HOIIIIIIII")
+    return fetchData();
+  }
 
-//   function signUpUser(id) {
-//     return ()=>fetchData()
-//   }
+  const fetchData = async () => {
+    console.log("sup");
+    // try {
+    //   const response = await fetch("/dummy/userSignUp", {
+    //     method: "GET",
+    //     credentials: "include",
+    //   });
+    //   const json = await response.json();
+    //   console.log(json.userId)
+    //   props.setUser(json.userId)
+    // } catch (error) {
+    //   console.log("error", error);
+    // }
+    // try {
+    //   const response = await fetch("/dummy/userSignUp", {
+    //     method: "GET",
+    //     credentials: "include",
+    //     body: JSON.stringify({
+    //       name: data.get('name'),
+    //       password: data.get('password'),
+    //       email: data.get('email')
+    //     }),
+    //   });
+    //   //const user = await response.json();
+    //   // props.setUser({userName: user.userName, userId: user.userId});
+
+    // } catch (error) {
+    //   console.log("hi error", error);
+    // }
+    console.log(user);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -97,15 +149,18 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-            //   onClick = {signUpUser(1)}
-              sx={{ mt: 3, mb: 2, fontFamily: 'Caudex', backgroundColor: 'rgb(191, 172, 224)', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}
-            >
-              Sign Up
-            </Button>
+              {/* <Link to = "/homeDashboard"> */}
+                <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick = {() => signUpUser(1)}
+                // href = "/homeDashboard"
+                sx={{ mt: 3, mb: 2, fontFamily: 'Caudex', backgroundColor: 'rgb(191, 172, 224)', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}
+                >
+                    Sign Up
+                </Button>
+              {/* </Link> */}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/signIn" href="/signIn" variant="body2">

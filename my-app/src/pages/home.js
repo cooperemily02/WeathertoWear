@@ -12,65 +12,10 @@ import SignUp from "../component/SignUp";
 
 
 const Home = (props) => {
-    var userId = props.userId
     const [openSignUp, setOpenSignUp] = useState(false);
     const [openLogin, setOpenLogin] = useState(false);
     const [enteredId, setEnteredId] = useState("");
     const [validId, setIsValidId] = useState(false)
-
-
-    // //Helper Functions
-    // const handleOpenSignUp = () => {
-    //   // // setOpenSignUp(true);
-    //   // alert("hi");
-    //   SignUp();
-    // };
-
-    // const handleCloseSignUp = () => {
-    //   setOpenSignUp(false);
-    // };
-    // const handleOpenLogin = () => {
-    //   SignIn();
-    // };
-
-    // const handleCloseLogin = () => {
-    //     setOpenLogin(false);
-    // };
-    
-    // function signUpUser(id) {
-    //   return ()=>fetchData()
-    // }
-
-    // function signInAttempt(id){
-    //   let valid = (enteredId!=="" && parseInt(enteredId)!==NaN && parseInt(enteredId)!==undefined && enteredId !== "" && (parseInt(enteredId)>0))
-    //   if (valid) {
-    //     return () => {
-    //       setIsValidId(true)
-    //       props.setUserId(id)
-    //       handleCloseLogin()
-    //     }
-    //   }
-    //   else {
-    //     return () => {
-    //       setIsValidId(false)
-    //     }
-    //   }
-    // }
-
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await fetch("/dummy/userSignUp", {
-    //       method: "GET",
-    //       credentials: "include",
-    //     });
-    //     const json = await response.json();
-    //     console.log(json.userId)
-    //     props.setUserId(json.userId)
-    //   } catch (error) {
-    //     console.log("error", error);
-    //   }
-    // };
-  
 
   const style = {
     position: 'absolute',
@@ -121,10 +66,10 @@ const Home = (props) => {
             </Typography> 
             <div>
               <Link to = "/signUp">
-                <Button variant="contained" href = "/signUp" onClick = {SignUp} sx={{margin: "5px", justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}><b>Sign Up</b></Button>
+                <Button variant="contained" href = "/signUp" onClick = {SignUp(props)} sx={{margin: "5px", justifyContent:"center", backgroundColor: 'rgb(191, 172, 224)', fontFamily: 'Caudex', ': hover': { backgroundColor: 'rgb(160, 132, 202)'}}}><b>Sign Up</b></Button>
               </Link>
               <Link to = "/signIn">
-                <Button variant="contained" href = "/signIn" onClick = {SignIn} sx={{margin: "5px", justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}><b>Sign In</b></Button>
+                <Button variant="contained" href = "/signIn" onClick = {SignIn(props)} sx={{margin: "5px", justifyContent:"center", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}><b>Sign In</b></Button>
               </Link>
             </div>
           </div>
