@@ -150,5 +150,14 @@ def outfit_template():
     db.session.commit()
     return {}
 
+"""
+Gets the outfit_templates of the user
+"""
+@app.route("/outfit-templates", methods=["POST"])
+def outfit_templates():
+    data = request.get_json()
+    user = models.User.query.get(data['user_id'])
+    return [template.serialize for template in user.outfit_templates]
+
 if __name__ == "__main__":
     app.run(debug=True)

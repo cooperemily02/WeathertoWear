@@ -79,6 +79,10 @@ class OutfitTemplate(db.Model):
     name = db.Column(db.String(50), nullable=False)
     item_templates = db.relationship("ItemTemplate")
 
+    @property
+    def serialize(self):
+        return {'name': self.name}
+
 
 template_tags = db.Table(
     "template_tags",
