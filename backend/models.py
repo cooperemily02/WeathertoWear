@@ -53,6 +53,7 @@ class Closet(db.Model):
     user = db.relationship("User", backref="closets")
     items = db.relationship("ClothingItem", backref="closet")
 
+    #TODO: Update this to only consider 'clean' items once laundry is implemented.
     def find_matching_outfit(self, outfit_template: 'OutfitTemplate') -> List[ClothingItem]:
         available_items = set(self.items)
         out = []
@@ -66,6 +67,7 @@ class Closet(db.Model):
             out.append(matching_item)
             available_items.remove(matching_item)
         return out
+
 
 """
 Represents a template/blueprint that an outfit matches by satisfying all the 
