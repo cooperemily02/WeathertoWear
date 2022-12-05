@@ -2,43 +2,42 @@ import React from "react";
 import { useState } from "react";
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
-import postData from "../utils"
+import postData from "../utils";
 
 const schema = {
-  "required": ["outfit_name", "items"],
+  "required": ["name", "item-templates"],
   "type": "object",
   "properties": {
-    "outfit_name": {"type": "string"},
-    "items": {
+    "name": {"type": "string"},
+    "item-templates": {
       "type":"array",
-      "items": { "$ref": "#/$defs/item" }
+      "items": { "$ref": "#/$defs/item-template" }
     }
   },
   "$defs": {
-    "item": {
+    "item-template": {
       "type": "object",
       "properties": {
-        "item_name": {"type": "string"},
+        "name": {"type": "string"},
         "tags": {"type": "array", "items": {"type": "string"}}
-      }
+      },
+      "required": ["name", "tags"]
     }
   }
 }
 
 
 export default function OutfitTemplateForm() {
-  const [formData, setFormData] = useState(null);
 
-  const onSubmit = (e) => {
-    console.log(e.formData)
-    // postData("outfit-template", e.formData)
-  }
+  const onSubmit = async (e) => {
+    console.log(e.formData);
+  };
 
-  return (<Form
-    schema={schema}
-    formData={formData}
-    onChange={e => setFormData(e.formData)}
-    validator={validator}
-    onSubmit={onSubmit}
-  />);
+  return (
+    <Form
+      schema={schema}
+      validator={validator}
+      onSubmit={onSubmit}
+    />
+  );
 }
