@@ -132,5 +132,23 @@ def generate_outfit():
     return [orm_item.serialize for orm_item in orm_outfit]
 
 
+@app.route("/outfit-template", methods=["POST"])
+def outfit_template():
+    data = request.get_json()
+    #TODO: get user_id instead of hardcoding '1'
+    outfit_template = models.OutfitTemplate(
+        name=data['name'],
+        user_id=1,
+        item_templates=[
+            models.ItemTemplate(name=template['name'], required_tags=[
+                models.Tag(name=tag_name) for tag_name in template['tags']
+            ])
+            for template in data['item-templates']
+        ]
+    )
+    db.session.add(outfit_template)
+    db.session.commit()
+    return {}
+
 if __name__ == "__main__":
     app.run(debug=True)
