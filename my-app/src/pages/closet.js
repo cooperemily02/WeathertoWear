@@ -10,7 +10,12 @@ import Creatable from 'react-select/creatable';
 const Closet = (props) => {
  
   const navigate = useNavigate()
-  const userId = props.userId
+  const userId = props.user.userId
+  const name = props.user.userName
+  console.log("userId");
+  console.log(userId);
+  console.log("name");
+  console.log(name);
 
   const handleAddItem = () =>{
     openAddItem(true)
@@ -186,7 +191,7 @@ const Closet = (props) => {
         </Alert>
       </Collapse>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
-      <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > User {userId}'s Closet </Typography>      </div>
+      <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > User {name}'s Closet </Typography>      </div>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
       <Button variant="contained" onClick = {handleAddItem} sx = {{margin: "10px", backgroundColor: 'rgb(211, 206, 223)', color: 'rgb(105,105,105)', hover: { backgroundColor: 'rgb(195, 184, 222)'}}}>
         Add Item

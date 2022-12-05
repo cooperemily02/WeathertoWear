@@ -75,66 +75,6 @@ const Home = (props) => {
           </div>
       </div>
     </div>
-      {/* <Modal
-      open={openSignUp}
-      onClose={handleCloseSignUp}
-      >
-      <Box sx = {style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Sign up for a user ID
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Click the "generate user ID" button to generate a unique user ID.
-        </Typography>
-        {userId == -1 &&
-        <Button variant="contained" onClick = {signUpUser(1)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Generate ID!</Button>
-        }
-        {
-        userId != -1 && 
-          <Typography sx = {{fontWeight: "bold", justifyContent:"center", alignItems: "center", display: "flex", padding: "10px"}}> Your generated ID is: {userId} </Typography>
-        }
-      </Box>
-  </Modal> */}
-  {/* <Modal
-      open={openLogin}
-      onClose={handleCloseLogin}
-      >
-      <Box sx = {style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Login to Weather to Wear
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Enter your user ID to see your closet and generated outfits
-        </Typography>
-        {userId == -1 &&
-        <>
-        <TextField 
-          id= "standard-basic"
-          error = {validId}
-          type = "number"
-          sx = {{justifyContent:"center", marginTop: "10px", alignItems: "center", display: "flex"}} 
-          onChange={(newValue) => {
-            setEnteredId(parseInt(newValue.target.value))
-            signInAttempt(newValue.target.value)
-          }}
-          helperText = {!validId && "Enter a valid ID"}
-          variant="standard"
-          required
-          />
-        <Link to = "/homeDashboard">
-          <Button variant="contained" href = "/homeDashboard" onClick = {signInAttempt(enteredId)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Login</Button>
-        </Link>
-        </>
-        }
-        {
-        userId != -1 && 
-          <Typography sx = {{fontWeight: "bold", justifyContent:"center", alignItems: "center", display: "flex", padding: "10px"}}> Hello user {userId}, you are sucessfully logged in! </Typography>
-        }
-      </Box>
-  </Modal> */}
-      {/* <Typography>
-        {userId !== -1 && <HomeDashboard userId={userId} />}
-      </Typography> */}
     </>
     );
 };
