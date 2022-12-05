@@ -28,9 +28,9 @@ const schema = {
 
 
 export default function OutfitTemplateForm() {
-
-  const onSubmit = async (e) => {
+  const onSubmit =  (e) => {
     console.log(e.formData);
+    postData('outfit-template', e.formData).then(data => console.log(data))
   };
 
   return (
@@ -38,6 +38,7 @@ export default function OutfitTemplateForm() {
       schema={schema}
       validator={validator}
       onSubmit={onSubmit}
+      formData={{'name': "hi", 'item-templates': [{"name": 'item1', 'tags': ['lol', 'lol2']}]}}
     />
   );
 }
