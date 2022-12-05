@@ -1,3 +1,4 @@
+from typing import List
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -50,3 +51,46 @@ class Closet(db.Model):
     user_id = db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
     user = db.relationship("User", backref="closets")
     items = db.relationship("ClothingItem", backref="closet")
+
+    def find_matching_outfit(self, outfit_template: 'OutfitTemplate') -> List[ClothingItem]:
+        available_items = set(self.items)
+        out = []
+        for item_template in outfit_template.item_templates:
+            required_tags = item_template.required_tags
+            matching_item = None
+            try:
+                matching_item = next(item for item in available_items if all(req_tag in item.tags for req_tag in required_tags))
+            except StopIteration:
+                raise ValueError(f"No item matches {item_template} in closet{self.id}")
+            out.append(matching_item)
+            available_items.remove(matching_item)
+        return out
+
+"""
+Represents a template/blueprint that an outfit matches by satisfying all the 
+required 'item_templates'.
+"""
+class OutfitTemplate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    item_templates = db.relationship("ItemTemplate")
+
+
+template_tags = db.Table(
+    "template_tags",
+    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"), primary_key=True),
+    db.Column(
+        "template_id", db.Integer, db.ForeignKey("item_template.id"), primary_key=True
+    ),
+)
+
+
+"""
+Represents a template/blueprint that a clothingItem satisfies by containing all the 
+required_tags.
+"""
+class ItemTemplate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    required_tags = db.relationship("Tag", secondary=template_tags)
+    outfit_template_id = db.Column(db.Integer, db.ForeignKey("outfit_template.id"))
