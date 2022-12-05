@@ -46,6 +46,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(name="Gym Top", required_tags=[top, gym_tag]),
         models.ItemTemplate(name="Gym Bottom", required_tags=[bottom, gym_tag])
     ])
+    user1.outfit_templates.append(gym_outfit_template)
 
     # write to db
     db.session.add_all([closet, user1])
@@ -55,6 +56,9 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     print("user1's items")
     for item in user1.get_all_items():
         print(item.serialize)
+    
+    print("user1's outfit templates:")
+    print(user1.outfit_templates)
     
     print(f"Searching for a gym outfit in closet (id={closet.id}):")
     print(closet.find_matching_outfit(gym_outfit_template))

@@ -41,6 +41,7 @@ class Tag(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    outfit_templates = db.relationship('OutfitTemplate')
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
@@ -72,6 +73,7 @@ required 'item_templates'.
 """
 class OutfitTemplate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
     name = db.Column(db.String(50), nullable=False)
     item_templates = db.relationship("ItemTemplate")
 
