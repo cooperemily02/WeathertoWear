@@ -5,6 +5,7 @@ import validator from "@rjsf/validator-ajv8";
 import postData from "../utils"
 
 const schema = {
+  "required": ["outfit_name", "items"],
   "type": "object",
   "properties": {
     "outfit_name": {"type": "string"},
