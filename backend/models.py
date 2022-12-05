@@ -7,7 +7,7 @@ db = SQLAlchemy()
 # Also notice how SQLAlchemy maps the 'ClothingItem' class to 'clothing_item'
 item_tags = db.Table(
     "item_tags",
-    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"), primary_key=True),
+    db.Column("tag_name", db.Integer, db.ForeignKey("tag.name"), primary_key=True),
     db.Column(
         "item_id", db.Integer, db.ForeignKey("clothing_item.id"), primary_key=True
     ),
@@ -34,8 +34,7 @@ class ClothingItem(db.Model):
 
 
 class Tag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False, primary_key=True)
 
 
 class User(db.Model):
