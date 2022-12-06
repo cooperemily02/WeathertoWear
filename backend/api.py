@@ -34,11 +34,12 @@ def Return_Closet():
     clothing_items = []
     for closet in closets:
         for item in closet.items:
-            clothing_items.append(item.serialize)
+            if item.times_worn < item.max_wears:
+                clothing_items.append(item.serialize)
     return clothing_items
 
 
-@app.route("/dummy/Laundry", methods=["GET"])
+@app.route("/dummy/Laundry", methods=["POST"])
 def Return_Laundry():
     user_id = request.get_json().get("user")
     user = models.User.query.get(user_id)
@@ -88,14 +89,13 @@ def Item_Washed():
     selected_item.times_worn = 0
     db.session.commit()
     
-    return selected_item.times_worn
+    return ({"timesWorn": selected_item.times_worn})
 
 @app.route("/dummy/sendToLaundry", methods=["PUT"])
 def Send_Laundry():
     user_id = request.get_json().get("user")
     item_dict = request.get_json().get("item")
     user = models.User.query.get(user_id)
-
     items = user.get_all_items()
     selected_item = items[0]
     for item in items:

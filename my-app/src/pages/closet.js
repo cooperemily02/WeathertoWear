@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from "react";
 import ClothingItem from "../component/ClothingItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
+import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField, setRef} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import Creatable from 'react-select/creatable';
+import { letterSpacing } from "@mui/system";
 
 
 const Closet = (props) => {
  
   const navigate = useNavigate()
+  const location = useLocation()
   const userId = props.userId
 
   const handleAddItem = () =>{
@@ -26,6 +28,8 @@ const Closet = (props) => {
   const [sortedClothingItems, setSortedClothingItems] = useState({Tops: [], Bottoms: [], Shoes: [], Outerwear: [], Other: []})
   const [addItemModal, openAddItem] = useState(false);
   const [severity, setSeverity] = useState(undefined);
+  const [itemSentToLaundry, setItemSentToLaundry] = useState(false)
+  var refetchItems = true
 
 
   const sortClothingItems = (items) => {
@@ -137,6 +141,7 @@ const Closet = (props) => {
   ]
 
   const fetchClothingItems = async () => {
+    refetchItems = false
     try {
       const response = await fetch("/dummy/Closet", {
         method: "POST",
@@ -160,9 +165,11 @@ const Closet = (props) => {
       navigate('/')
     }
     else {
+      //setItemSentToLaundry(false)
       fetchClothingItems();
+      refetchItems = false
     }
-}, [userId]);
+}, [userId, location]);
   return (
     <>
      <Collapse in={openAlert}>
@@ -204,7 +211,7 @@ const Closet = (props) => {
             <Grid container justifyContent = "center" spacing={5}>
               {clothingItems.map((item, index) => (
                 <Grid item xs={2} sm={4} md={4} key = {index}>
-                  <ClothingItem item = {item} optionsForType = {optionsForType} optionsForWeather = {optionsForWeather}></ClothingItem>
+                  <ClothingItem item = {item} parent = {{type: "closet", updateFunction: fetchClothingItems}} optionsForType = {optionsForType} optionsForWeather = {optionsForWeather} userId = {userId}></ClothingItem>
                 </Grid>
               ))}
           </Grid>

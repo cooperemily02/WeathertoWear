@@ -25,7 +25,7 @@ class ClothingItem(db.Model):
 
     # the values become default only once committed to the database (not upon instantiation)
     times_worn = db.Column(db.Integer, default=0) 
-    max_wears = db.Column(db.Integer, default= sys.maxsize)
+    max_wears = db.Column(db.Integer, default=1)
 
     @property
     def serialize(self):
