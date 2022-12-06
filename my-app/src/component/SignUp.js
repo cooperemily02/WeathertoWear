@@ -38,9 +38,15 @@ export default function SignUp(props) {
         },
       });
       const json = await response.json();
-      setUser(json);
-      if (user.userId !== -1){
-        navigate('/homeDashboard');
+      console.log(json);
+      if (json.exists == "true"){
+        alert("This user already exists.");
+      }
+      if (json.exists == "false"){
+        setUser(json);
+        if (user.userId !== -1){
+          navigate('/homeDashboard');
+        }
       }
     } catch (error) {
       console.log("hi error", error);
