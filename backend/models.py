@@ -89,7 +89,7 @@ class OutfitTemplate(db.Model):
 
 template_tags = db.Table(
     "template_tags",
-    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"), primary_key=True),
+    db.Column("tag_name", db.String(50), db.ForeignKey('tag.name'), nullable=False, primary_key=True),
     db.Column(
         "template_id", db.Integer, db.ForeignKey("item_template.id"), primary_key=True
     ),
