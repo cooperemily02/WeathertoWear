@@ -66,6 +66,23 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(any("bottom" in item["tags"] for item in resp_data))
         self.assertTrue(any("shoes" in item["tags"] for item in resp_data))
 
+    def test_get_laundry(self):
+       return
+
+    def test_send_laundry(self):
+        request_data = {
+            "user": 1,
+            "item": {"name": "item to test add-item", "attributes": ["something"]},
+        }
+        response = self.app.put(
+            '/dummy/sendToLaundry', 
+            data=json.dumps(request_data), 
+            content_type='application/json'
+        )
+        # UNFINISHED
+        json_items = response.get_json()
+        self.assertEqual(response.status_code, 200)
+
 
 # running the class for testing, dont delete lines 21-22
 if __name__ == "__main__":
