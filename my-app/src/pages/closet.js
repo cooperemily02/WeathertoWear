@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
-import Select from 'react-select'
+import Creatable from 'react-select/creatable';
 
 
 const Closet = (props) => {
@@ -227,7 +227,7 @@ const Closet = (props) => {
         <TextField sx = {{width: "100%", padding: "5px"}}id="standard" label="Name of item" variant="standard" onChange={(newValue) => handleChangeItemName(newValue.target.value)}/>
         <div style = {{paddingBlock: "5px"}}>
           <b>This item is a:</b>
-          <Select 
+          <Creatable 
             styles = {{margin: 5}}
             placeholder = {"Enter item type..."}
             onChange = {handleChangeType}
@@ -237,12 +237,13 @@ const Closet = (props) => {
           </div>
         <div style = {{paddingBlock: "5px"}}>
           <b>Item is good for this type of weather:</b>
-          <Select
+          <Creatable
             closeMenuOnSelect={false}
             isMulti
             onChange = {handleChangeAttributes}
             placeholder = {"Select one or more attributes"}
             options={optionsForWeather}
+            
           />
         </div>
         <Button variant="contained" onClick = {handleOnClick} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Add Item To Closet</Button>

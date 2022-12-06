@@ -43,7 +43,6 @@ function DrawerComponent(props) {
           </ListItem>
           {/* <ListItem onClick={() => setOpenDrawer(false)}>
             <ListItemText>
-              <Link to="/dailyoutfits" class={classes.link}>
                 Daily Outfits
               </Link>
             </ListItemText>
