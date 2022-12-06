@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import json
+
 from flask import Flask, flash, jsonify, request
 from werkzeug.security import generate_password_hash
-import json
+
 import models
 import weather
 from models import db
@@ -63,6 +65,7 @@ def Return_Laundry():
 @app.route("/dummy/userSignUp", methods=["POST"])
 def Return_New_User():
     if request.method == "POST":
+        #userExists = False
         user = None
         print("JSON" + json.dumps(request.get_json()))
         name = request.get_json().get("name")
@@ -76,10 +79,9 @@ def Return_New_User():
             newUser = models.User(name=name, password_hash = password, email = email) #add the id portion here
             db.session.add(newUser)
             db.session.commit()
-            return {"userName": newUser.name, "userId": newUser.id}
+            return {"exists": "false", "userName": newUser.name, "userId": newUser.id}
         else:
-            print('Error: User already exists')
-            return {}
+            return {"exists": "true"}
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])
