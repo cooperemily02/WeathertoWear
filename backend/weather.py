@@ -24,7 +24,6 @@ def get_forecast(zipcode: str) -> dict:
 
     response = requests.get(url)
     days = response.json().get("list")
-
     forecast = {}
     for i, day in enumerate(days):
         dt = day.get("dt")
@@ -35,6 +34,9 @@ def get_forecast(zipcode: str) -> dict:
         forecast["weather" + str(i)] = day.get("weather")[0].get("main")
         # TODO breaking here to get one 3-hr interval, fix for 1.0
         break
+
+    city = response.json().get("city").get("name")
+    forecast["city_name"] = city
     return forecast
 
 

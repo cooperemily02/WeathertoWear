@@ -94,7 +94,8 @@ export const WeatherDashboard = (props) => {
                 elevation={3}
                 square = {false}
                 >
-                    <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather </Typography>
+                    {console.log(weather)}
+                    <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather for <b>{weather.city_name}</b></Typography>
                     <DigitalClock />
                     <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>
                     <div style = {{float: "right", padding: "5%"}}>
