@@ -6,6 +6,7 @@ import Navbar from "./navbar";
 import Closet from "../pages/closet";
 import Home from "../pages/home";
 import HomeDashboard from "../pages/HomeDashboard";
+import OutfitTemplateForm from "../component/OutfitTemplateForm"
 
 function Header(props) {
   const userId = props.userId;
@@ -24,6 +25,7 @@ function Header(props) {
           element={HomeDashboard({userId: userId})}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
+        <Route path="/outfit-template-form" element={<OutfitTemplateForm/>}/>
       </Routes>
     </>
   );
