@@ -45,8 +45,8 @@ export default function SignIn(props) {
       });
       const json = await response.json();
       console.log(json);
-      if (json.password_correct == "False" && json.user_exist == "False"){
-        alert("Either your password is incorrect or the user doesn't exist. Please try again");
+      if (json.user_exist == "False"){
+        alert("The user doesn't exist. Please try again.");
       }
       if (json.password_correct == "False" && json.user_exist == "True"){
         alert("Your password is incorrect. Please try again.")

@@ -109,9 +109,13 @@ def Login():
             if check_password_hash(user.password_hash, password):
                 password_correct = 'True'
                 return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
+            else:
+                return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
         else:
             # print('Error: that user doesnt exist, try again')
-            return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
+            print("user exists variable")
+            print(user_exists)
+            return {'password_correct': password_correct, 'user_exist': user_exists}
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])
