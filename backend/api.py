@@ -78,9 +78,11 @@ def Return_New_Clothing_Item():
 
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
-    clothing_item.tags = [
-        models.Tag(name=tag_name) for tag_name in item_dict["attributes"]
+    tag_objects = [
+        models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
+        models.Tag(name=tag_name) for tag_name in item_dict['attributes']
     ]
+    clothing_item.tags = tag_objects
 
     # finds the user in the database, based on the inputted user ID
     user = models.User.query.get(user_id)
