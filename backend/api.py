@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, flash, jsonify, request
-from werkzeug.security import generate_password_hash, check_password_hash
 import json
+
+from flask import Flask, flash, jsonify, request
+from werkzeug.security import check_password_hash, generate_password_hash
+
 import models
 import weather
 from models import db
@@ -74,8 +76,11 @@ def Return_New_User():
         user = models.User.query.filter_by(
             email=email).first()  # looks in databse and tries to get the first occurence of this name in it
         if user is None:  # if the user is not in the database
-            # hashed_pw = generate_password_hash(password)  # needed for login
-            newUser = models.User(name=name, password_hash=password, email=email)  # add the id portion here
+            hashed_pw = generate_password_hash(password)  # needed for login
+            print("hashed password")
+            print(hashed_pw)
+            # newUser = models.User(name=name, password_hash=password, email=email)  # add the id portion here
+            newUser = models.User(name=name, password_hash=hashed_pw, email=email)  # add the id portion here
             db.session.add(newUser)
             db.session.commit()
             return {"exists": "false", "userName": newUser.name, "userId": newUser.id}
@@ -92,20 +97,21 @@ def Login():
         print("JSON" + json.dumps(request.get_json()))
         password = request.get_json().get("password")
         email = request.get_json().get("email")
-
         # in line below filter by the email
         user = models.User.query.filter_by(
             email=email).first()  # looks in databse and tries to get the first occurence of this email in it
         if user:  # if the user is  in the database
             user_exists = 'True'
+            print("hashed password, login")
+            print(user.password_hash)
             # check if the password user submits, matches the one in the database:
-            if check_password_hash(user.password_hash,
-                                   password):  # returns true if password of user in database is the same as the one they entered in the form
+            # if password == user.password_hash:  # returns true if password of user in database is the same as the one they entered in the form
+            if check_password_hash(user.password_hash, password):
                 password_correct = 'True'
-                return {'password_correct': password_correct, 'user_exist': user_exists}
+                return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
         else:
             # print('Error: that user doesnt exist, try again')
-            return {'password_correct': password_correct, 'user_exist': user_exists}
+            return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])

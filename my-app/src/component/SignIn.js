@@ -1,8 +1,8 @@
 import * as React from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -12,14 +12,58 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
+export default function SignIn(props) {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+  var user = props.user;
+  var setUser = props.setUser;
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email').toString();
+    const password = data.get('password').toString();
+    const currentUser = {
+      password: password,
+      email: email
+    }
+    try{
+      const response = await fetch("/dummy/userLogin", {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify(currentUser),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      const json = await response.json();
+      console.log(json);
+      if (json.password_correct == "False" && json.user_exist == "False"){
+        alert("Either your password is incorrect or the user doesn't exist. Please try again");
+      }
+      if (json.password_correct == "False" && json.user_exist == "True"){
+        alert("Your password is incorrect. Please try again.")
+      }
+      if (json.password_correct == "True" && json.user_exist == "True"){
+        setUser(json);
+        if (user.userId !== -1){
+          navigate('/homeDashboard');
+        }
+      }
+    } catch (error) {
+      console.log("sup error", error);
+    }
+    // console.log({
+    //   email: data.email,
+    //   password: data.password,
+    // });
   };
 
   return (
