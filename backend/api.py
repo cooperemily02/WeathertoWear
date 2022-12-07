@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from models import db
 import weather
 from w2w_logic.outfit_generator import Item, pick_outfit
@@ -66,6 +66,10 @@ def Return_Forecast(zipcode: str):
     if request.method == "GET":
         return weather.get_forecast(zipcode)
 
+image_dir = "images"
+@app.route('/images/<path:filename>')  
+def send_file(filename):  
+    return send_from_directory(image_dir, filename)
 
 @app.route("/dummy/clothingItem", methods=["POST"])
 def Return_New_Clothing_Item():
@@ -78,16 +82,17 @@ def Return_New_Clothing_Item():
     clothing_item.name = item_dict["name"]
     
     # Proof of concept of accessing and saving files
-    file = request.files['file'] 
+    
     #print(file.filename)
     # TODO put sotorage of file in clothing_item.img setter
-    upload_dir = "images"
-    if not os.path.isdir(upload_dir):
-        os.mkdir(upload_dir)
-    print((str(user_id) + file.filename))
-    print(os.path.join(upload_dir, (str(user_id) + file.filename)))
-    file.save(os.path.join(upload_dir, (str(user_id) + file.filename)))
-    clothing_item.img = (str(user_id) + file.filename)
+    #upload_dir = "images"
+    #if not os.path.isdir(upload_dir):
+    #    os.mkdir(upload_dir)
+    #print((str(user_id) + file.filename))
+    #print(os.path.join(upload_dir, (str(user_id) + file.filename)))
+    #file.save(os.path.join(upload_dir, (str(user_id) + file.filename)))
+    #clothing_item.img = (str(user_id) + file.filename)
+    
     
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
@@ -114,6 +119,8 @@ def Return_New_Clothing_Item():
         closet.user_id = user.id
         clothing_item.closet_id = closet.id
         closet.items = [clothing_item]
+    file = request.files['file'] 
+    clothing_item.setimg(file)
     db.session.add(clothing_item)
     db.session.commit()
 

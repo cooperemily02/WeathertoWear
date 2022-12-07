@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+import os
 db = SQLAlchemy()
 
 
@@ -13,7 +13,7 @@ item_tags = db.Table(
     ),
 )
 
-
+import random
 class ClothingItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -23,7 +23,18 @@ class ClothingItem(db.Model):
     # the 'backref' lets us do the opposite: tag.items
     tags = db.relationship("Tag", secondary=item_tags, backref="items")
     closet_id = db.Column(db.Integer, db.ForeignKey("closet.id"))
-
+        
+    def setimg(self, file):
+        if isinstance(file, str):
+            self.img
+        else:
+            upload_dir = "images"
+            if not os.path.isdir(upload_dir):
+                os.mkdir(upload_dir)
+            r = str(random.randint(0,100000000))
+            file.save(os.path.join(upload_dir, (r + file.filename)))
+            self.img = (r + file.filename)
+    
     # TODO: In 'serialize' return a dictionary matching how the frontend displays items
     @property
     def serialize(self):

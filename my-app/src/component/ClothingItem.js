@@ -12,16 +12,28 @@ import coat from "../static/coat.png"
 function ClothingItem(props) {
   const item = props.item;
   var backgroundColor = "FFFFFF"
-  item.tags.forEach(tag => {
-    if(tag === "top"){img = top}
-    if(tag === "bottom"){img = bottom}
-    if(tag === "shoes"){img = shoes}
-    if(tag === "outerwear"){img = coat}
-    if(tag === "cold"){backgroundColor = "#DAF0F7"}
-    if(tag === "hot"){backgroundColor = "#FFBDAF"}
-    if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
-  })
-
+  const fetchImage = async (imageUrl) => {
+    const res = await fetch(imageUrl);
+    const imageBlob = await res.blob();
+    const imageObjectURL = URL.createObjectURL(imageBlob);
+    img = imageObjectURL;
+  };
+  //console.log(item);
+  //console.log(item.img)
+  if (item.img != undefined){
+    fetchImage('/images/' + item.img)
+  }
+  else{
+    item.tags.forEach(tag => {
+      if(tag === "top"){img = top}
+      if(tag === "bottom"){img = bottom}
+      if(tag === "shoes"){img = shoes}
+      if(tag === "outerwear"){img = coat}
+      if(tag === "cold"){backgroundColor = "#DAF0F7"}
+      if(tag === "hot"){backgroundColor = "#FFBDAF"}
+      if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
+    })
+  }
   function generateDisplayTag(tag, type){
     if (type === 'temp'){
       if(tag === "average_temp"){
