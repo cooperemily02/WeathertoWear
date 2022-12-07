@@ -65,6 +65,17 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(any("top" in item["tags"] for item in resp_data))
         self.assertTrue(any("bottom" in item["tags"] for item in resp_data))
         self.assertTrue(any("shoes" in item["tags"] for item in resp_data))
+    
+
+    def test_get_outfit_templates(self):
+        response = self.app.post(
+            "/outfit-templates",
+            data=json.dumps({"user": 1}),
+            content_type="application/json",
+        )
+        assert(any(
+            "Gym Outfit" in template['name'] for template in response.get_json()
+        ))
 
 
 # running the class for testing, dont delete lines 21-22
