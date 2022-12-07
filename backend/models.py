@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Set
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -31,7 +31,13 @@ class ClothingItem(db.Model):
         for tag in self.tags:
             list_tags.append(tag.name)
 
-        return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id}
+        return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id, "id": self.id}
+    
+    
+    def is_match_for_template(self, item_template: 'ItemTemplate'):
+        return all(
+            required_tag in self.tags for required_tag in item_template.required_tags
+        )
 
 
 class Tag(db.Model):
@@ -52,38 +58,44 @@ class Tag(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     outfit_templates = db.relationship('OutfitTemplate')
-    closets = db.relationship("Closet")
+    closets = db.relationship("Closet", back_populates="user")
 
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
-
+    
     def default_closet(self) -> 'Closet':
         if not self.closets:
             self.closets.append(Closet())
         return self.closets[0]
+    
 
 class Closet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
-    user = db.relationship("User")
+    user = db.relationship("User", back_populates='closets')
     items = db.relationship("ClothingItem", backref="closet")
 
-    #TODO: Update this to only consider 'clean' items once laundry is implemented.
     def find_matching_outfit(self, outfit_template: 'OutfitTemplate') -> List[ClothingItem]:
+        #TODO: Update this to only consider 'clean' items once laundry is implemented.
         available_items = set(self.items)
-        out = []
+        included_items = set()
         for item_template in outfit_template.item_templates:
-            required_tags = item_template.required_tags
-            matching_item = None
-            try:
-                matching_item = next(item for item in available_items if all(req_tag in item.tags for req_tag in required_tags))
-            except StopIteration:
-                raise ValueError(f"No item matches {item_template} in closet{self.id}")
-            out.append(matching_item)
-            available_items.remove(matching_item)
-        return out
+            # Exclude item if it is already included, as we don't want to generate duplicates
+            matching_item = self.find_matching_item(item_template, excluded_items=included_items)
+            included_items.add(matching_item)
+        return included_items
+    
 
+    def find_matching_item(self, item_template: 'ItemTemplate', excluded_items: Set[ClothingItem] = set()):
+        available_items = set(self.items) - excluded_items
+        req_tags = item_template.required_tags
+        match = None
+        try:
+            match = next(item for item in available_items if all(req_tag in item.tags for req_tag in req_tags))
+        except StopIteration:
+            raise ValueError(f"No item matches {item_template} in closet{self.id}")
+        return match
 
 """
 Represents a template/blueprint that an outfit matches by satisfying all the 

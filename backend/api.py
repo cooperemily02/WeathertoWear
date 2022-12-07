@@ -161,5 +161,22 @@ def outfit_templates():
     user = models.User.query.get(data['user'])
     return [template.serialize for template in user.outfit_templates]
 
+"""
+Gets a clean item matching 'item_template' id from the user's closet(s)
+"""
+@app.route("/item-from-template", methods=["POST"])
+def get_item_from_template():
+    data = request.get_json()
+    user: models.User = models.User.query.get(data['user'])
+    item_template = models.ItemTemplate.query.get(data['item_template'])
+    excluded_items = set()
+    if 'excluded_item' in data:
+        excluded_items.add(models.ClothingItem.query.get(data['excluded_item']))
+    match: models.ClothingItem = user.default_closet().find_matching_item(item_template=item_template, excluded_items=excluded_items) 
+    # Add the template_id, this lets the frontend know what template the item matched (for regeneration)
+    item_dict = match.serialize.copy()
+    item_dict['item_template'] = data['item_template']
+    return item_dict
+
 if __name__ == "__main__":
     app.run(debug=True)
