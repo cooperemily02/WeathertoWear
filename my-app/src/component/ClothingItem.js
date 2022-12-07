@@ -3,7 +3,7 @@ import {Stack, TextField, List, ListItem, Card, CardContent, CardActionArea, Car
 import {Delete as DeleteIcon, Edit as EditIcon} from '@mui/icons-material';
 import {capitalize} from '../helpers'
 import Select from 'react-select'
-import img from "../static/W2W.png";
+import w2wLogo from "../static/W2W.png";
 import top from "../static/top.png"
 import bottom from "../static/bottom.png"
 import shoes from "../static/shoes.jpg"
@@ -13,28 +13,15 @@ function ClothingItem(props) {
   const item = props.item;
   var backgroundColor = "FFFFFF"
   //I very buggy proof of concept code. I have no idea why this runs at every keypress/ update
+  const [img, setImg] = useState(w2wLogo)
   const fetchImage = async (imageUrl) => {
     const res = await fetch(imageUrl);
     const imageBlob = await res.blob();
     const imageObjectURL = URL.createObjectURL(imageBlob);
-    img = imageObjectURL;
+    setImg(imageObjectURL);
   };
   //console.log(item);
   //console.log(item.img)
-  if (item.img != undefined){
-    fetchImage('/images/' + item.img)
-  }
-  else{
-    item.tags.forEach(tag => {
-      if(tag === "top"){img = top}
-      if(tag === "bottom"){img = bottom}
-      if(tag === "shoes"){img = shoes}
-      if(tag === "outerwear"){img = coat}
-      if(tag === "cold"){backgroundColor = "#DAF0F7"}
-      if(tag === "hot"){backgroundColor = "#FFBDAF"}
-      if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
-    })
-  }
   function generateDisplayTag(tag, type){
     if (type === 'temp'){
       if(tag === "average_temp"){
@@ -97,6 +84,22 @@ function ClothingItem(props) {
   
   const handleOnClick = () => {
   }
+  useEffect(() => {
+    if (item.img != undefined){
+      fetchImage('/images/' + item.img)
+    }
+    else{
+      item.tags.forEach(tag => {
+        if(tag === "top"){setImg(top)}
+        if(tag === "bottom"){setImg(bottom)}
+        if(tag === "shoes"){setImg(shoes)}
+        if(tag === "outerwear"){setImg(coat)}
+        if(tag === "cold"){backgroundColor = "#DAF0F7"}
+        if(tag === "hot"){backgroundColor = "#FFBDAF"}
+        if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
+      })
+    }
+  }, [])
   return (
     <>
     <Card sx={{ maxWidth: 250, backgroundColor: `${backgroundColor}`}}>
