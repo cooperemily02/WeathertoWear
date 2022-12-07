@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useNavigate, Link } from "react-router-dom";
 import {Stack, TextField, List, ListItem, Card, CardContent, CardActionArea, CardMedia, Button, Modal, Box, Typography, ListItemText} from "@mui/material";
 import {Delete as DeleteIcon, Edit as EditIcon} from '@mui/icons-material';
 import {capitalize} from '../helpers'
@@ -11,6 +12,10 @@ import coat from "../static/coat.png"
 
 function ClothingItem(props) {
   const item = props.item;
+  console.log(item);
+  const userId = props.userId
+  console.log(item);
+  const navigate = useNavigate()
   var backgroundColor = "FFFFFF"
   item.tags.forEach(tag => {
     if(tag === "top"){img = top}
@@ -54,6 +59,29 @@ function ClothingItem(props) {
   };
 
   const [addItemModal, openAddItem] = useState(false);
+
+  const handleDelete = async (item) => {
+    const deleteItem = "true";
+    const selectedItem = {user: userId, item: item, deleteItem: deleteItem};
+    try{
+      const response = await fetch('/dummy/clothingItem', {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify(selectedItem),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      const json = await response.json();
+      console.log(json);
+      if (json.deleted == "true"){
+        alert("Clothing item has been deleted.");
+      }
+    } catch (error){
+      console.log("error", error);
+    }     
+  }
+  
   const handleAddItem = () =>{
     handleClose()
     openAddItem(true)
@@ -139,8 +167,8 @@ function ClothingItem(props) {
           </Stack>
         </Stack>
         <Stack direction = "row" spacing = {1}>
-          <Button variant="outlined" color = "error" fullWidth startIcon={<DeleteIcon/>}>
-                Delete
+          <Button variant="outlined" color = "error" fullWidth startIcon={<DeleteIcon/>} onClick = {() => handleDelete(item)}>
+            Delete
           </Button>
           <Button variant="outlined" fullWidth startIcon={<EditIcon/>} onClick = {handleAddItem}>
                 Edit
