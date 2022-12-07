@@ -31,7 +31,8 @@ class ClothingItem(db.Model):
             upload_dir = "images"
             if not os.path.isdir(upload_dir):
                 os.mkdir(upload_dir)
-            r = str(random.randint(0,100000000))
+            #random So I can keep uploading the same image for testing
+            r = str(random.randint(0, 100000000))
             file.save(os.path.join(upload_dir, (r + file.filename)))
             self.img = (r + file.filename)
     

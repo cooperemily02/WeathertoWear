@@ -81,19 +81,6 @@ def Return_New_Clothing_Item():
     clothing_item = models.ClothingItem()
     clothing_item.name = item_dict["name"]
     
-    # Proof of concept of accessing and saving files
-    
-    #print(file.filename)
-    # TODO put sotorage of file in clothing_item.img setter
-    #upload_dir = "images"
-    #if not os.path.isdir(upload_dir):
-    #    os.mkdir(upload_dir)
-    #print((str(user_id) + file.filename))
-    #print(os.path.join(upload_dir, (str(user_id) + file.filename)))
-    #file.save(os.path.join(upload_dir, (str(user_id) + file.filename)))
-    #clothing_item.img = (str(user_id) + file.filename)
-    
-    
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
     clothing_item.tags = [
@@ -119,8 +106,10 @@ def Return_New_Clothing_Item():
         closet.user_id = user.id
         clothing_item.closet_id = closet.id
         closet.items = [clothing_item]
+        
     file = request.files['file'] 
     clothing_item.setimg(file)
+    
     db.session.add(clothing_item)
     db.session.commit()
 

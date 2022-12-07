@@ -12,6 +12,7 @@ import coat from "../static/coat.png"
 function ClothingItem(props) {
   const item = props.item;
   var backgroundColor = "FFFFFF"
+  //I very buggy proof of concept code. I have no idea why this runs at every keypress/ update
   const fetchImage = async (imageUrl) => {
     const res = await fetch(imageUrl);
     const imageBlob = await res.blob();
