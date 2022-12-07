@@ -126,7 +126,7 @@ function ClothingItem(props) {
         spacing={10}
           sx={{ flexWrap: 'wrap', gap: 1 }}
           >
-          <CardMedia component="img" image={img} alt={item.name} sx = {{padding: "7px", width: "50%"}}/>
+          <CardMedia component="img" image={img} alt={item.name} sx = {{padding: "7px", width: "40%"}}/>
           <Stack direction = "column" sx = {{textAlign: "left"}}>
             <Typography variant="h5" sx={{fontFamily: 'Caudex'}} > For Weather: </Typography>
             <List>
