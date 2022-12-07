@@ -9,6 +9,7 @@ import shoes from "../static/shoes.jpg";
 import coat from "../static/coat.png";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
+import postData from "../utils"
 
 export const Outfit = (props) => {
     const outfit = props.outfit
@@ -37,6 +38,13 @@ export const Outfit = (props) => {
         console.log('Trying to regen item:', excluded_item, 
             'with template: ', item_template
         )
+        //TODO: regen the item (need to find a way to modify the outfit,
+        // and to get the user id)
+
+        // new_item = postData('item-from-template', {
+        //     user: 1, item_template: item_template, excluded_item: excluded_item
+        // })
+        //TODO: replace old with new_item
     }
 
     if (outfit.length == 0 || props.fetchedOutfitData.hasOutfit == false){
