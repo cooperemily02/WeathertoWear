@@ -56,16 +56,9 @@ def Return_Laundry():
 @app.route("/dummy/itemSelected", methods=["PUT"])
 def Item_Selected():
     # function to update an item's wears given that the user has selected it from their daily outfits 
-    user_id = request.get_json().get("user")
     item_dict = request.get_json().get("item")
-    user = models.User.query.get(user_id)
+    selected_item = models.ClothingItem.query.get(item_dict['id'])
 
-    items = user.get_all_items()
-    selected_item = items[0]
-    for item in items:
-        if item.name == item_dict["name"]:
-            selected_item = item
-            break
     selected_item.times_worn += 1
 
     db.session.commit()
@@ -74,17 +67,8 @@ def Item_Selected():
 @app.route("/dummy/itemWashed", methods=["PUT"])
 def Item_Washed():
     # if a user washes an item in laundry
-    user_id = request.get_json().get("user")
     item_dict = request.get_json().get("item")
-    user = models.User.query.get(user_id)
-
-    # this section of code re-used multiple times, fix later 
-    items = user.get_all_items()
-    selected_item = items[0]
-    for item in items:
-        if item.name == item_dict["name"]:
-            selected_item = item
-            break
+    selected_item = models.ClothingItem.query.get(item_dict['id'])
 
     selected_item.times_worn = 0
     db.session.commit()
@@ -109,16 +93,9 @@ def Wash_Laundry():
 
 @app.route("/dummy/sendToLaundry", methods=["PUT"])
 def Send_Laundry():
-    user_id = request.get_json().get("user")
     item_dict = request.get_json().get("item")
-    user = models.User.query.get(user_id)
-    items = user.get_all_items()
-    selected_item = items[0]
-    for item in items:
-        if item.name == item_dict["name"]:
-            selected_item = item
-            break
-
+    selected_item = models.ClothingItem.query.get(item_dict['id'])
+    
     selected_item.times_worn = weather.sys.maxsize
     db.session.commit()
 

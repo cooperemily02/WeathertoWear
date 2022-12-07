@@ -33,7 +33,7 @@ class ClothingItem(db.Model):
         for tag in self.tags:
             list_tags.append(tag.name)
 
-        return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id}
+        return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id, "id": self.id}
 
 
 class Tag(db.Model):
