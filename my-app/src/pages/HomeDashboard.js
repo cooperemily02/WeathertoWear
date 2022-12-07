@@ -41,7 +41,6 @@ export const HomeDashboard = (props) => {
 
       const handleButtonClick = () => {
         setZipcode(enteredZipcode)
-        console.log(zipcode)
         fetchGeneratedOutfit()
         fetchWeatherData()
       }
@@ -62,7 +61,6 @@ export const HomeDashboard = (props) => {
         return (
         <>
             <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, User {props.userId}</Typography>
-            {zipcode == -1 && 
               <>
                 <div style = {{justifyContent: "center", alignItems: "center", textAlign: "center"}}>
                   <TextField id="outlined-basic" 
@@ -73,12 +71,12 @@ export const HomeDashboard = (props) => {
                   <Button variant="contained" onClick = {handleButtonClick} sx={{display: "block", justifyContent:"center", alignItems: "center", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Fetch Weather & Outfits!</Button>
                 </div>
               </>
-            }
+            
             <div>
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
               
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
-              <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData}/>
+              <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
                 <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>
