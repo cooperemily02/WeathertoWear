@@ -16,9 +16,22 @@ function ClothingItem(props) {
   const [img, setImg] = useState(w2wLogo)
   const fetchImage = async (imageUrl) => {
     const res = await fetch(imageUrl);
+    const res = await fetch(imageUrl)
     const imageBlob = await res.blob();
     const imageObjectURL = URL.createObjectURL(imageBlob);
+    if(res.ok){
     setImg(imageObjectURL);
+    }else{
+      item.tags.forEach(tag => {
+        if(tag === "top"){setImg(top)}
+        if(tag === "bottom"){setImg(bottom)}
+        if(tag === "shoes"){setImg(shoes)}
+        if(tag === "outerwear"){setImg(coat)}
+        if(tag === "cold"){backgroundColor = "#DAF0F7"}
+        if(tag === "hot"){backgroundColor = "#FFBDAF"}
+        if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
+      })
+    }
   };
   //console.log(item);
   //console.log(item.img)
@@ -85,20 +98,7 @@ function ClothingItem(props) {
   const handleOnClick = () => {
   }
   useEffect(() => {
-    if (item.img != undefined){
       fetchImage('/images/' + item.img)
-    }
-    else{
-      item.tags.forEach(tag => {
-        if(tag === "top"){setImg(top)}
-        if(tag === "bottom"){setImg(bottom)}
-        if(tag === "shoes"){setImg(shoes)}
-        if(tag === "outerwear"){setImg(coat)}
-        if(tag === "cold"){backgroundColor = "#DAF0F7"}
-        if(tag === "hot"){backgroundColor = "#FFBDAF"}
-        if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
-      })
-    }
   }, [])
   return (
     <>
