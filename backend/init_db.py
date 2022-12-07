@@ -35,10 +35,8 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     gym_bottom = models.ClothingItem(name="Nike shorts", tags=[bottom, gym_tag])
 
     # add all to user1's closet
-    closet = models.Closet(
-        user=user1,
-        items=[tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom],
-    )
+    closet = user1.default_closet()
+    closet.items = [tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom]
 
     # Define an outfit template:
     gym_outfit_template = models.OutfitTemplate(name='Gym Outfit')

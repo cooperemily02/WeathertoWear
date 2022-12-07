@@ -58,6 +58,10 @@ class User(db.Model):
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
 
+    def default_closet(self) -> 'Closet':
+        if not self.closets:
+            self.closets.append(Closet())
+        return self.closets[0]
 
 class Closet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
