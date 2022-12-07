@@ -103,8 +103,9 @@ def Wash_Laundry():
             item.times_worn = 0
 
     db.session.commit()
-    # this just returns all clothing, modify?
-    return user.get_all_items()
+    # # this just returns all clothing, modify?
+    # return user.get_all_items()
+    return {}
 
 @app.route("/dummy/sendToLaundry", methods=["PUT"])
 def Send_Laundry():

@@ -152,9 +152,10 @@ function ClothingItem(props) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-      <Button startIcon={<LocalLaundryServiceIcon/>} onClick = {sendItemToLaundry} sx = {{float: "left", color: "blue", justifyContent: "center"}}/>
-
-      <Typography variant="h3" sx={{fontFamily: 'Caudex', margin: "5%"}} > <b>{capitalize(item.name)}</b> </Typography>
+      <div display = "block">
+        <Typography variant="h3" sx={{fontFamily: 'Caudex', marginTop: "5%"}} > <b>{capitalize(item.name)}</b> </Typography>
+        <Button startIcon={<LocalLaundryServiceIcon/>} onClick = {sendItemToLaundry} sx = {{color: "blue", justifyContent: "center", marginBottom: "5%"}}>Put in Laundry Bin</Button>
+      </div>
         <Stack 
         direction="row"
         spacing={10}

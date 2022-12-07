@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from "react";
-import { Paper, Stack, Typography, Box, Grid, Button, FormControl, InputLabel, MenuItem } from "@mui/material";
+import {Collapse, Alert, IconButton, Paper, Stack, Typography, Box, Grid, Button, FormControl, InputLabel, MenuItem } from "@mui/material";
 import ClothingItem from "../component/ClothingItem";
 import Select from 'react-select'
 import { useNavigate, useLocation } from "react-router-dom";
-import DryCleaningIcon from '@mui/icons-material/DryCleaning';
+import { DryCleaning as DryCleaningIcon, Close as CloseIcon}from '@mui/icons-material';
 
 
 
 const Laundry = (props) => {
   const userId = props.userId
-    const [itemTypeToShow, setItemTypeToShow] = useState('Tops')
+    const [itemTypeToShow, setItemTypeToShow] = useState('All')
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [severity, setSeverity] = useState(undefined);
     const navigate = useNavigate()
     const location = useLocation()
     const handleChange = (event) => {
@@ -56,6 +58,28 @@ const Laundry = (props) => {
         console.log("error", error);
       }
     };
+    const washLaundry = async () => {
+      try {
+        const response = await fetch("/dummy/washLaundry", {
+          method: "PUT",
+          credentials: "include",
+          body: JSON.stringify({
+            user: userId,
+           }),
+           headers: {
+             'Content-type': 'application/json; charset=UTF-8',
+           },
+        });
+        const json = await response.json();
+        setSortedClothingItems({Tops: [], Bottoms: [], Shoes: [], Outerwear: [], Other: [], All: []})
+        setSeverity('success')
+        setOpenAlert(true)
+      } catch (error) {
+        setSeverity('error')
+        setOpenAlert(true)
+        console.log("error", error);
+      }
+    };
     useEffect(() => {
       if(userId===-1){
         navigate('/')
@@ -66,9 +90,29 @@ const Laundry = (props) => {
   }, [userId, itemTypeToShow, location]);
     return (
         <>
+        <Collapse in={openAlert}>
+        <Alert
+          severity = {severity}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpenAlert(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {severity == 'success' ? "Your Laundry Is Washed and Ready!" : "Couldn't wash laundry. Try again later."}
+        </Alert>
+        </Collapse>
         <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > User {props.userId}'s Laundry Bin </Typography>     
         <Paper elevation = {6} style = {{backgroundColor: "#f5f5f5", margin: "5px", width: "75%", display: "block", marginInline: "auto", justifyContent: "center", alignItems: "center", textAlign: "center", paddingBottom: "5%", paddingInline: "10%"}}>
-        <Button startIcon={<DryCleaningIcon/>} onClick = {{}} sx = {{color: "blue", justifyContent: "center", margin: "5%"}}>
+        <Button startIcon={<DryCleaningIcon/>} onClick = {washLaundry} sx = {{color: "blue", justifyContent: "center", margin: "5%"}}>
           Do Laundry (send all items to closet)
         </Button>
         <Box sx = {{
@@ -104,7 +148,6 @@ const Laundry = (props) => {
           </div>
         </Box>
       </Paper>
-
         </>
     )
 }
