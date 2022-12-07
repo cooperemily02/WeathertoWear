@@ -91,6 +91,21 @@ def Item_Washed():
     
     return ({"timesWorn": selected_item.times_worn})
 
+@app.route("/dummy/washLaundry", methods=["PUT"])
+def Wash_Laundry():
+    # washed all items in laundry 
+    user_id = request.get_json().get("user")
+    user = models.User.query.get(user_id)
+
+    items = user.get_all_items()
+    for item in items:
+        if item.times_worn >= item.max_wears:
+            item.times_worn = 0
+
+    db.session.commit()
+    # this just returns all clothing, modify?
+    return user.get_all_items()
+
 @app.route("/dummy/sendToLaundry", methods=["PUT"])
 def Send_Laundry():
     user_id = request.get_json().get("user")
