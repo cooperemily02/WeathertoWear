@@ -7,6 +7,7 @@ import Closet from "../pages/closet";
 import Home from "../pages/home";
 import HomeDashboard from "../pages/HomeDashboard";
 import OutfitTemplateForm from "../component/OutfitTemplateForm"
+import Laundry from "../pages/laundry";
 
 function Header(props) {
   const userId = props.userId;
@@ -23,6 +24,10 @@ function Header(props) {
         <Route
           path="/homeDashboard"
           element={HomeDashboard({userId: userId})}
+        />
+        <Route
+          path="/laundry"
+          element={Laundry({userId: userId})}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
         <Route path="/outfit-template-form" element={<OutfitTemplateForm/>}/>
