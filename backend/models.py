@@ -37,6 +37,17 @@ class ClothingItem(db.Model):
 class Tag(db.Model):
     name = db.Column(db.String(50), nullable=False, primary_key=True)
 
+    """
+    If the name is not an existing tag, creates & writes a new one.
+    Returns the tag object with the given name
+    """
+    def get_or_create(name):
+        if not db.session.query(Tag).get(name):
+            tag_object = Tag(name=name)
+            db.session.add(tag_object)
+            db.session.commit()
+        return Tag.query.get(name)
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
