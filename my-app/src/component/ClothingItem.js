@@ -15,7 +15,7 @@ function ClothingItem(props) {
   const userId = props.userId
   const parent = props.parent
   var backgroundColor = "FFFFFF" 
-  
+
   item.tags.forEach(tag => {
     if(tag === "top"){img = top}
     if(tag === "bottom"){img = bottom}
@@ -116,6 +116,8 @@ function ClothingItem(props) {
       console.log(json);
       if (json.deleted == "true"){
         alert("Clothing item has been deleted.");
+        props.parent.updateFunction(true)
+        handleClose()
       }
     } catch (error){
       console.log("error", error);
