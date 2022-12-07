@@ -79,8 +79,7 @@ def Return_New_Clothing_Item():
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
     tag_objects = [
-        models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
-        models.Tag(name=tag_name) for tag_name in item_dict['attributes']
+        models.Tag.get_or_create(tag_name) for tag_name in item_dict['attributes']
     ]
     clothing_item.tags = tag_objects
 
@@ -136,6 +135,7 @@ def generate_outfit():
 
 @app.route("/outfit-template", methods=["POST"])
 def outfit_template():
+    breakpoint()
     data = request.get_json()
     #TODO: get user_id instead of hardcoding '1'
     outfit_template = models.OutfitTemplate(
@@ -143,7 +143,7 @@ def outfit_template():
         user_id=1,
         item_templates=[
             models.ItemTemplate(name=template['name'], required_tags=[
-                models.Tag(name=tag_name) for tag_name in template['tags']
+                models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']
             ])
             for template in data['item-templates']
         ]
