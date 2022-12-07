@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {Stack, TextField, List, ListItem, Card, CardContent, CardActionArea, CardMedia, Button, Modal, Box, Typography, ListItemText} from "@mui/material";
-import {Delete as DeleteIcon, Edit as EditIcon} from '@mui/icons-material';
+import {Delete as DeleteIcon, Edit as EditIcon, LocalLaundryService as LocalLaundryServiceIcon} from '@mui/icons-material';
 import {capitalize} from '../helpers'
 import Select from 'react-select'
 import img from "../static/W2W.png";
@@ -12,11 +12,10 @@ import coat from "../static/coat.png"
 
 function ClothingItem(props) {
   const item = props.item;
-  console.log(item);
   const userId = props.userId
-  console.log(item);
-  const navigate = useNavigate()
-  var backgroundColor = "FFFFFF"
+  const parent = props.parent
+  var backgroundColor = "FFFFFF" 
+  
   item.tags.forEach(tag => {
     if(tag === "top"){img = top}
     if(tag === "bottom"){img = bottom}
@@ -43,6 +42,47 @@ function ClothingItem(props) {
     }
 
     //Can be edited to include other tags for display
+  }
+
+  const sendItemToLaundry = async () => {
+    try {
+      const response = await fetch("/dummy/sendToLaundry", {
+        method: "PUT",
+        credentials: "include",
+        body: JSON.stringify({
+          user: userId,
+          item: item
+         }),
+         headers: {
+           'Content-type': 'application/json; charset=UTF-8',
+         },
+      });
+      const json = await response.json();
+      props.parent.updateFunction(true)
+      handleClose()
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+
+  const sendItemToCloset = async () => {
+    try {
+      const response = await fetch("/dummy/itemWashed", {
+        method: "PUT",
+        credentials: "include",
+        body: JSON.stringify({
+          user: userId,
+          item: item
+         }),
+         headers: {
+           'Content-type': 'application/json; charset=UTF-8',
+         },
+      });
+      const json = await response.json();
+      parent.updateFunction(true)
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   const style = {
@@ -112,17 +152,22 @@ function ClothingItem(props) {
   
   const handleOnClick = () => {
   }
+
+  useEffect(()=>{
+
+  }, [props.parent.updateVariable])
   return (
     <>
+    {
     <Card sx={{ maxWidth: 250, backgroundColor: `${backgroundColor}`}}>
-      <CardActionArea onClick = {handleOpen}>
+      <CardActionArea onClick = {parent.type == "closet" && handleOpen || parent.type =="laundry" && sendItemToCloset}>
         <CardMedia component="img" height="100%" width="100%" image={img} alt={item.name} />
         <CardContent>
         <Typography variant="h5" sx={{fontFamily: 'Caudex'}} > <b>{capitalize(item.name)}</b> </Typography>
         </CardContent>
       </CardActionArea>
-    </Card>
-    
+    </Card>    
+    }
 
     <div>
     <Modal
@@ -132,7 +177,10 @@ function ClothingItem(props) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-      <Typography variant="h3" sx={{fontFamily: 'Caudex', margin: "5%"}} > <b>{capitalize(item.name)}</b> </Typography>
+      <div display = "block">
+        <Typography variant="h3" sx={{fontFamily: 'Caudex', marginTop: "5%"}} > <b>{capitalize(item.name)}</b> </Typography>
+        <Button startIcon={<LocalLaundryServiceIcon/>} onClick = {sendItemToLaundry} sx = {{color: "blue", justifyContent: "center", marginBottom: "5%"}}>Put in Laundry Bin</Button>
+      </div>
         <Stack 
         direction="row"
         spacing={10}

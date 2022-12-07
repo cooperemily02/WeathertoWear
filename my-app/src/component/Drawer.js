@@ -43,7 +43,6 @@ function DrawerComponent(props) {
           </ListItem>
           {/* <ListItem onClick={() => setOpenDrawer(false)}>
             <ListItemText>
-              <Link to="/dailyoutfits" class={classes.link}>
                 Daily Outfits
               </Link>
             </ListItemText>
@@ -54,6 +53,13 @@ function DrawerComponent(props) {
             <ListItemText>
               <Link to="/closet" class={classes.link}>
                 Closet
+              </Link>
+            </ListItemText>
+          </ListItem>
+          <ListItem onClick={() => setOpenDrawer(false)}>
+            <ListItemText>
+              <Link to="/laundry" class={classes.link}>
+                Laundry Bin
               </Link>
             </ListItemText>
           </ListItem>
