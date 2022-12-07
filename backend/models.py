@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+import sys
 db = SQLAlchemy()
 
 
@@ -23,14 +23,17 @@ class ClothingItem(db.Model):
     tags = db.relationship("Tag", secondary=item_tags, backref="items")
     closet_id = db.Column(db.Integer, db.ForeignKey("closet.id"))
 
-    # TODO: In 'serialize' return a dictionary matching how the frontend displays items
+    # the values become default only once committed to the database (not upon instantiation)
+    times_worn = db.Column(db.Integer, default=0) 
+    max_wears = db.Column(db.Integer, default=1)
+
     @property
     def serialize(self):
         list_tags = []
         for tag in self.tags:
             list_tags.append(tag.name)
 
-        return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id}
+        return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id, "id": self.id}
 
 
 class Tag(db.Model):
@@ -43,6 +46,9 @@ class User(db.Model):
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
+    
+    def get_laundry_items(self):
+        return [item.times_worn < item.max_wears for closet in self.closets for item in closet.items]
 
 
 class Closet(db.Model):
