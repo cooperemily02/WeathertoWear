@@ -52,6 +52,7 @@ class Tag(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     outfit_templates = db.relationship('OutfitTemplate')
+    closets = db.relationship("closets")
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
@@ -60,7 +61,7 @@ class User(db.Model):
 class Closet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
-    user = db.relationship("User", backref="closets")
+    user = db.relationship("User")
     items = db.relationship("ClothingItem", backref="closet")
 
     #TODO: Update this to only consider 'clean' items once laundry is implemented.
