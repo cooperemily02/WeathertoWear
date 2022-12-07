@@ -15,7 +15,6 @@ function ClothingItem(props) {
   //I very buggy proof of concept code. I have no idea why this runs at every keypress/ update
   const [img, setImg] = useState(w2wLogo)
   const fetchImage = async (imageUrl) => {
-    const res = await fetch(imageUrl);
     const res = await fetch(imageUrl)
     const imageBlob = await res.blob();
     const imageObjectURL = URL.createObjectURL(imageBlob);
