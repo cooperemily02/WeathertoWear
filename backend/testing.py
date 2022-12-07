@@ -59,14 +59,10 @@ class MyTestCase(unittest.TestCase):
             content_type="application/json",
         )
 
-        # TODO: re-design test
-        # For now, regardless of the weather, an outfit includes:
-        # top + bottom + shoes
         resp_data = response.get_json()
-        self.assertTrue(any("top" in item["tags"] for item in resp_data))
-        self.assertTrue(any("bottom" in item["tags"] for item in resp_data))
-        self.assertTrue(any("shoes" in item["tags"] for item in resp_data))
-    
+        #TODO: add test checks that each item satisfies the 'item_template' with it (idk how to test the DB)
+
+        assert(response.status_code == 200)
 
     def test_get_outfit_templates(self):
         response = self.app.post(

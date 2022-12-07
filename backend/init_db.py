@@ -46,6 +46,24 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     ])
     user1.outfit_templates.append(gym_outfit_template)
 
+    # Basic template:
+    basic_template = models.OutfitTemplate(name='Basic Outfit')
+    basic_template.item_templates.extend([
+        models.ItemTemplate(name="Basic Top", required_tags=[top]),
+        models.ItemTemplate(name="Basic Bottom", required_tags=[bottom]),
+        models.ItemTemplate(name="Basic Bottom", required_tags=[shoes])
+    ])
+    user1.outfit_templates.append(basic_template)
+
+    # Rain template:
+    rain_template = models.OutfitTemplate(name='rain Outfit')
+    rain_template.item_templates.extend([
+        models.ItemTemplate(name="Rain Top", required_tags=[top, rainy]),
+        models.ItemTemplate(name="Rain Bottom", required_tags=[bottom, rainy]),
+        models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy])
+    ])
+    user1.outfit_templates.append(rain_template)
+
     # write to db
     db.session.add_all([closet, user1])
     db.session.commit()  # This writes the items to the database

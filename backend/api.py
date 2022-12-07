@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request
 from models import db
 import weather
 from w2w_logic.outfit_generator import Item, pick_outfit
+import helpers
 
 
 app = Flask(__name__, static_folder="./build", static_url_path="/")
@@ -113,24 +114,20 @@ def generate_outfit():
     data = request.get_json()
     zipcode, user_id = data["zipcode"], data["user"]
 
-    user = models.User.query.get(user_id)
+    user: models.User = models.User.query.get(user_id)
+    closet = user.default_closet()
     items = user.get_all_items()
     weather_str = weather.get_forecast(zipcode)["weather0"]
+    #TODO: refactoring. (right now this helper method uses defaults/hardcode to work under flexible conditons)
+    outfit_template_id = helpers.get_default_template_id_from_weather_str(weather_str)
+    outfit_template = models.OutfitTemplate.query.get(outfit_template_id)
 
-    # This is used to map/re-map the logic function's input/output type
-    # from/to the ORM models
-    logic_item_to_orm = {
-        Item(
-            name=model_item.name, attributes=[attr.name for attr in model_item.tags]
-        ): model_item
-        for model_item in items
-    }
-    logic_outfit = pick_outfit(
-        items=set(logic_item_to_orm.keys()), weather_str=weather_str
-    )
-    orm_outfit = [logic_item_to_orm[logic_item] for logic_item in logic_outfit]
+    items, item_to_its_template = closet.find_matching_outfit(outfit_template)
+    # Adding the template id's for future use:
+    return [
+        item.serialize_with_template_id(item_to_its_template[item]) for item in items
+    ]
 
-    return [orm_item.serialize for orm_item in orm_outfit]
 
 
 @app.route("/outfit-template", methods=["POST"])

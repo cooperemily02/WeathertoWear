@@ -1,4 +1,4 @@
-from typing import List, Set
+from typing import List, Set, Tuple
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -32,6 +32,11 @@ class ClothingItem(db.Model):
             list_tags.append(tag.name)
 
         return {"name": self.name, "tags": list_tags, "closet_id": self.closet_id, "id": self.id}
+    
+    def serialize_with_template_id(self, template: 'ItemTemplate'):
+        out = self.serialize.copy()
+        out['item_template'] = template.id
+        return out
     
     
     def is_match_for_template(self, item_template: 'ItemTemplate'):
@@ -76,15 +81,18 @@ class Closet(db.Model):
     user = db.relationship("User", back_populates='closets')
     items = db.relationship("ClothingItem", backref="closet")
 
-    def find_matching_outfit(self, outfit_template: 'OutfitTemplate') -> List[ClothingItem]:
+    def find_matching_outfit(self, outfit_template: 'OutfitTemplate') -> Tuple[List[ClothingItem], dict[ClothingItem, 'ItemTemplate']]:
         #TODO: Update this to only consider 'clean' items once laundry is implemented.
         available_items = set(self.items)
+        item_to_template_it_matches: dict[ClothingItem, 'ItemTemplate'] = {}
         included_items = set()
         for item_template in outfit_template.item_templates:
             # Exclude item if it is already included, as we don't want to generate duplicates
             matching_item = self.find_matching_item(item_template, excluded_items=included_items)
             included_items.add(matching_item)
-        return included_items
+            item_to_template_it_matches[matching_item] = item_template
+        # Tuple so we remember which item matches which item_template
+        return (included_items, item_to_template_it_matches)
     
 
     def find_matching_item(self, item_template: 'ItemTemplate', excluded_items: Set[ClothingItem] = set()):
