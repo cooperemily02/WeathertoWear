@@ -18,10 +18,9 @@ const schema = {
     "item-template": {
       "type": "object",
       "properties": {
-        "name": {"type": "string"},
         "tags": {"type": "array", "items": {"type": "string"}}
       },
-      "required": ["name", "tags"]
+      "required": ["tags"]
     }
   }
 }

@@ -104,6 +104,7 @@ const Closet = (props) => {
           handleCloseModal()
           setSeverity('success')
           setOpenAlert(true)
+          setImageOfItem(null)
           // Handle data
        })
        .catch((err) => {
