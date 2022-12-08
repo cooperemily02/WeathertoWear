@@ -38,7 +38,9 @@ export const HomeDashboard = (props) => {
             setFetchedOutfitData({hasOutfit: true})
           } catch (error) {
             setFetchedOutfitData({hasOutfit: false, fetchError: true})
-            console.log("error", error);
+            //handle error message - not working at the moment
+            console.log(error)
+            
           }
         };
       const handleSetZipcode = (zipCode) => {
@@ -101,12 +103,16 @@ export const HomeDashboard = (props) => {
             
             <div>
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
-              
+            {console.log(fetchedOutfitData)}
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
               <Outfit userId = {userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece} onTemplateChange={onTemplateChange} templateOptions={templateOptions}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
+            <>
+                
                 <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>
+            </>
+              
             }
             </div> 
         </>

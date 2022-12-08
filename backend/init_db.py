@@ -11,6 +11,9 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     # tags i.e attributes
     snowy = models.Tag(name="snowy")
     rainy = models.Tag(name="rainy")
+    hot = models.Tag(name = "hot")
+    cold = models.Tag(name = "cold")
+    average = models.Tag(name = "average_temp")
     cotton = models.Tag(name="cotton")
     shoes = models.Tag(name="shoes")
     top = models.Tag(name="top")
@@ -48,7 +51,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     closet = user1.default_closet()
     closet.items = [jeans, sneakers, blue_rain_coat, boots, green_sweats, long_sleeve, gym_top, gym_bottom, red_coat]
 
-    # Define an outfit template:
+    # Define an outfit template, template 1:
     gym_outfit_template = models.OutfitTemplate(name='Gym Outfit')
     gym_outfit_template.item_templates.extend([
         models.ItemTemplate(required_tags=[top, gym_tag]),
@@ -56,7 +59,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     ])
     user1.outfit_templates.append(gym_outfit_template)
 
-    # Basic template:
+    # Basic template, template 2:
     basic_template = models.OutfitTemplate(name='Basic Outfit')
     basic_template.item_templates.extend([
         models.ItemTemplate(required_tags=[top]),
@@ -65,7 +68,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     ])
     user1.outfit_templates.append(basic_template)
 
-    # Rain template:
+    # Rain template, template 3:
     rain_template = models.OutfitTemplate(name='Rain Outfit')
     rain_template.item_templates.extend([
         models.ItemTemplate(required_tags=[top, rainy]),
@@ -74,6 +77,43 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(required_tags=[outerwear, rainy])
     ])
     user1.outfit_templates.append(rain_template)
+
+    # snow template, template 4:
+    snow_template = models.OutfitTemplate(name='Snow Outfit')
+    snow_template.item_templates.extend([
+        models.ItemTemplate(required_tags=[top, snowy]),
+        models.ItemTemplate(required_tags=[bottom, snowy]),
+        models.ItemTemplate(required_tags=[shoes, snowy]),
+        models.ItemTemplate(required_tags=[outerwear, snowy])
+    ])
+    user1.outfit_templates.append(snow_template)
+
+     # hot template, template 5:
+    hot_template = models.OutfitTemplate(name='Hot Outfit')
+    hot_template.item_templates.extend([
+        models.ItemTemplate(required_tags=[top, hot]),
+        models.ItemTemplate(required_tags=[bottom, hot]),
+        models.ItemTemplate(required_tags=[shoes, hot]),
+    ])
+    user1.outfit_templates.append(hot_template)
+
+     #cold template, template 6:
+    cold_template = models.OutfitTemplate(name='Cold Outfit')
+    cold_template.item_templates.extend([
+        models.ItemTemplate(required_tags=[top, cold]),
+        models.ItemTemplate(required_tags=[bottom, cold]),
+        models.ItemTemplate(required_tags=[shoes, cold]),
+    ])
+    user1.outfit_templates.append(cold_template)
+
+    #average template, template 7, not sure whether to use this:
+    avg_template = models.OutfitTemplate(name='Average Outfit')
+    avg_template.item_templates.extend([
+        models.ItemTemplate(required_tags=[top, average]),
+        models.ItemTemplate(required_tags=[bottom, average]),
+        models.ItemTemplate(required_tags=[shoes, average]),
+    ])
+    user1.outfit_templates.append(avg_template)
 
     # write to db
     db.session.add_all([closet, user1])
