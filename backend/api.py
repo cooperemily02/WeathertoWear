@@ -257,7 +257,12 @@ def generate_outfit():
     weather_str = weather.get_forecast(zipcode)["weather0"]
     #TODO: refactoring. (right now this helper method uses defaults/hardcode to work under flexible conditons)
     outfit_template_id = helpers.get_default_template_id_from_weather_str(weather_str)
+    # Use the given template_id if it exists:
+    if 'template_id' in data and data['template_id'] != -1:
+        outfit_template_id = data.get('template_id', outfit_template_id)
+
     outfit_template = models.OutfitTemplate.query.get(outfit_template_id)
+
 
     items, item_to_its_template = closet.find_matching_outfit(outfit_template)
     # Adding the template id's for future use:
@@ -275,7 +280,7 @@ def outfit_template():
         name=data['name'],
         user_id=1,
         item_templates=[
-            models.ItemTemplate(name=template['name'], required_tags=[
+            models.ItemTemplate(required_tags=[
                 models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']
             ])
             for template in data['item-templates']

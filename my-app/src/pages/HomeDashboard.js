@@ -3,6 +3,7 @@ import Outfit from "../component/Outfit";
 import { Typography, TextField, Button } from "@mui/material";
 import WeatherDashboard from '../component/WeatherDashboard'
 import postData from "../utils";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 
 export const HomeDashboard = (props) => {
@@ -12,18 +13,22 @@ export const HomeDashboard = (props) => {
     const [weather, setWeather] = useState(false)
     const userId = props.userId
     let [outfit, setOutfit] = useState([]);
+    const [templateOptions, setTemplateOptions] = useState([])
+    const [templateId, setTemplateId] = useState(-1)
 
     //console.log(outfit);
     //console.log(zipcode);
     const fetchGeneratedOutfit = async () => {
+      const body = JSON.stringify({
+        user: userId,
+        zipcode: enteredZipcode,
+        template_id: templateId
+      })
         try {
             const response = await fetch("/gen-outfit", {
               method: "POST",
               credentials: "include",
-              body: JSON.stringify({
-                user: userId,
-                zipcode: enteredZipcode
-               }),
+              body: body,
                headers: {
                  'Content-type': 'application/json; charset=UTF-8',
                },
@@ -42,6 +47,8 @@ export const HomeDashboard = (props) => {
 
       const handleButtonClick = () => {
         setZipcode(enteredZipcode)
+        setTemplateId(-1)
+        updateTemplateOptions()
         fetchGeneratedOutfit()
         fetchWeatherData()
       }
@@ -64,6 +71,19 @@ export const HomeDashboard = (props) => {
         setOutfit(_outfit)
       }
 
+      const onTemplateChange = (option) => {
+        setTemplateId(option.value)
+      }
+
+      const updateTemplateOptions = async () => {
+        const newTemplates = await postData('outfit-templates', {'user': 1})
+        const newTemplateOptions = []
+        newTemplates.forEach(element => {
+          newTemplateOptions.push({label: element.name, value: element.id})
+        });
+        setTemplateOptions(newTemplateOptions)
+      }
+
 
         return (
         <>
@@ -83,7 +103,7 @@ export const HomeDashboard = (props) => {
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
               
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
-              <Outfit userId = {userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece}/>
+              <Outfit userId = {userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece} onTemplateChange={onTemplateChange} templateOptions={templateOptions}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
                 <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>

@@ -1,5 +1,6 @@
 from api import db, app
 import models
+import os
 
 with app.app_context():  # context is needed so sqlalchemy knows where to create the database
     db.drop_all()
@@ -18,49 +19,59 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     gym_tag = models.Tag(name="Gym")
 
     # summer outfit
-    tshirt = models.ClothingItem(name="t-shirt", tags=[top, cotton], img = "https://i.imgur.com/lx9198r.jpeg")
-    shorts = models.ClothingItem(name="shorts", tags=[bottom])
     sneakers = models.ClothingItem(name="sneakers", tags=[shoes])
+    sneakers.setimg('sneakers.jpeg')
 
     # rainy/snowy outfit
-    rain_coat = models.ClothingItem(name="rain coat", tags=[outerwear, rainy, snowy])
+    blue_rain_coat = models.ClothingItem(name="blue coat", tags=[outerwear, rainy, snowy])
+    blue_rain_coat.setimg('BlueCoat.jpeg')
+    red_coat = models.ClothingItem(name="red coat", tags=[outerwear, rainy, snowy])
+    red_coat.setimg('RedCoat.jpeg')
     boots = models.ClothingItem(name="rain boots", tags=[shoes, rainy, snowy])
-    leggings = models.ClothingItem(name="leggings", tags=[bottom, rainy, snowy])
+    boots.setimg('Boots.jpeg')
+    green_sweats = models.ClothingItem(name="Green Sweats", tags=[bottom, rainy, snowy])
+    green_sweats.setimg('GreenSweats.jpeg')
+    jeans = models.ClothingItem(name="jeans", tags=[bottom, rainy, snowy])
+    jeans.setimg('BlueJeans.jpeg')
     long_sleeve = models.ClothingItem(
         name="long-sleeve shirt", tags=[top, rainy, snowy]
     )
+    long_sleeve.setimg('longSleeve.jpg')
 
     # sample gym outfit:
-    gym_top = models.ClothingItem(name="Nike shirt", tags=[top, gym_tag])
-    gym_bottom = models.ClothingItem(name="Nike shorts", tags=[bottom, gym_tag])
+    gym_top = models.ClothingItem(name="Blue T-Shirt", tags=[top, gym_tag])
+    gym_top.setimg('BlueTshirt.jpeg')
+    gym_bottom = models.ClothingItem(name="shorts", tags=[bottom, gym_tag])
+    gym_bottom.setimg('KhakiShorts.jpeg')
 
     # add all to user1's closet
     closet = user1.default_closet()
-    closet.items = [tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom]
+    closet.items = [jeans, sneakers, blue_rain_coat, boots, green_sweats, long_sleeve, gym_top, gym_bottom, red_coat]
 
     # Define an outfit template:
     gym_outfit_template = models.OutfitTemplate(name='Gym Outfit')
     gym_outfit_template.item_templates.extend([
-        models.ItemTemplate(name="Gym Top", required_tags=[top, gym_tag]),
-        models.ItemTemplate(name="Gym Bottom", required_tags=[bottom, gym_tag])
+        models.ItemTemplate(required_tags=[top, gym_tag]),
+        models.ItemTemplate(required_tags=[bottom, gym_tag])
     ])
     user1.outfit_templates.append(gym_outfit_template)
 
     # Basic template:
     basic_template = models.OutfitTemplate(name='Basic Outfit')
     basic_template.item_templates.extend([
-        models.ItemTemplate(name="Basic Top", required_tags=[top]),
-        models.ItemTemplate(name="Basic Bottom", required_tags=[bottom]),
-        models.ItemTemplate(name="Basic Bottom", required_tags=[shoes])
+        models.ItemTemplate(required_tags=[top]),
+        models.ItemTemplate(required_tags=[bottom]),
+        models.ItemTemplate(required_tags=[shoes])
     ])
     user1.outfit_templates.append(basic_template)
 
     # Rain template:
-    rain_template = models.OutfitTemplate(name='rain Outfit')
+    rain_template = models.OutfitTemplate(name='Rain Outfit')
     rain_template.item_templates.extend([
-        models.ItemTemplate(name="Rain Top", required_tags=[top, rainy]),
-        models.ItemTemplate(name="Rain Bottom", required_tags=[bottom, rainy]),
-        models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy])
+        models.ItemTemplate(required_tags=[top, rainy]),
+        models.ItemTemplate(required_tags=[bottom, rainy]),
+        models.ItemTemplate(required_tags=[shoes, rainy]),
+        models.ItemTemplate(required_tags=[outerwear, rainy])
     ])
     user1.outfit_templates.append(rain_template)
 
