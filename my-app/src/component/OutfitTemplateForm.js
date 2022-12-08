@@ -33,7 +33,7 @@ const schema = {
           "items": {
             "title": "Tag - ex \"hot\"",
             "type": "string",
-            "enum": ["hot", "cold", "umbrella", "rain", "snow", "average"]
+            "enum": ["hot", "cold", "umbrella", "rain", "snow", "average", "top", "bottom", "shoes", "outerwear"]
           },
           "uniqueItems": true
         }
