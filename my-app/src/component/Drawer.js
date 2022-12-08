@@ -31,7 +31,7 @@ function DrawerComponent(props) {
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
     <>
-        {console.log(props)}
+        {/* {console.log(props)} */}
       <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)} sx={{color: 'black'}} userId = {userId}>
         <List>
           <ListItem onClick={() => setOpenDrawer(false)} sx={{color: 'rgb(156, 180, 204)'}}>
