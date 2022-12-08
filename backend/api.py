@@ -190,7 +190,6 @@ def generate_outfit():
 
 @app.route("/outfit-template", methods=["POST"])
 def outfit_template():
-    breakpoint()
     data = request.get_json()
     #TODO: get user_id instead of hardcoding '1'
     outfit_template = models.OutfitTemplate(
