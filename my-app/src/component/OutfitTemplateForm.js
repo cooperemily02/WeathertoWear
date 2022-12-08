@@ -25,7 +25,7 @@ const schema = {
     "item-template": {
       "type": "object",
       "title": "Item",
-      "description": "Give all items in the outfit these tags:",
+      "description": "Require an item in the outfit to have these tags:",
       "properties": {
         "tags": {
           "title": "Item tags",
@@ -39,7 +39,7 @@ const schema = {
       "required": ["tags"]
     }
   }
-}
+} 
 
 
 export default function OutfitTemplateForm() {
