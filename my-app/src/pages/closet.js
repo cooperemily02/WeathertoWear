@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import ClothingItem from "../component/ClothingItem";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import {Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField, setRef} from '@mui/material'
+import {Stack, Grid, Typography, Box, IconButton, Alert, Collapse, Paper, Modal, Button, TextField} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Creatable from 'react-select/creatable';
 import { letterSpacing } from "@mui/system";
 
@@ -21,6 +22,18 @@ const Closet = (props) => {
   const handleCloseModal = () => {
     openAddItem(false)
   }
+
+  const inputFile = useRef(null) 
+  const [imageOfItem, setImageOfItem] = useState(null)
+  const [uploadImageOfItem, setUploadImageOfItem] = useState(null)
+
+  const onImageChange = (event) => {
+  if (event.target.files && event.target.files[0]) {
+    setUploadImageOfItem(event.target.files[0])
+    setImageOfItem(URL.createObjectURL(event.target.files[0]));
+  }
+  }
+
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [enteredItemName, setItemName] = useState("");
@@ -79,18 +92,18 @@ const Closet = (props) => {
   };
   
   const handleOnClick = () => {
+    const deleteItem = "false";
     selectedAttributes.push(selectedType)
-    let clothingItem = {name: enteredItemName, attributes: selectedAttributes}
+    let clothingItem = {name: enteredItemName, attributes: selectedAttributes, image: imageOfItem, file: imageOfItem, filename: "1"}
+    const data = new FormData();
+    data.append('file', uploadImageOfItem);//, "filename");
+    data.append("item", JSON.stringify(clothingItem));
+    data.append("user", userId);
+
     fetch('/dummy/clothingItem', {
       method: 'POST',
       credentials: "include",
-      body: JSON.stringify({
-       user: userId,
-       item: clothingItem
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
+      body: data,
     })
        .then((response) => response.json())
        .then((data) => {
@@ -110,13 +123,18 @@ const Closet = (props) => {
        });
   }
 
+  const onFileButtonClick = () => {
+    // `current` points to the mounted file input element
+   inputFile.current.click();
+  };
+
 
   const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 700,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -202,7 +220,7 @@ const Closet = (props) => {
         </Alert>
       </Collapse>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
-      <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > User {name}'s Closet </Typography>      </div>
+      <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > {name}'s Closet </Typography>      </div>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
       <Button variant="contained" onClick = {handleAddItem} sx = {{margin: "10px", backgroundColor: 'rgb(211, 206, 223)', color: 'rgb(105,105,105)', hover: { backgroundColor: 'rgb(195, 184, 222)'}}}>
         Add Item
@@ -234,6 +252,43 @@ const Closet = (props) => {
       onClose={handleCloseModal}
       >
       <Box sx = {style}>
+        <Stack direction = "row">
+        <input type='file' accept="image/*" id='file' ref={inputFile} onChange={onImageChange} style={{display: 'none'}}/>
+        {!imageOfItem && <Box
+          component="span"
+          sx={{
+            width: 300,
+            margin: "5%",
+            backgroundColor: 'black',
+            borderColor: 'red',
+            borderWidth: 'thick',
+            borderStyle: 'dashed'
+          }}>
+          <IconButton
+            onClick={onFileButtonClick}
+          >
+            <FileUploadIcon sx = {{color: 'red'}}/>
+          </IconButton>
+        </Box>
+        }
+        {imageOfItem && 
+        <Box
+          component="span"
+          sx={{
+            width: 300,
+            height: 300,
+            margin: "5%",
+            backgroundColor: 'black',
+            borderColor: 'red',
+            borderWidth: 'thick',
+            borderStyle: 'dashed',
+            justifyContent: 'center',
+            display: 'flex'
+          }}>
+             <img src = {imageOfItem} height = {"100%"} onClick = {onFileButtonClick} style = {{cursor: "pointer"}}></img>
+        </Box>
+        }
+        <Stack direction = "column">
         <Typography id="modal-modal-title" variant="h5" component="h2">
           Add Item
         </Typography>
@@ -263,7 +318,8 @@ const Closet = (props) => {
           />
         </div>
         <Button variant="contained" onClick = {handleOnClick} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Add Item To Closet</Button>
-        
+        </Stack>
+        </Stack>
       </Box>
   </Modal>
     </>

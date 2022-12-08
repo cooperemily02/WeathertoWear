@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import Outfit from "../component/Outfit";
 import { Typography, TextField, Button } from "@mui/material";
 import WeatherDashboard from '../component/WeatherDashboard'
+import postData from "../utils";
 
 
 export const HomeDashboard = (props) => {
@@ -66,6 +67,12 @@ export const HomeDashboard = (props) => {
         }
       };
 
+      const updateSinglePiece = (index, new_item) => {
+        let _outfit = [...outfit]
+        _outfit[index] = new_item
+        setOutfit(_outfit)
+      }
+
 
         return (
         <>
@@ -86,7 +93,7 @@ export const HomeDashboard = (props) => {
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
               
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
-              <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit}/>
+              <Outfit userId = {user.userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true &&
               <div> 

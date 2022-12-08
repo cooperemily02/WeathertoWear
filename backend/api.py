@@ -1,14 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from flask import Flask, jsonify, request, send_from_directory
+from models import db
+import weather
+import json
+import helpers
 import json
 
 from flask import Flask, flash, jsonify, request
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import models
-import weather
-from models import db
-from w2w_logic.outfit_generator import Item, pick_outfit
+import werkzeug.exceptions
 
 app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
@@ -173,46 +176,132 @@ def Return_Forecast(zipcode: str):
     if request.method == "GET":
         return weather.get_forecast(zipcode)
 
+image_dir = "images"
+@app.route('/images/<path:filename>')  
+def send_file(filename):  
+    return send_from_directory(image_dir, filename)
 
 @app.route("/dummy/clothingItem", methods=["POST"])
 def Return_New_Clothing_Item():
-    # get_json is needed instead of 'form'
-    item_dict = request.get_json().get("item")
-    user_id = request.get_json().get("user")
+    try:
+        print("JSON" + json.dumps(request.get_json()))
+        item_dict = request.get_json().get('item')
+        print("item")
+        print(item_dict)
+        user_id = request.get_json().get('user')
+        delete_item = request.get_json().get('deleteItem')
 
-    # created the clothing item in the DB based on the user input
-    clothing_item = models.ClothingItem()
-    clothing_item.name = item_dict["name"]
+        if delete_item == "false": #when user wants to add item to the closet
+            # created the clothing item in the DB based on the user input
+            clothing_item = models.ClothingItem()
+            clothing_item.name = item_dict["name"]
+            # Construct Tag objects from the request (called attributes there), 
+            # And add them to the clothing_item
+            tag_objects = [
+                models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
+                models.Tag(name=tag_name) for tag_name in item_dict['attributes']
+            ]
+            clothing_item.tags = tag_objects
+            # finds the user in the database, based on the inputted user ID
+            user = models.User.query.get(user_id)
+            #TODO: This endpoint takes in an item and a user. BUT, our model has multiple
+            # closets for each user. So find/create a default Closet for the user, and
+            # add the item there.
+            is_user_has_closet = len(user.closets) > 0
+            # if the user has a closet/default closet then add it there
+            if (is_user_has_closet): 
+                # we haven't talked about a default closet, use input from front end later?
+                closet = (user.closets)[0]
+                clothing_item.closet_id = closet.id
+                print("added item")
+                print(clothing_item)
+                closet.items.append(clothing_item)
+            else:     
+                closet = models.Closet()
+                closet.user = user
+                closet.user_id = user.id
+                clothing_item.closet_id = closet.id
+                closet.items = [clothing_item]
+            db.session.add(clothing_item)
+            db.session.commit() 
+            print("added item after adding it to database")
+            print(clothing_item)
+            exists = models.ClothingItem.query.filter_by(id = clothing_item.id).first()
+            if exists:
+                print("item exists in database")   
+            return clothing_item.serialize 
+        
+        if delete_item == "true": #when user wants to delete item in closet
+            print("item dictionary")
+            print(item_dict)
+            user = models.User.query.get(user_id)
+            closet = (user.closets)[0]
+            closet_list = closet.items
+            for i in range(len(closet_list)):
+                if closet_list[i].closet_id == item_dict["closet_id"] and closet_list[i].name == item_dict["name"]:
+                    result = False
+                    item_names = []
+                    for item in closet_list[i].tags:
+                        item_names.append(item.name)
+                    
+                    for y in range(len(item_names)):
+                        for tag in item_dict["tags"]:
+                            if y == len(item_names) - 1 and item_names[y] == tag:
+                                # print("same")
+                                result = True
+                            if item_names[y] == tag:
+                                continue
+                    if result:
+                        deleted_item = closet_list[i]
+                        del closet_list[i]
+                        exists = models.ClothingItem.query.filter_by(id = deleted_item.id).first()
+                        db.session.delete(exists)
+                        db.session.commit()
+                        return {"deleted": "true"}
+                    else:
+                        print("Tags didn't align")
+    except werkzeug.exceptions.BadRequest:
+        # form instead of json for image support
+        item_dict = json.loads(request.form.get("item"))
+        user_id = request.form.get("user")
 
-    # Construct Tag objects from the request (called attributes there),
-    # And add them to the clothing_item
-    tag_objects = [
-        models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
-        models.Tag(name=tag_name) for tag_name in item_dict['attributes']
-    ]
-    clothing_item.tags = tag_objects
+        # created the clothing item in the DB based on the user input
+        clothing_item = models.ClothingItem()
+        clothing_item.name = item_dict["name"]
+        
+        # Construct Tag objects from the request (called attributes there),
+        # And add them to the clothing_item
+        tag_objects = set([models.Tag.get_or_create(tag_name) for tag_name in item_dict['attributes']])
+        tag_objects = list(tag_objects)
+        clothing_item.tags = tag_objects
 
-    # finds the user in the database, based on the inputted user ID
-    user = models.User.query.get(user_id)
+        # finds the user in the database, based on the inputted user ID
+        user = models.User.query.get(user_id)
 
-    #Find/create a default Closet for the user
-    is_user_has_closet = len(user.closets) > 0
-    # if the user has a closet/default closet then add it there
-    if is_user_has_closet:
-        # we haven't talked about a default closet, use input from front end later?
-        closet = (user.closets)[0]
-        clothing_item.closet_id = closet.id
-        closet.items.append(clothing_item)
-    else:
-        closet = models.Closet()
-        closet.user = user
-        closet.user_id = user.id
-        clothing_item.closet_id = closet.id
-        closet.items = [clothing_item]
-    db.session.add(clothing_item)
-    db.session.commit()
+        #Find/create a default Closet for the user
+        is_user_has_closet = len(user.closets) > 0
+        # if the user has a closet/default closet then add it there
+        if is_user_has_closet:
+            # we haven't talked about a default closet, use input from front end later?
+            closet = (user.closets)[0]
+            clothing_item.closet_id = closet.id
+            closet.items.append(clothing_item)
+        else:
+            closet = models.Closet()
+            closet.user = user
+            closet.user_id = user.id
+            clothing_item.closet_id = closet.id
+            closet.items = [clothing_item]
+            
+        if 'file' in request.files:
+            file = request.files['file'] 
+            clothing_item.setimg(file)
+        
+        db.session.add(clothing_item)
+        db.session.commit()
 
-    return clothing_item.serialize
+        return clothing_item.serialize
+    
 
 
 @app.route("/gen-outfit", methods=["POST"])
@@ -220,25 +309,65 @@ def generate_outfit():
     data = request.get_json()
     zipcode, user_id = data["zipcode"], data["user"]
 
-    user = models.User.query.get(user_id)
+    user: models.User = models.User.query.get(user_id)
+    closet = user.default_closet()
     items = user.get_all_items()
     weather_str = weather.get_forecast(zipcode)["weather0"]
+    #TODO: refactoring. (right now this helper method uses defaults/hardcode to work under flexible conditons)
+    outfit_template_id = helpers.get_default_template_id_from_weather_str(weather_str)
+    outfit_template = models.OutfitTemplate.query.get(outfit_template_id)
 
-    # This is used to map/re-map the logic function's input/output type
-    # from/to the ORM models
-    logic_item_to_orm = {
-        Item(
-            name=model_item.name, attributes=[attr.name for attr in model_item.tags]
-        ): model_item
-        for model_item in items
-    }
-    logic_outfit = pick_outfit(
-        items=set(logic_item_to_orm.keys()), weather_str=weather_str
+    items, item_to_its_template = closet.find_matching_outfit(outfit_template)
+    # Adding the template id's for future use:
+    return [
+        item.serialize_with_template_id(item_to_its_template[item]) for item in items
+    ]
+
+
+
+@app.route("/outfit-template", methods=["POST"])
+def outfit_template():
+    data = request.get_json()
+    #TODO: get user_id instead of hardcoding '1'
+    outfit_template = models.OutfitTemplate(
+        name=data['name'],
+        user_id=1,
+        item_templates=[
+            models.ItemTemplate(name=template['name'], required_tags=[
+                models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']
+            ])
+            for template in data['item-templates']
+        ]
     )
-    orm_outfit = [logic_item_to_orm[logic_item] for logic_item in logic_outfit]
+    db.session.add(outfit_template)
+    db.session.commit()
+    return {}
 
-    return [orm_item.serialize for orm_item in orm_outfit]
+"""
+Gets the outfit_templates of the user
+"""
+@app.route("/outfit-templates", methods=["POST"])
+def outfit_templates():
+    data = request.get_json()
+    user = models.User.query.get(data['user'])
+    return [template.serialize for template in user.outfit_templates]
 
+"""
+Gets a clean item matching 'item_template' id from the user's closet(s)
+"""
+@app.route("/item-from-template", methods=["POST"])
+def get_item_from_template():
+    data = request.get_json()
+    user: models.User = models.User.query.get(data['user'])
+    item_template = models.ItemTemplate.query.get(data['item_template'])
+    excluded_items = set()
+    if 'excluded_item' in data:
+        excluded_items.add(models.ClothingItem.query.get(data['excluded_item']))
+    match: models.ClothingItem = user.default_closet().find_matching_item(item_template=item_template, excluded_items=excluded_items) 
+    # Add the template_id, this lets the frontend know what template the item matched (for regeneration)
+    item_dict = match.serialize.copy()
+    item_dict['item_template'] = data['item_template']
+    return item_dict
 
 if __name__ == "__main__":
     app.run(debug=True)

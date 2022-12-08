@@ -34,12 +34,12 @@ function DrawerComponent(props) {
         <List>
           <ListItem onClick={() => setOpenDrawer(false)} sx={{color: 'rgb(156, 180, 204)'}}>
             <ListItemText>
-              <Link to={userId == -1 ? "/" : "/homeDashboard"} class={classes.link} sx={{color: 'rgb(156, 180, 204)'}}>
+              <Link to={userId == 0 ? "/" : "/homeDashboard"} class={classes.link} sx={{color: 'rgb(156, 180, 204)'}}>
                 Home
               </Link>
             </ListItemText>
           </ListItem>
-          {userId!=-1 &&
+          {userId!=0 &&
           <>
           <ListItem onClick={() => setOpenDrawer(false)}>
             <ListItemText>

@@ -8,6 +8,7 @@ import Home from "../pages/home";
 import HomeDashboard from "../pages/HomeDashboard";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
+import OutfitTemplateForm from "../component/OutfitTemplateForm"
 import Laundry from "../pages/laundry";
 
 function Header(props) {
@@ -40,6 +41,7 @@ function Header(props) {
           element={Laundry({user: user})}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
+        <Route path="/outfit-template-form" element={<OutfitTemplateForm/>}/>
       </Routes>
     </>
   );

@@ -23,7 +23,6 @@ export default function SignUp(props) {
     const name = data.get('name').toString();
     const email = data.get('email').toString();
     const password = data.get('password').toString();
-    console.log(password)
     const createdUser = {
       name: name,
       password: password,
