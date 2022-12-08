@@ -35,22 +35,72 @@ def Return_Closet():
     clothing_items = []
     for closet in closets:
         for item in closet.items:
-            clothing_items.append(item.serialize)
+            if item.times_worn < item.max_wears:
+                clothing_items.append(item.serialize)
     return clothing_items
 
 
-@app.route("/dummy/Laundry", methods=["GET"])
+@app.route("/dummy/Laundry", methods=["POST"])
 def Return_Laundry():
-    if request.method == "GET":
-        data = [
-            {"name": "blue rain coat", "tags": ["outerwear"]},
-            {"name": "gray t-shirt", "tags": ["top"]},
-            {"name": "white long sleeve", "tags": ["top"]},
-            {"name": "brown jeans", "tags": ["bottom"]},
-            {"name": "pink shorts", "tags": ["bottom"]},
-        ]
-        return jsonify(data)
+    user_id = request.get_json().get("user")
+    user = models.User.query.get(user_id)
 
+    closets = user.closets
+    clothing_items = []
+    for closet in closets:
+        for item in closet.items:
+            if item.times_worn >= item.max_wears:
+                clothing_items.append(item.serialize)
+    return clothing_items
+
+
+@app.route("/dummy/itemSelected", methods=["PUT"])
+def Item_Selected():
+    # function to update an item's wears given that the user has selected it from their daily outfits 
+    item_dict = request.get_json().get("item")
+    selected_item = models.ClothingItem.query.get(item_dict['id'])
+
+    selected_item.times_worn += 1
+
+    db.session.commit()
+    return selected_item.times_worn
+
+@app.route("/dummy/itemWashed", methods=["PUT"])
+def Item_Washed():
+    # if a user washes an item in laundry
+    item_dict = request.get_json().get("item")
+    selected_item = models.ClothingItem.query.get(item_dict['id'])
+
+    selected_item.times_worn = 0
+    db.session.commit()
+    
+    return ({"timesWorn": selected_item.times_worn})
+
+@app.route("/dummy/washLaundry", methods=["PUT"])
+def Wash_Laundry():
+    # washed all items in laundry 
+    user_id = request.get_json().get("user")
+    user = models.User.query.get(user_id)
+
+    items = user.get_all_items()
+    for item in items:
+        if item.times_worn >= item.max_wears:
+            item.times_worn = 0
+
+    db.session.commit()
+    # # this just returns all clothing, modify?
+    # return user.get_all_items()
+    return {}
+
+@app.route("/dummy/sendToLaundry", methods=["PUT"])
+def Send_Laundry():
+    item_dict = request.get_json().get("item")
+    selected_item = models.ClothingItem.query.get(item_dict['id'])
+    
+    selected_item.times_worn = weather.sys.maxsize
+    db.session.commit()
+
+    return selected_item.serialize
 
 @app.route("/dummy/userSignUp", methods=["GET"])
 def Return_New_User():
@@ -83,16 +133,16 @@ def Return_New_Clothing_Item():
     
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
-    clothing_item.tags = [
-        models.Tag(name=tag_name) for tag_name in item_dict["attributes"]
+    tag_objects = [
+        models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
+        models.Tag(name=tag_name) for tag_name in item_dict['attributes']
     ]
+    clothing_item.tags = tag_objects
 
     # finds the user in the database, based on the inputted user ID
     user = models.User.query.get(user_id)
 
-    # TODO: This endpoint takes in an item and a user. BUT, our model has multiple
-    # closets for each user. So find/create a default Closet for the user, and
-    # add the item there.
+    #Find/create a default Closet for the user
     is_user_has_closet = len(user.closets) > 0
     # if the user has a closet/default closet then add it there
     if is_user_has_closet:

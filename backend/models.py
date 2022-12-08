@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 import os
+import sys
 db = SQLAlchemy()
 
 
@@ -7,7 +8,7 @@ db = SQLAlchemy()
 # Also notice how SQLAlchemy maps the 'ClothingItem' class to 'clothing_item'
 item_tags = db.Table(
     "item_tags",
-    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"), primary_key=True),
+    db.Column("tag_name", db.String(50), db.ForeignKey('tag.name'), nullable=False, primary_key=True),
     db.Column(
         "item_id", db.Integer, db.ForeignKey("clothing_item.id"), primary_key=True
     ),
@@ -37,20 +38,23 @@ class ClothingItem(db.Model):
             self.img = (r + file.filename)
     
     # TODO: In 'serialize' return a dictionary matching how the frontend displays items
+
+    # the values become default only once committed to the database (not upon instantiation)
+    times_worn = db.Column(db.Integer, default=0) 
+    max_wears = db.Column(db.Integer, default=1)
+
     @property
     def serialize(self):
         list_tags = []
         for tag in self.tags:
             list_tags.append(tag.name)
-        out = {"name": self.name, "tags": list_tags, "closet_id": self.closet_id}
+        out = {"name": self.name, "tags": list_tags, "closet_id": self.closet_id, "id": self.id}
         if self.img:
             out["img"] = self.img
         return out
 
-
 class Tag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False, primary_key=True)
 
 
 class User(db.Model):
@@ -58,6 +62,9 @@ class User(db.Model):
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
+    
+    def get_laundry_items(self):
+        return [item.times_worn < item.max_wears for closet in self.closets for item in closet.items]
 
 
 class Closet(db.Model):
