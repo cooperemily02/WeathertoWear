@@ -28,7 +28,7 @@ class ClothingItem(db.Model):
         
     def setimg(self, file):
         if isinstance(file, str):
-            self.img
+            self.img = file # In this case 'file' is the path of the file
         else:
             upload_dir = "images"
             if not os.path.isdir(upload_dir):

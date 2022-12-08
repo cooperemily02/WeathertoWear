@@ -1,5 +1,6 @@
 from api import db, app
 import models
+import os
 
 with app.app_context():  # context is needed so sqlalchemy knows where to create the database
     db.drop_all()
@@ -23,8 +24,10 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     sneakers = models.ClothingItem(name="sneakers", tags=[shoes])
 
     # rainy/snowy outfit
-    rain_coat = models.ClothingItem(name="rain coat", tags=[outerwear, rainy, snowy])
+    blue_rain_coat = models.ClothingItem(name="blue coat", tags=[outerwear, rainy, snowy])
+    blue_rain_coat.setimg('BlueCoat.jpeg')
     boots = models.ClothingItem(name="rain boots", tags=[shoes, rainy, snowy])
+    # boots.setimg()
     leggings = models.ClothingItem(name="leggings", tags=[bottom, rainy, snowy])
     long_sleeve = models.ClothingItem(
         name="long-sleeve shirt", tags=[top, rainy, snowy]
@@ -36,7 +39,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
 
     # add all to user1's closet
     closet = user1.default_closet()
-    closet.items = [tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom]
+    closet.items = [tshirt, shorts, sneakers, blue_rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom]
 
     # Define an outfit template:
     gym_outfit_template = models.OutfitTemplate(name='Gym Outfit')
