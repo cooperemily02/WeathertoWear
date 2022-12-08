@@ -141,11 +141,7 @@ function ClothingItem(props) {
   }
   useEffect(() => {
       fetchImage('/images/' + item.img)
-  })
-
-  useEffect(()=>{
-
-  }, [props.parent.updateVariable])
+  }, [img, userId])
   return (
     <>
     {
