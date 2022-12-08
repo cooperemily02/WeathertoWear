@@ -43,8 +43,8 @@ export const Outfit = (props) => {
         const new_item = await postData('item-from-template', {
             user: 1, item_template: item_template, excluded_item: excluded_item
         })
+        props.updateSinglePiece(index, new_item)
         console.log(new_item)
-        //TODO: replace old with new_item
     }
 
     if (outfit.length == 0 || props.fetchedOutfitData.hasOutfit == false){
