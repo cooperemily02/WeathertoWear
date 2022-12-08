@@ -8,9 +8,8 @@ import { useState } from 'react'
 
 
 export default function App() {
-  const [user, setUser] = useState({userName: "", userId: 0});
-  // console.log(user);
+  const [userId, setUserId] = useState(-1);
   return (
-    <Header user={user} setUser={setUser}/>
+    <Header userId = {userId} setUserId = {setUserId}/>
   );
 }

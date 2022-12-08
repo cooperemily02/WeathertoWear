@@ -9,6 +9,7 @@ import {
 import { makeStyles, useTheme } from "@mui/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -30,16 +31,23 @@ function DrawerComponent(props) {
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
     <>
+        {/* {console.log(props)} */}
       <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)} sx={{color: 'black'}} userId = {userId}>
         <List>
           <ListItem onClick={() => setOpenDrawer(false)} sx={{color: 'rgb(156, 180, 204)'}}>
             <ListItemText>
-              <Link to={userId == 0 ? "/" : "/homeDashboard"} class={classes.link} sx={{color: 'rgb(156, 180, 204)'}}>
+              <Link to={userId == -1 ? "/" : "/homeDashboard"} class={classes.link} sx={{color: 'rgb(156, 180, 204)'}}>
                 Home
               </Link>
             </ListItemText>
           </ListItem>
-          {userId!=0 &&
+          {/* <ListItem onClick={() => setOpenDrawer(false)}>
+            <ListItemText>
+                Daily Outfits
+              </Link>
+            </ListItemText>
+          </ListItem> */}
+          {userId!=-1 &&
           <>
           <ListItem onClick={() => setOpenDrawer(false)}>
             <ListItemText>
@@ -57,6 +65,13 @@ function DrawerComponent(props) {
           </ListItem>
           </>
         }
+        <ListItem onClick={() => setOpenDrawer(false)}>
+            <ListItemText>
+              <Link to="/outfit-template-form" class={classes.link}>
+                Template Form
+              </Link>
+            </ListItemText>
+          </ListItem>
         </List>
       </Drawer>
       <IconButton onClick={() => setOpenDrawer(!openDrawer)}>

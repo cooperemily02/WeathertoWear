@@ -6,10 +6,6 @@ import weather
 import json
 import helpers
 import json
-
-from flask import Flask, flash, jsonify, request
-from werkzeug.security import check_password_hash, generate_password_hash
-
 import models
 import werkzeug.exceptions
 
@@ -17,6 +13,7 @@ app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
 
 db.init_app(app)  # Now we can use the database in our endpoints!
+import models
 
 
 @app.route("/")
@@ -107,68 +104,13 @@ def Send_Laundry():
 
     return selected_item.serialize
 
-# @app.route("/dummy/userSignUp", methods=["GET"])
-# def Return_New_User():
-#     if request.method == "GET":
-#         newUser = models.User()
-#         db.session.add(newUser)
-#         db.session.commit()
-#         return {"userId": newUser.id}
-
-@app.route("/dummy/userSignUp", methods=["POST"])
+@app.route("/dummy/userSignUp", methods=["GET"])
 def Return_New_User():
-    if request.method == "POST":
-        # userExists = False
-        user = None
-        print("JSON" + json.dumps(request.get_json()))
-        name = request.get_json().get("name")
-        password = request.get_json().get("password")
-        email = request.get_json().get("email")
-        # id = request.get_json().get("id")
-        # in line below filter by the id
-        user = models.User.query.filter_by(
-            email=email).first()  # looks in databse and tries to get the first occurence of this name in it
-        if user is None:  # if the user is not in the database
-            hashed_pw = generate_password_hash(password)  # needed for login
-            print("hashed password")
-            print(hashed_pw)
-            # newUser = models.User(name=name, password_hash=password, email=email)  # add the id portion here
-            newUser = models.User(name=name, password_hash=hashed_pw, email=email)  # add the id portion here
-            db.session.add(newUser)
-            db.session.commit()
-            return {"exists": "false", "userName": newUser.name, "userId": newUser.id}
-        else:
-            return {"exists": "true"}
-
-
-@app.route("/dummy/userLogin", methods=["POST"])
-def Login():
-    if request.method == "POST":
-        user = None
-        password_correct = 'False'
-        user_exists = 'False'
-        print("JSON" + json.dumps(request.get_json()))
-        password = request.get_json().get("password")
-        email = request.get_json().get("email")
-        # in line below filter by the email
-        user = models.User.query.filter_by(
-            email=email).first()  # looks in databse and tries to get the first occurence of this email in it
-        if user:  # if the user is  in the database
-            user_exists = 'True'
-            print("hashed password, login")
-            print(user.password_hash)
-            # check if the password user submits, matches the one in the database:
-            # if password == user.password_hash:  # returns true if password of user in database is the same as the one they entered in the form
-            if check_password_hash(user.password_hash, password):
-                password_correct = 'True'
-                return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
-            else:
-                return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
-        else:
-            # print('Error: that user doesnt exist, try again')
-            print("user exists variable")
-            print(user_exists)
-            return {'password_correct': password_correct, 'user_exist': user_exists}
+    if request.method == "GET":
+        newUser = models.User()
+        db.session.add(newUser)
+        db.session.commit()
+        return {"userId": newUser.id}
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])
@@ -315,7 +257,12 @@ def generate_outfit():
     weather_str = weather.get_forecast(zipcode)["weather0"]
     #TODO: refactoring. (right now this helper method uses defaults/hardcode to work under flexible conditons)
     outfit_template_id = helpers.get_default_template_id_from_weather_str(weather_str)
+    # Use the given template_id if it exists:
+    if 'template_id' in data and data['template_id'] != -1:
+        outfit_template_id = data.get('template_id', outfit_template_id)
+
     outfit_template = models.OutfitTemplate.query.get(outfit_template_id)
+
 
     items, item_to_its_template = closet.find_matching_outfit(outfit_template)
     # Adding the template id's for future use:
@@ -333,7 +280,7 @@ def outfit_template():
         name=data['name'],
         user_id=1,
         item_templates=[
-            models.ItemTemplate(name=template['name'], required_tags=[
+            models.ItemTemplate(required_tags=[
                 models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']
             ])
             for template in data['item-templates']

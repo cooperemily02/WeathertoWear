@@ -6,39 +6,28 @@ import Navbar from "./navbar";
 import Closet from "../pages/closet";
 import Home from "../pages/home";
 import HomeDashboard from "../pages/HomeDashboard";
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
 import OutfitTemplateForm from "../component/OutfitTemplateForm"
 import Laundry from "../pages/laundry";
 
 function Header(props) {
-  const user = props.user;
-  const setUser = props.setUser;
-
+  const userId = props.userId;
+  const setUserId = props.setUserId
   return (
     <>
-      <Navbar user = {user} setUser = {setUser}/>
+      <Navbar userId = {userId} setUserId = {setUserId}/>
       <Routes>
-        <Route path="/" element={Home({user: user, setUser: setUser})} />
+        <Route path="/" element={Home({userId: userId, setUserId: setUserId})} />
         <Route
           path="/closet"
-          element={Closet({user: user})}
+          element={Closet({userId: userId})}
         />
         <Route
           path="/homeDashboard"
-          element={HomeDashboard({user: user})}
-        />
-        <Route
-          path="/signUp"
-          element={SignUp({user: user, setUser: setUser})}
-        />
-        <Route
-          path="/signin"
-          element={SignIn({user: user, setUser: setUser})} 
+          element={HomeDashboard({userId: userId})}
         />
         <Route
           path="/laundry"
-          element={Laundry({user: user})}
+          element={Laundry({userId: userId})}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
         <Route path="/outfit-template-form" element={<OutfitTemplateForm/>}/>

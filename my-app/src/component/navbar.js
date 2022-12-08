@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -10,6 +9,7 @@ import {
   MenuItem,
   Menu,
 } from "@mui/material";
+import {Link} from "react-router-dom";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import { makeStyles } from "@mui/styles";
 import Drawer from "./Drawer";
@@ -49,22 +49,23 @@ function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const userId = props.user.userId
+  const userId = props.userId
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const logoutAndHandleClose = () => {
-    props.setUser({userName: "", userId: 0})
+  const handleClose = () => {
+    props.setUserId(-1)
+    window.location.reload(false);
     setAnchorEl(null)
   };
-  const handleCloseMenu = () => {
-    setAnchorEl(null)
-  }
   return (
     <AppBar position="static" sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
       <CssBaseline />
+      {/* <IconButton>
+            <CloseIcon />
+      </IconButton> */}
       <Toolbar >
         <Drawer userId = {userId} />
         <div
@@ -84,7 +85,7 @@ function Navbar(props) {
             left: "95%",
             top: "50%",
             transform: "translate(-50%, -50%)",}}>
-          { userId !== 0 && 
+          { userId !== -1 && 
           <IconButton onClick={handleClick}>
             <AccountCircleRoundedIcon style = {{color: 'white'}} fontSize = "large" />
           </IconButton>
@@ -94,7 +95,7 @@ function Navbar(props) {
             aria-labelledby="demo-positioned-button"
             anchorEl={anchorEl}
             open={open}
-            onClose={handleCloseMenu}
+            onClose={handleClose}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'left',
@@ -104,8 +105,7 @@ function Navbar(props) {
               horizontal: 'left',
             }}
           >
-            <MenuItem component={Link} to = '/' onClick={logoutAndHandleClose} >Logout</MenuItem>
-            <MenuItem component = {Link} to = '/outfit-template-form' onClick = {handleCloseMenu}>Outfit Template Form</MenuItem>
+            <MenuItem component={Link} to = '/' onClick={handleClose} >Logout</MenuItem>
         </Menu>
       </div>
       </Toolbar>
