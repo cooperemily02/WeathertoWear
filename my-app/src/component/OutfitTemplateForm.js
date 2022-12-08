@@ -32,7 +32,8 @@ const schema = {
           "type": "array", 
           "items": {
             "title": "Tag - ex \"hot\"",
-            "type": "string"
+            "type": "string",
+            "enum": ["hot", "cold", "umbrella", "rain", "snow", "average"]
           },
           "uniqueItems": true
         }
