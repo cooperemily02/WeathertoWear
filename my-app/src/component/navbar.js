@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -10,10 +10,10 @@ import {
   MenuItem,
   Menu,
 } from "@mui/material";
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { makeStyles } from "@mui/styles";
 import Drawer from "./Drawer";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -43,30 +43,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const userId = props.user.userId
+  const userId = props.user.userId;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    props.setUser({})
-    setAnchorEl(null)
+    props.setUser({});
+    setAnchorEl(null);
   };
   const logoutHandleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
   return (
-    <AppBar position="static" sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
+    <AppBar position="static" sx={{ backgroundColor: "rgb(116, 141, 166)" }}>
       <CssBaseline />
-      <Toolbar >
-        <Drawer userId = {userId} />
+      <Toolbar>
+        <Drawer userId={userId} />
         <div
           style={{
             position: "absolute",
@@ -75,20 +73,30 @@ function Navbar(props) {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Typography sx={{fontFamily: 'Caudex'}} variant="h4" className={classes.logo}>
+          <Typography
+            sx={{ fontFamily: "Caudex" }}
+            variant="h4"
+            className={classes.logo}
+          >
             Weather to Wear
           </Typography>
         </div>
-        <div style = {{
+        <div
+          style={{
             position: "absolute",
             left: "95%",
             top: "50%",
-            transform: "translate(-50%, -50%)",}}>
-          { userId !== -1 && 
-          <IconButton onClick={handleClick}>
-            <AccountCircleRoundedIcon style = {{color: 'white'}} fontSize = "large" />
-          </IconButton>
-          }
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          {userId !== -1 && (
+            <IconButton onClick={handleClick}>
+              <AccountCircleRoundedIcon
+                style={{ color: "white" }}
+                fontSize="large"
+              />
+            </IconButton>
+          )}
           <Menu
             id="demo-positioned-menu"
             aria-labelledby="demo-positioned-button"
@@ -96,20 +104,21 @@ function Navbar(props) {
             open={open}
             onClose={logoutHandleClose}
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
+              vertical: "top",
+              horizontal: "left",
             }}
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
+              vertical: "top",
+              horizontal: "left",
             }}
           >
-            <MenuItem component={Link} to = '/' onClick={handleClose} >Logout</MenuItem>
-        </Menu>
-      </div>
+            <MenuItem component={Link} to="/" onClick={handleClose}>
+              Logout
+            </MenuItem>
+          </Menu>
+        </div>
       </Toolbar>
     </AppBar>
-
   );
 }
 export default Navbar;

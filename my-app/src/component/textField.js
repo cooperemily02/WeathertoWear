@@ -1,15 +1,15 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 export default function BasicSelect(props) {
-  const [dropDownValue, setDropDownValue] = React.useState('');
-  const label = props.label
-  const options = props.options
-  console.log(options)
+  const [dropDownValue, setDropDownValue] = React.useState("");
+  const label = props.label;
+  const options = props.options;
+  console.log(options);
   const handleChange = (event) => {
     setDropDownValue(event.target.value);
   };
@@ -25,9 +25,9 @@ export default function BasicSelect(props) {
           label={label}
           onChange={handleChange}
         >
-            {options.map((option) => {
-                return <MenuItem value = {option.value}> {option.name} </MenuItem>
-            })}
+          {options.map((option) => {
+            return <MenuItem value={option.value}> {option.name} </MenuItem>;
+          })}
         </Select>
       </FormControl>
     </Box>

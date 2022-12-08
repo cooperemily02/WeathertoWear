@@ -5,32 +5,31 @@ import validator from "@rjsf/validator-ajv8";
 import postData from "../utils";
 
 const schema = {
-  "required": ["name", "item-templates"],
-  "type": "object",
-  "properties": {
-    "name": {"type": "string"},
+  required: ["name", "item-templates"],
+  type: "object",
+  properties: {
+    name: { type: "string" },
     "item-templates": {
-      "type":"array",
-      "items": { "$ref": "#/$defs/item-template" }
-    }
+      type: "array",
+      items: { $ref: "#/$defs/item-template" },
+    },
   },
-  "$defs": {
+  $defs: {
     "item-template": {
-      "type": "object",
-      "properties": {
-        "name": {"type": "string"},
-        "tags": {"type": "array", "items": {"type": "string"}}
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        tags: { type: "array", items: { type: "string" } },
       },
-      "required": ["name", "tags"]
-    }
-  }
-}
-
+      required: ["name", "tags"],
+    },
+  },
+};
 
 export default function OutfitTemplateForm() {
-  const onSubmit =  (e) => {
+  const onSubmit = (e) => {
     console.log(e.formData);
-    postData('outfit-template', e.formData).then(data => console.log(data))
+    postData("outfit-template", e.formData).then((data) => console.log(data));
   };
 
   return (
@@ -38,7 +37,10 @@ export default function OutfitTemplateForm() {
       schema={schema}
       validator={validator}
       onSubmit={onSubmit}
-      formData={{'name': "hi", 'item-templates': [{"name": 'item1', 'tags': ['lol', 'lol2']}]}}
+      formData={{
+        name: "hi",
+        "item-templates": [{ name: "item1", tags: ["lol", "lol2"] }],
+      }}
     />
   );
 }
