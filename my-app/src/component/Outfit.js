@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { Typography } from "@mui/material";
 import {Box, Grid, Button  } from "@mui/material";
+import ClothingItem from "./ClothingItem";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import top from "../static/top.png";
@@ -13,27 +14,8 @@ import postData from "../utils"
 
 export const Outfit = (props) => {
     const outfit = props.outfit
+    const userId = props.userId
     const generateOutfitFunction = props.generateOutfitFunction
-    console.log(outfit)
-    let namesOfPieces = [];
-    for (let i = 0; i< outfit.length; i++){
-        namesOfPieces.push(outfit[i].name);
-    }
-    const image = (tags) => {
-        if (tags.includes("top")){
-            return top;
-        }
-        else if (tags.includes("bottom")){
-            return bottom;
-        }
-        else if (tags.includes("shoes")){
-            return shoes;
-        }
-        else if (tags.includes("outerwear")){
-            return coat;
-        }
-    }
-
     const onRegenItem = async (index, item_template, excluded_item) => {
         console.log('Trying to regen item:', excluded_item, 
             'with template: ', item_template
@@ -69,7 +51,7 @@ export const Outfit = (props) => {
                         <RefreshIcon />
                     </IconButton>
                     <Typography variant="h4"  sx={{color: 'white', fontFamily: 'Caudex', pt:15}} >{piece.name.charAt(0).toUpperCase() + piece.name.slice(1)}</Typography>
-                    <img src={image(piece.tags)} alt={piece} height="250" />
+                    <ClothingItem item = {piece} parent = {{type: "laundry", updateFunction: {}}} userId = {userId}></ClothingItem>
                 </Box> 
             );
         })

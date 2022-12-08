@@ -83,7 +83,7 @@ export const HomeDashboard = (props) => {
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
               
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
-              <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece}/>
+              <Outfit userId = {userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
                 <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>
