@@ -42,7 +42,6 @@ export const HomeDashboard = (props) => {
 
       const handleButtonClick = () => {
         setZipcode(enteredZipcode)
-        console.log(zipcode)
         fetchGeneratedOutfit()
         fetchWeatherData()
       }
@@ -79,7 +78,7 @@ export const HomeDashboard = (props) => {
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
               
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
-              <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData}/>
+              <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true &&
               <div> 

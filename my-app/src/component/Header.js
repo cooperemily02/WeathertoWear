@@ -8,6 +8,7 @@ import Home from "../pages/home";
 import HomeDashboard from "../pages/HomeDashboard";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
+import Laundry from "../pages/laundry";
 
 function Header(props) {
   const user = props.user;
@@ -33,6 +34,10 @@ function Header(props) {
         <Route
           path="/signin"
           element={SignIn({user: user, setUser: setUser})} 
+        />
+        <Route
+          path="/laundry"
+          element={Laundry({user: user})}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>
