@@ -1,24 +1,40 @@
 import React from "react";
 import { useState } from "react";
-import Form from "@rjsf/core";
+import Form from "@rjsf/mui";
 import validator from "@rjsf/validator-ajv8";
 import postData from "../utils";
 
 const schema = {
-  "required": ["name", "item-templates"],
+  "title": "Create Outfit Templates",
+  "description": "Use this form to create custom outfit templates based on different tags.",
+  "required": ["Name", "item-templates"],
   "type": "object",
   "properties": {
-    "name": {"type": "string"},
+    "name": {
+      "type": "string",
+      "title": "Template Name - ex \"Gym Outfit\" ",
+    },
     "item-templates": {
       "type":"array",
+      "description": "This is a template for a type of outfit. Add items that you'd like to include with this outfit.",
+      "title": "Outfit Template",
       "items": { "$ref": "#/$defs/item-template" }
     }
   },
   "$defs": {
     "item-template": {
       "type": "object",
+      "title": "Item",
+      "description": "Give all items in the outfit these tags:",
       "properties": {
-        "tags": {"type": "array", "items": {"type": "string"}}
+        "tags": {
+          "title": "Item tags",
+          "type": "array", 
+          "items": {
+            "title": "Tag - ex \"hot\"",
+            "type": "string"
+          }
+        }
       },
       "required": ["tags"]
     }
@@ -33,11 +49,14 @@ export default function OutfitTemplateForm() {
   };
 
   return (
-    <Form
-      schema={schema}
-      validator={validator}
-      onSubmit={onSubmit}
-      formData={{'name': "hi", 'item-templates': [{"name": 'item1', 'tags': ['lol', 'lol2']}]}}
-    />
+    <div style = {{margin: "5%"}}>
+      <Form
+        schema={schema}
+        validator={validator}
+        onSubmit={onSubmit}
+        formData={{'name': "", 'item-templates': [{"name": '', 'tags': ['', '']}]}}
+        sx = {{padding: "5%", margin: "5%"}}
+      />
+    </div>
   );
 }
