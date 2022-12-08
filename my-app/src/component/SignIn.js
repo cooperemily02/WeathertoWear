@@ -46,7 +46,7 @@ export default function SignIn(props) {
       const json = await response.json();
       console.log(json);
       if (json.user_exist == "False"){
-        alert("The user doesn't exist. Please try again.");
+        alert("The user doesn't exist. Please sign up if you would like to create an account.");
       }
       if (json.password_correct == "False" && json.user_exist == "True"){
         alert("Your password is incorrect. Please try again.")
@@ -81,7 +81,7 @@ export default function SignIn(props) {
           <Typography component="h1" variant="h4" sx={{fontFamily: 'Caudex'}}>
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, fontFamily: 'Caudex' }}>
             <TextField
               margin="normal"
               required
@@ -110,12 +110,7 @@ export default function SignIn(props) {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/signUp" href="/signUp" variant="body2">
                   {"Don't have an account? Sign Up"}

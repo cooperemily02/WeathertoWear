@@ -114,7 +114,7 @@ export const WeatherDashboard = (props) => {
                                 <FormControlLabel value="f" control={<Radio />} label={<Typography fontFamily = 'Caudex'> Celcius </Typography> }/>
                             </RadioGroup>
                          </FormControl>
-                        <Typography variant = "h6" fontFamily = 'Caudex'> Today's Forcast Is: <b>{weather.weather0}</b> </Typography>
+                        <Typography variant = "h6" fontFamily = 'Caudex'> Today's Forecast Is: <b>{weather.weather0}</b> </Typography>
                         </>
                         }
                     </div>
