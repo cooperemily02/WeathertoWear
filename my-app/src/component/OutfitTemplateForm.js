@@ -33,7 +33,8 @@ const schema = {
           "items": {
             "title": "Tag - ex \"hot\"",
             "type": "string"
-          }
+          },
+          "uniqueItems": true
         }
       },
       "required": ["tags"]
