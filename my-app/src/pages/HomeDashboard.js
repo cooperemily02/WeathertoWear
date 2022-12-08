@@ -12,7 +12,8 @@ export const HomeDashboard = (props) => {
     const [enteredZipcode, setEnteredZipcode] = useState("")
     const [fetchedOutfitData, setFetchedOutfitData] = useState({hasOutfit: false, fetchError: false})
     const [weather, setWeather] = useState(false)
-    const userId = props.userId
+    const user = props.user
+    //console.log(user);
     let [outfit, setOutfit] = useState([]);
 
     //console.log(outfit);
@@ -23,7 +24,7 @@ export const HomeDashboard = (props) => {
               method: "POST",
               credentials: "include",
               body: JSON.stringify({
-                user: userId,
+                user: user,
                 zipcode: enteredZipcode
                }),
                headers: {
@@ -68,7 +69,7 @@ export const HomeDashboard = (props) => {
 
         return (
         <>
-            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, User {props.userId}</Typography>
+            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, {user.userName}</Typography>
             {zipcode == -1 && 
               <>
                 <div style = {{justifyContent: "center", alignItems: "center", textAlign: "center"}}>
@@ -87,8 +88,10 @@ export const HomeDashboard = (props) => {
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
               <Outfit outfit = {outfit} fetchedOutfitData = {fetchedOutfitData}/>
             }
-            {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
-                <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>
+            {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true &&
+              <div> 
+                <Typography variant="h5" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex'}}> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </Typography>
+              </div>
             }
             </div> 
         </>

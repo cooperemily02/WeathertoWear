@@ -6,22 +6,33 @@ import Navbar from "./navbar";
 import Closet from "../pages/closet";
 import Home from "../pages/home";
 import HomeDashboard from "../pages/HomeDashboard";
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
 
 function Header(props) {
-  const userId = props.userId;
-  const setUserId = props.setUserId
+  const user = props.user;
+  const setUser = props.setUser;
+
   return (
     <>
-      <Navbar userId = {userId} setUserId = {setUserId}/>
+      <Navbar user = {user} setUser = {setUser}/>
       <Routes>
-        <Route path="/" element={Home({userId: userId, setUserId: setUserId})} />
+        <Route path="/" element={Home({user: user, setUser: setUser})} />
         <Route
           path="/closet"
-          element={Closet({userId: userId})}
+          element={Closet({user: user})}
         />
         <Route
           path="/homeDashboard"
-          element={HomeDashboard({userId: userId})}
+          element={HomeDashboard({user: user})}
+        />
+        <Route
+          path="/signUp"
+          element={SignUp({user: user, setUser: setUser})}
+        />
+        <Route
+          path="/signin"
+          element={SignIn({user: user, setUser: setUser})} 
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
       </Routes>
