@@ -82,8 +82,17 @@ class Tag(db.Model):
         return Tag.query.get(name)
 
 
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+
+#     def get_all_items(self):
+#         return [item for closet in self.closets for item in closet.items]
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False, unique=False)
+    password_hash = db.Column(db.String(20), nullable=False, unique=True)
+    email = db.Column(db.String(40), nullable=False, unique=True)
     outfit_templates = db.relationship('OutfitTemplate')
     closets = db.relationship("Closet", back_populates="user")
 

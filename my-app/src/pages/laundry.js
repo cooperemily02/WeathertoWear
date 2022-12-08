@@ -8,7 +8,7 @@ import { DryCleaning as DryCleaningIcon, Close as CloseIcon}from '@mui/icons-mat
 
 
 const Laundry = (props) => {
-  const userId = props.userId
+  const userId = props.user.userId
     const [itemTypeToShow, setItemTypeToShow] = useState('All')
     const [openAlert, setOpenAlert] = React.useState(false);
     const [severity, setSeverity] = useState(undefined);
