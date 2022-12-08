@@ -1,6 +1,7 @@
 import api
 import unittest
 from flask import json
+from models import ItemTemplate, ClothingItem
 
 
 class MyTestCase(unittest.TestCase):
@@ -58,14 +59,41 @@ class MyTestCase(unittest.TestCase):
             content_type="application/json",
         )
 
-        # TODO: re-design test
-        # For now, regardless of the weather, an outfit includes:
-        # top + bottom + shoes
         resp_data = response.get_json()
-        self.assertTrue(any("top" in item["tags"] for item in resp_data))
-        self.assertTrue(any("bottom" in item["tags"] for item in resp_data))
-        self.assertTrue(any("shoes" in item["tags"] for item in resp_data))
+        #TODO: add test checks that each item satisfies the 'item_template' with it (idk how to test the DB)
 
+        assert(response.status_code == 200)
+
+    def test_get_outfit_templates(self):
+        response = self.app.post(
+            "/outfit-templates",
+            data=json.dumps({"user": 1}),
+            content_type="application/json",
+        )
+        assert(any(
+            "Gym Outfit" in template['name'] for template in response.get_json()
+        ))
+    
+
+    def test_get_item_from_template(self):
+        response = self.app.post(
+            "/item-from-template",
+            data=json.dumps({"user": 1, "item_template": 1, "excluded_item": 1}),
+            content_type="application/json",
+        )
+        #TODO: this test relies on init_db not changing much, re-factor
+        # or ignore if it fails because of that
+        assert(response.get_json()['id'] == 9)
+        # This should give an error, as the excluded '9' is the only thing matching template '1'.
+        try:
+            response = self.app.post(
+                "/item-from-template",
+                data=json.dumps({"user": 1, "item_template": 1, "excluded_item": 9}),
+                content_type="application/json",
+            )
+            assert(False) # The error should happen before this point
+        except ValueError:
+            pass
     def test_get_laundry(self):
        return
 

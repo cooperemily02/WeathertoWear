@@ -4,7 +4,7 @@ import {Stack, TextField, List, ListItem, Card, CardContent, CardActionArea, Car
 import {Delete as DeleteIcon, Edit as EditIcon, LocalLaundryService as LocalLaundryServiceIcon} from '@mui/icons-material';
 import {capitalize} from '../helpers'
 import Select from 'react-select'
-import img from "../static/W2W.png";
+import w2wLogo from "../static/W2W.png";
 import top from "../static/top.png"
 import bottom from "../static/bottom.png"
 import shoes from "../static/shoes.jpg"
@@ -14,18 +14,29 @@ function ClothingItem(props) {
   const item = props.item;
   const userId = props.userId
   const parent = props.parent
-  var backgroundColor = "FFFFFF" 
-
-  item.tags.forEach(tag => {
-    if(tag === "top"){img = top}
-    if(tag === "bottom"){img = bottom}
-    if(tag === "shoes"){img = shoes}
-    if(tag === "outerwear"){img = coat}
-    if(tag === "cold"){backgroundColor = "#DAF0F7"}
-    if(tag === "hot"){backgroundColor = "#FFBDAF"}
-    if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
-  })
-
+  var backgroundColor = "FFFFFF"
+  //I very buggy proof of concept code. I have no idea why this runs at every keypress/ update
+  const [img, setImg] = useState(w2wLogo)
+  const fetchImage = async (imageUrl) => {
+    const res = await fetch(imageUrl)
+    const imageBlob = await res.blob();
+    const imageObjectURL = URL.createObjectURL(imageBlob);
+    if(res.ok){
+    setImg(imageObjectURL);
+    }else{
+      item.tags.forEach(tag => {
+        if(tag === "top"){setImg(top)}
+        if(tag === "bottom"){setImg(bottom)}
+        if(tag === "shoes"){setImg(shoes)}
+        if(tag === "outerwear"){setImg(coat)}
+        if(tag === "cold"){backgroundColor = "#DAF0F7"}
+        if(tag === "hot"){backgroundColor = "#FFBDAF"}
+        if(tag === "average_temp"){backgroundColor = "#FFFFCE"}
+      })
+    }
+  };
+  //console.log(item);
+  //console.log(item.img)
   function generateDisplayTag(tag, type){
     if (type === 'temp'){
       if(tag === "average_temp"){
@@ -189,11 +200,12 @@ function ClothingItem(props) {
   const handleChangeType= (type) => {
     setSelectedType(type.value);
   };
-
-
-  useEffect(()=>{
-
-  }, [props.parent.updateVariable])
+  
+  const handleOnClick = () => {
+  }
+  useEffect(() => {
+      fetchImage('/images/' + item.img)
+  }, [item, userId])
   return (
     <>
     {
@@ -224,7 +236,7 @@ function ClothingItem(props) {
         spacing={10}
           sx={{ flexWrap: 'wrap', gap: 1 }}
           >
-          <CardMedia component="img" image={img} alt={item.name} sx = {{padding: "7px", width: "50%"}}/>
+          <CardMedia component="img" image={img} alt={item.name} sx = {{padding: "7px", width: "40%"}}/>
           <Stack direction = "column" sx = {{textAlign: "left"}}>
             <Typography variant="h5" sx={{fontFamily: 'Caudex'}} > For Weather: </Typography>
             <List>
