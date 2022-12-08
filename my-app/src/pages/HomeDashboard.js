@@ -10,8 +10,7 @@ export const HomeDashboard = (props) => {
     const [enteredZipcode, setEnteredZipcode] = useState("")
     const [fetchedOutfitData, setFetchedOutfitData] = useState({hasOutfit: false, fetchError: false})
     const [weather, setWeather] = useState(false)
-    const user = props.user
-    //console.log(user);
+    const userId = props.userId
     let [outfit, setOutfit] = useState([]);
 
     //console.log(outfit);
@@ -22,7 +21,7 @@ export const HomeDashboard = (props) => {
               method: "POST",
               credentials: "include",
               body: JSON.stringify({
-                user: user,
+                user: userId,
                 zipcode: enteredZipcode
                }),
                headers: {
@@ -68,8 +67,7 @@ export const HomeDashboard = (props) => {
 
         return (
         <>
-            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, {user.userName}</Typography>
-            {zipcode == -1 && 
+            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, User {props.userId}</Typography>
               <>
                 <div style = {{justifyContent: "center", alignItems: "center", textAlign: "center"}}>
                   <TextField id="outlined-basic" 
@@ -80,17 +78,15 @@ export const HomeDashboard = (props) => {
                   <Button variant="contained" onClick = {handleButtonClick} sx={{display: "block", justifyContent:"center", alignItems: "center", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Fetch Weather & Outfits!</Button>
                 </div>
               </>
-            }
+            
             <div>
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
               
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
               <Outfit userId = {userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece}/>
             }
-            {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true &&
-              <div> 
-                <Typography variant="h5" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex'}}> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </Typography>
-              </div>
+            {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
+                <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>
             }
             </div> 
         </>

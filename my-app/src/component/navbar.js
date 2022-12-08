@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -10,6 +9,7 @@ import {
   MenuItem,
   Menu,
 } from "@mui/material";
+import {Link} from "react-router-dom";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import { makeStyles } from "@mui/styles";
 import Drawer from "./Drawer";
@@ -49,22 +49,23 @@ function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const userId = props.user.userId
+  const userId = props.userId
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    props.setUser({})
+    props.setUserId(-1)
+    window.location.reload(false);
     setAnchorEl(null)
   };
-  const logoutHandleClose = () => {
-    setAnchorEl(null)
-  }
   return (
     <AppBar position="static" sx={{backgroundColor: 'rgb(116, 141, 166)'}}>
       <CssBaseline />
+      {/* <IconButton>
+            <CloseIcon />
+      </IconButton> */}
       <Toolbar >
         <Drawer userId = {userId} />
         <div
@@ -94,7 +95,7 @@ function Navbar(props) {
             aria-labelledby="demo-positioned-button"
             anchorEl={anchorEl}
             open={open}
-            onClose={logoutHandleClose}
+            onClose={handleClose}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'left',
