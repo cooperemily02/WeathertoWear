@@ -11,7 +11,6 @@ export const HomeDashboard = (props) => {
     const [fetchedOutfitData, setFetchedOutfitData] = useState({hasOutfit: false, fetchError: false})
     const [weather, setWeather] = useState(false)
     const user = props.user
-    const userId = props.user.userId
     //console.log(user);
     let [outfit, setOutfit] = useState([]);
 
