@@ -135,9 +135,8 @@ def Return_New_Clothing_Item():
     
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
-    tag_objects = [
-        models.Tag.get_or_create(tag_name) for tag_name in item_dict['attributes']
-    ]
+    tag_objects = set([models.Tag.get_or_create(tag_name) for tag_name in item_dict['attributes']])
+    tag_objects = list(tag_objects)
     clothing_item.tags = tag_objects
 
     # finds the user in the database, based on the inputted user ID
@@ -158,8 +157,9 @@ def Return_New_Clothing_Item():
         clothing_item.closet_id = closet.id
         closet.items = [clothing_item]
         
-    file = request.files['file'] 
-    clothing_item.setimg(file)
+    if 'file' in request.files:
+        file = request.files['file'] 
+        clothing_item.setimg(file)
     
     db.session.add(clothing_item)
     db.session.commit()
