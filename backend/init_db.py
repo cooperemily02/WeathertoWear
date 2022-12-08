@@ -5,7 +5,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     db.drop_all()
     db.create_all()
 
-    #TODO Fix this to work with the new sign-in system
+    #TODO Implement the new_user method & make sure it works here.
     user1 = models.User.new_user(
         name='Default User',
         password='123',
