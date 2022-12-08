@@ -85,6 +85,7 @@ const Closet = (props) => {
   };
   
   const handleOnClick = () => {
+    const deleteItem = "false";
     selectedAttributes.push(selectedType)
     let clothingItem = {name: enteredItemName, attributes: selectedAttributes, image: imageOfItem, file: imageOfItem, filename: "1"}
     const data = new FormData();

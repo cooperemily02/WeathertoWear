@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useNavigate, Link } from "react-router-dom";
 import {Stack, TextField, List, ListItem, Card, CardContent, CardActionArea, CardMedia, Button, Modal, Box, Typography, ListItemText} from "@mui/material";
 import {Delete as DeleteIcon, Edit as EditIcon, LocalLaundryService as LocalLaundryServiceIcon} from '@mui/icons-material';
 import {capitalize} from '../helpers'
@@ -109,11 +110,74 @@ function ClothingItem(props) {
   };
 
   const [addItemModal, openAddItem] = useState(false);
+
+  const handleDelete = async (arr) => {
+    const deleteItem = "true";
+    console.log("ITEM")
+    console.log(arr[0]);
+    const selectedItem = {user: userId, item: arr[0], deleteItem: deleteItem};
+    try{
+      const response = await fetch('/dummy/clothingItem', {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify(selectedItem),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      const json = await response.json();
+      console.log(json);
+      if (json.deleted == "true" && arr[1].edit == false){
+        alert("Clothing item has been deleted.");
+        props.parent.updateFunction(true)
+        handleClose()
+      }
+      if (json.deleted == "true" && arr[1].edit == true){
+        props.parent.updateFunction(true)
+      }
+    } catch (error){
+      console.log("error", error);
+    }     
+  }
+
+  const handleEdit = async (item) => {
+    handleDelete([item, {edit: true}]);
+    const deleteItem = "false";
+    const tags = [];
+    tags.push(selectedType);
+    for (let i = 0; i < itemTags.length; i++){
+      tags.push(itemTags[i]);
+    }
+    const updatedItem = {closet_id: item.closet_id, id: item.id, name: itemName, attributes: tags}
+    console.log(updatedItem);
+    const selectedItem = {user: userId, item: updatedItem, deleteItem: deleteItem};
+    try{
+      const response = await fetch('/dummy/clothingItem', {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify(selectedItem),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      const json = await response.json();
+      console.log(json);
+      if (json){
+        alert("Clothing item has been updated.");
+        props.parent.updateFunction(true)
+        handleCloseModal()
+      }
+    } catch (error){
+      console.log("error", error);
+    }     
+  }
+  
   const handleAddItem = () =>{
     handleClose()
     openAddItem(true)
   }
   const handleCloseModal = () => {
+    handleClose()
     openAddItem(false)
   }
 
@@ -128,7 +192,7 @@ function ClothingItem(props) {
    //This is run when the user changes the attributes on the multiselect dropdown for adding an item
    const handleChangeAttributes= (attributes) => {
     let items = []
-    items.map(item => {
+    attributes.map(item => {
       items.push(item.value)
     })
     setItemTags(items)
@@ -201,8 +265,8 @@ function ClothingItem(props) {
           </Stack>
         </Stack>
         <Stack direction = "row" spacing = {1}>
-          <Button variant="outlined" color = "error" fullWidth startIcon={<DeleteIcon/>}>
-                Delete
+          <Button variant="outlined" color = "error" fullWidth startIcon={<DeleteIcon/>} onClick = {() => handleDelete([item, {edit: false}])}>
+            Delete
           </Button>
           <Button variant="outlined" fullWidth startIcon={<EditIcon/>} onClick = {handleAddItem}>
                 Edit
@@ -211,7 +275,6 @@ function ClothingItem(props) {
       </Box>
     </Modal>
   </div>
-
 
   <Modal
       open={addItemModal}
@@ -224,7 +287,7 @@ function ClothingItem(props) {
         <Typography id="modal-modal-description" sx={{ mt: 2, marginBottom: "5px"}}>
           Edit the information about your <b>{item.name}</b>
         </Typography>
-        <TextField sx = {{width: "100%", padding: "5px"}} value = {itemName} id="standard" label="Name of item" variant="standard" onChange={(newValue) => setItemName(newValue.target.value)}/>
+        <TextField sx = {{width: "100%", padding: "5px"}} id="standard" label="Name of item" variant="standard" onChange={(newValue) => setItemName(newValue.target.value)}/>
         <div style = {{paddingBlock: "5px"}}>
           <b>This item is a:</b>
           <Select 
@@ -245,8 +308,7 @@ function ClothingItem(props) {
             options={props.optionsForWeather}
           />
         </div>
-        <Button variant="contained" onClick = {handleOnClick} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Edit Item</Button>
-        
+        <Button variant="contained" onClick = {() => handleEdit(item)} sx={{justifyContent:"center", alignItems: "center", display: "flex", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Edit Item</Button>
       </Box>
   </Modal>
     </>
