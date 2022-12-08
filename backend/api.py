@@ -254,9 +254,11 @@ def generate_outfit():
     user: models.User = models.User.query.get(user_id)
     closet = user.default_closet()
     items = user.get_all_items()
-    weather_str = weather.get_forecast(zipcode)["weather0"]
+    weather_data = weather.get_forecast(zipcode)
+    weather_str = weather_data["weather0"]
+    temp = weather_data['temp0']
     #TODO: refactoring. (right now this helper method uses defaults/hardcode to work under flexible conditons)
-    outfit_template_id = helpers.get_default_template_id_from_weather_str(weather_str)
+    outfit_template_id = helpers.get_default_template_id_from_weather_str(weather_str, temp)
     # Use the given template_id if it exists:
     if 'template_id' in data and data['template_id'] != -1:
         outfit_template_id = data.get('template_id', outfit_template_id)
