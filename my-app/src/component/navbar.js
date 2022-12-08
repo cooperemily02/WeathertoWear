@@ -55,11 +55,11 @@ function Navbar(props) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const logoutAndHandleClose = () => {
-    props.setUser({userName: "", userId: 0})
+  const handleClose = () => {
+    props.setUser({})
     setAnchorEl(null)
   };
-  const handleCloseMenu = () => {
+  const logoutHandleClose = () => {
     setAnchorEl(null)
   }
   return (
@@ -84,7 +84,7 @@ function Navbar(props) {
             left: "95%",
             top: "50%",
             transform: "translate(-50%, -50%)",}}>
-          { userId !== 0 && 
+          { userId !== -1 && 
           <IconButton onClick={handleClick}>
             <AccountCircleRoundedIcon style = {{color: 'white'}} fontSize = "large" />
           </IconButton>
@@ -94,7 +94,7 @@ function Navbar(props) {
             aria-labelledby="demo-positioned-button"
             anchorEl={anchorEl}
             open={open}
-            onClose={handleCloseMenu}
+            onClose={logoutHandleClose}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'left',
@@ -104,8 +104,7 @@ function Navbar(props) {
               horizontal: 'left',
             }}
           >
-            <MenuItem component={Link} to = '/' onClick={logoutAndHandleClose} >Logout</MenuItem>
-            <MenuItem component = {Link} to = '/outfit-template-form' onClick = {handleCloseMenu}>Outfit Template Form</MenuItem>
+            <MenuItem component={Link} to = '/' onClick={handleClose} >Logout</MenuItem>
         </Menu>
       </div>
       </Toolbar>
