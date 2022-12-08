@@ -6,6 +6,8 @@ import weather
 from w2w_logic.outfit_generator import Item, pick_outfit
 import os
 import json
+import helpers
+
 
 app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
@@ -134,8 +136,7 @@ def Return_New_Clothing_Item():
     # Construct Tag objects from the request (called attributes there),
     # And add them to the clothing_item
     tag_objects = [
-        models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
-        models.Tag(name=tag_name) for tag_name in item_dict['attributes']
+        models.Tag.get_or_create(tag_name) for tag_name in item_dict['attributes']
     ]
     clothing_item.tags = tag_objects
 
@@ -171,25 +172,66 @@ def generate_outfit():
     data = request.get_json()
     zipcode, user_id = data["zipcode"], data["user"]
 
-    user = models.User.query.get(user_id)
+    user: models.User = models.User.query.get(user_id)
+    closet = user.default_closet()
     items = user.get_all_items()
     weather_str = weather.get_forecast(zipcode)["weather0"]
+    #TODO: refactoring. (right now this helper method uses defaults/hardcode to work under flexible conditons)
+    outfit_template_id = helpers.get_default_template_id_from_weather_str(weather_str)
+    outfit_template = models.OutfitTemplate.query.get(outfit_template_id)
 
-    # This is used to map/re-map the logic function's input/output type
-    # from/to the ORM models
-    logic_item_to_orm = {
-        Item(
-            name=model_item.name, attributes=[attr.name for attr in model_item.tags]
-        ): model_item
-        for model_item in items
-    }
-    logic_outfit = pick_outfit(
-        items=set(logic_item_to_orm.keys()), weather_str=weather_str
+    items, item_to_its_template = closet.find_matching_outfit(outfit_template)
+    # Adding the template id's for future use:
+    return [
+        item.serialize_with_template_id(item_to_its_template[item]) for item in items
+    ]
+
+
+
+@app.route("/outfit-template", methods=["POST"])
+def outfit_template():
+    breakpoint()
+    data = request.get_json()
+    #TODO: get user_id instead of hardcoding '1'
+    outfit_template = models.OutfitTemplate(
+        name=data['name'],
+        user_id=1,
+        item_templates=[
+            models.ItemTemplate(name=template['name'], required_tags=[
+                models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']
+            ])
+            for template in data['item-templates']
+        ]
     )
-    orm_outfit = [logic_item_to_orm[logic_item] for logic_item in logic_outfit]
+    db.session.add(outfit_template)
+    db.session.commit()
+    return {}
 
-    return [orm_item.serialize for orm_item in orm_outfit]
+"""
+Gets the outfit_templates of the user
+"""
+@app.route("/outfit-templates", methods=["POST"])
+def outfit_templates():
+    data = request.get_json()
+    user = models.User.query.get(data['user'])
+    return [template.serialize for template in user.outfit_templates]
 
+"""
+Gets a clean item matching 'item_template' id from the user's closet(s)
+"""
+@app.route("/item-from-template", methods=["POST"])
+def get_item_from_template():
+    data = request.get_json()
+    user: models.User = models.User.query.get(data['user'])
+    item_template = models.ItemTemplate.query.get(data['item_template'])
+    excluded_items = set()
+    if 'excluded_item' in data:
+        excluded_items.add(models.ClothingItem.query.get(data['excluded_item']))
+    match: models.ClothingItem = user.default_closet().find_matching_item(item_template=item_template, excluded_items=excluded_items) 
+    # Add the template_id, this lets the frontend know what template the item matched (for regeneration)
+    item_dict = match.serialize.copy()
+    item_dict['item_template'] = data['item_template']
+    return item_dict
 
 if __name__ == "__main__":
     app.run(debug=True)

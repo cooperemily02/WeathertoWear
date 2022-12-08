@@ -9,6 +9,7 @@ import shoes from "../static/shoes.jpg";
 import coat from "../static/coat.png";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
+import postData from "../utils"
 
 export const Outfit = (props) => {
     const outfit = props.outfit
@@ -32,6 +33,20 @@ export const Outfit = (props) => {
             return coat;
         }
     }
+
+    const onRegenItem = async (index, item_template, excluded_item) => {
+        console.log('Trying to regen item:', excluded_item, 
+            'with template: ', item_template
+        )
+
+        //TODO: replace hardcoded user
+        const new_item = await postData('item-from-template', {
+            user: 1, item_template: item_template, excluded_item: excluded_item
+        })
+        console.log(new_item)
+        //TODO: replace old with new_item
+    }
+
     if (outfit.length == 0 || props.fetchedOutfitData.hasOutfit == false){
         return ( 
             <>
@@ -46,11 +61,11 @@ export const Outfit = (props) => {
         );
     }
     else {
-        let outfitItems = outfit.map((piece) => {
+        let outfitItems = outfit.map((piece, i) => {
             console.log(piece)
             return (
                 <Box display="flex" justifyContent="space-between" sx={{pt: 10}}>
-                    <IconButton color="primary" aria-label="add to shopping cart">
+                    <IconButton color="primary" aria-label="add to shopping cart" onClick={() => onRegenItem(i, piece.item_template, piece.id)}>
                         <RefreshIcon />
                     </IconButton>
                     <Typography variant="h4"  sx={{color: 'white', fontFamily: 'Caudex', pt:15}} >{piece.name.charAt(0).toUpperCase() + piece.name.slice(1)}</Typography>

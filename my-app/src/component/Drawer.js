@@ -65,6 +65,13 @@ function DrawerComponent(props) {
           </ListItem>
           </>
         }
+        <ListItem onClick={() => setOpenDrawer(false)}>
+            <ListItemText>
+              <Link to="/outfit-template-form" class={classes.link}>
+                Template Form
+              </Link>
+            </ListItemText>
+          </ListItem>
         </List>
       </Drawer>
       <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
