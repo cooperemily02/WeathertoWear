@@ -121,7 +121,6 @@ def Return_Forecast(zipcode: str):
 
 @app.route("/dummy/clothingItem", methods=["POST"])
 def Return_New_Clothing_Item():
-    # get_json is needed instead of 'form'
     if request.method == "POST":
         print("JSON" + json.dumps(request.get_json()))
         item_dict = request.get_json().get('item')
@@ -130,25 +129,19 @@ def Return_New_Clothing_Item():
         user_id = request.get_json().get('user')
         delete_item = request.get_json().get('deleteItem')
 
-        if delete_item == "false":
+        if delete_item == "false": #when user wants to add item to the closet
             # created the clothing item in the DB based on the user input
             clothing_item = models.ClothingItem()
             clothing_item.name = item_dict["name"]
-            
             # Construct Tag objects from the request (called attributes there), 
             # And add them to the clothing_item
-            # clothing_item.tags = [models.Tag(name=tag_name) for tag_name in item_dict['attributes']]
-
             tag_objects = [
                 models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
                 models.Tag(name=tag_name) for tag_name in item_dict['attributes']
             ]
             clothing_item.tags = tag_objects
-
             # finds the user in the database, based on the inputted user ID
             user = models.User.query.get(user_id)
-
-            
             #TODO: This endpoint takes in an item and a user. BUT, our model has multiple
             # closets for each user. So find/create a default Closet for the user, and
             # add the item there.
@@ -158,11 +151,9 @@ def Return_New_Clothing_Item():
                 # we haven't talked about a default closet, use input from front end later?
                 closet = (user.closets)[0]
                 clothing_item.closet_id = closet.id
-                # print("added item")
-                # print(clothing_item)
+                print("added item")
+                print(clothing_item)
                 closet.items.append(clothing_item)
-                # print("closet after adding item")
-                # print(closet.items)
             else:     
                 closet = models.Closet()
                 closet.user = user
@@ -171,29 +162,20 @@ def Return_New_Clothing_Item():
                 closet.items = [clothing_item]
             db.session.add(clothing_item)
             db.session.commit() 
+            print("added item after adding it to database")
+            print(clothing_item)
             exists = models.ClothingItem.query.filter_by(id = clothing_item.id).first()
             if exists:
-                print("item exists in database")
-            # print("after adding item")
-            # for item in closet.items:
-            #         print(item.name)     
+                print("item exists in database")   
             return clothing_item.serialize 
-        if delete_item == "true":
-            # print("item dictionary")
-            # print(item_dict)
+        
+        if delete_item == "true": #when user wants to delete item in closet
+            print("item dictionary")
+            print(item_dict)
             user = models.User.query.get(user_id)
             closet = (user.closets)[0]
             closet_list = closet.items
-            # print("closet list")
-            # print(closet_list)
-            # print("printing item parts")
-            # print(item_dict["closet_id"])
-            # print(item_dict["name"])
-            # print(item_dict["tags"])
             for i in range(len(closet_list)):
-                # print(closet_list[i].closet_id)
-                # print(closet_list[i].name)
-                # print(closet_list[i].tags)
                 if closet_list[i].closet_id == item_dict["closet_id"] and closet_list[i].name == item_dict["name"]:
                     result = False
                     item_names = []
@@ -208,25 +190,11 @@ def Return_New_Clothing_Item():
                             if item_names[y] == tag:
                                 continue
                     if result:
-                        # print("closet list before removing")
-                        # print(closet_list)
-                        # print(closet_list[i])
                         deleted_item = closet_list[i]
                         del closet_list[i]
-                        # print("deleted")
-                        # print(closet_list)
                         exists = models.ClothingItem.query.filter_by(id = deleted_item.id).first()
-                        # if exists:
-                        #     print("still exists")
-                        # else:
-                        #     print("huh?")
                         db.session.delete(exists)
                         db.session.commit()
-                        # exists = models.ClothingItem.query.filter_by(id = deleted_item.id).first()
-                        # print("does exists exist")
-                        # print(exists)
-                        # if exists == None:
-                        #     print("doesn't exist anymore")
                         return {"deleted": "true"}
                     else:
                         print("Tags didn't align")
