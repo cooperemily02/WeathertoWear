@@ -60,7 +60,8 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     rain_template.item_templates.extend([
         models.ItemTemplate(name="Rain Top", required_tags=[top, rainy]),
         models.ItemTemplate(name="Rain Bottom", required_tags=[bottom, rainy]),
-        models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy])
+        models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy]),
+        models.ItemTemplate(name="RainCoat", required_tags=[outerwear, rainy])
     ])
     user1.outfit_templates.append(rain_template)
 
