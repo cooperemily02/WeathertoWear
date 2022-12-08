@@ -7,7 +7,7 @@ import postData from "../utils";
 const schema = {
   "title": "Create Outfit Templates",
   "description": "Use this form to create custom outfit templates based on different tags.",
-  "required": ["Name", "item-templates"],
+  "required": ["name", "item-templates"],
   "type": "object",
   "properties": {
     "name": {
