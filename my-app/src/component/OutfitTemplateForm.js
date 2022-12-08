@@ -55,7 +55,7 @@ export default function OutfitTemplateForm() {
         schema={schema}
         validator={validator}
         onSubmit={onSubmit}
-        formData={{'name': "", 'item-templates': [{"name": '', 'tags': ['', '']}]}}
+        formData={{'name': "", 'item-templates': [{'tags': ['', '']}]}}
         sx = {{padding: "5%", margin: "5%"}}
       />
     </div>
