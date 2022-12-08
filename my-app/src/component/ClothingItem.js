@@ -141,7 +141,7 @@ function ClothingItem(props) {
   }
   useEffect(() => {
       fetchImage('/images/' + item.img)
-  }, [])
+  })
 
   useEffect(()=>{
 
