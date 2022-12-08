@@ -126,6 +126,9 @@ def Return_New_User():
         email = request.get_json().get("email")
         # id = request.get_json().get("id")
         # in line below filter by the id
+
+        #TODO: Implement what's below in the models.User class (so it can be accessed without the api)
+        # (A method for authenticating & one for creating users), then use it here.
         user = models.User.query.filter_by(
             email=email).first()  # looks in databse and tries to get the first occurence of this name in it
         if user is None:  # if the user is not in the database
@@ -138,11 +141,12 @@ def Return_New_User():
             db.session.commit()
             return {"exists": "false", "userName": newUser.name, "userId": newUser.id}
         else:
-            return {"exists": "true"}
+            return {"exists": "true", "userName": user.name, "userId": user.id}
 
 
 @app.route("/dummy/userLogin", methods=["POST"])
 def Login():
+    #TODO implement & use the models.User authentication method here.
     if request.method == "POST":
         user = None
         password_correct = 'False'
@@ -163,6 +167,7 @@ def Login():
                 password_correct = 'True'
                 return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
             else:
+                #TODO: I think it's wrong/unnecessary to return the name/id since the password is wrong here.
                 return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
         else:
             # print('Error: that user doesnt exist, try again')
