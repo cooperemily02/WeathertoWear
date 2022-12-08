@@ -34,16 +34,16 @@ export const Outfit = (props) => {
         }
     }
 
-    const onRegenItem = (index, item_template, excluded_item) => {
+    const onRegenItem = async (index, item_template, excluded_item) => {
         console.log('Trying to regen item:', excluded_item, 
             'with template: ', item_template
         )
-        //TODO: regen the item (need to find a way to modify the outfit,
-        // and to get the user id)
 
-        // new_item = postData('item-from-template', {
-        //     user: 1, item_template: item_template, excluded_item: excluded_item
-        // })
+        //TODO: replace hardcoded user
+        const new_item = await postData('item-from-template', {
+            user: 1, item_template: item_template, excluded_item: excluded_item
+        })
+        console.log(new_item)
         //TODO: replace old with new_item
     }
 
