@@ -72,6 +72,7 @@ const Closet = (props) => {
   };
   
   const handleOnClick = () => {
+    const deleteItem = "false";
     selectedAttributes.push(selectedType)
     let clothingItem = {name: enteredItemName, attributes: selectedAttributes}
     fetch('/dummy/clothingItem', {
@@ -79,7 +80,8 @@ const Closet = (props) => {
       credentials: "include",
       body: JSON.stringify({
        user: userId,
-       item: clothingItem
+       item: clothingItem,
+       deleteItem: deleteItem
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',

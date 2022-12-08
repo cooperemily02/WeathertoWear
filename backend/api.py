@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Flask, jsonify, request
-from models import db
-import weather
-from w2w_logic.outfit_generator import Item, pick_outfit
+import json
 
+from flask import Flask, jsonify, request
+
+import models
+import weather
+from models import db
+from w2w_logic.outfit_generator import Item, pick_outfit
 
 app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
@@ -118,43 +121,83 @@ def Return_Forecast(zipcode: str):
 
 @app.route("/dummy/clothingItem", methods=["POST"])
 def Return_New_Clothing_Item():
-    # get_json is needed instead of 'form'
-    item_dict = request.get_json().get("item")
-    user_id = request.get_json().get("user")
+    if request.method == "POST":
+        print("JSON" + json.dumps(request.get_json()))
+        item_dict = request.get_json().get('item')
+        print("item")
+        print(item_dict)
+        user_id = request.get_json().get('user')
+        delete_item = request.get_json().get('deleteItem')
 
-    # created the clothing item in the DB based on the user input
-    clothing_item = models.ClothingItem()
-    clothing_item.name = item_dict["name"]
-
-    # Construct Tag objects from the request (called attributes there),
-    # And add them to the clothing_item
-    tag_objects = [
-        models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
-        models.Tag(name=tag_name) for tag_name in item_dict['attributes']
-    ]
-    clothing_item.tags = tag_objects
-
-    # finds the user in the database, based on the inputted user ID
-    user = models.User.query.get(user_id)
-
-    #Find/create a default Closet for the user
-    is_user_has_closet = len(user.closets) > 0
-    # if the user has a closet/default closet then add it there
-    if is_user_has_closet:
-        # we haven't talked about a default closet, use input from front end later?
-        closet = (user.closets)[0]
-        clothing_item.closet_id = closet.id
-        closet.items.append(clothing_item)
-    else:
-        closet = models.Closet()
-        closet.user = user
-        closet.user_id = user.id
-        clothing_item.closet_id = closet.id
-        closet.items = [clothing_item]
-    db.session.add(clothing_item)
-    db.session.commit()
-
-    return clothing_item.serialize
+        if delete_item == "false": #when user wants to add item to the closet
+            # created the clothing item in the DB based on the user input
+            clothing_item = models.ClothingItem()
+            clothing_item.name = item_dict["name"]
+            # Construct Tag objects from the request (called attributes there), 
+            # And add them to the clothing_item
+            tag_objects = [
+                models.Tag.query.get(tag_name) if models.Tag.query.get(tag_name) else
+                models.Tag(name=tag_name) for tag_name in item_dict['attributes']
+            ]
+            clothing_item.tags = tag_objects
+            # finds the user in the database, based on the inputted user ID
+            user = models.User.query.get(user_id)
+            #TODO: This endpoint takes in an item and a user. BUT, our model has multiple
+            # closets for each user. So find/create a default Closet for the user, and
+            # add the item there.
+            is_user_has_closet = len(user.closets) > 0
+            # if the user has a closet/default closet then add it there
+            if (is_user_has_closet): 
+                # we haven't talked about a default closet, use input from front end later?
+                closet = (user.closets)[0]
+                clothing_item.closet_id = closet.id
+                print("added item")
+                print(clothing_item)
+                closet.items.append(clothing_item)
+            else:     
+                closet = models.Closet()
+                closet.user = user
+                closet.user_id = user.id
+                clothing_item.closet_id = closet.id
+                closet.items = [clothing_item]
+            db.session.add(clothing_item)
+            db.session.commit() 
+            print("added item after adding it to database")
+            print(clothing_item)
+            exists = models.ClothingItem.query.filter_by(id = clothing_item.id).first()
+            if exists:
+                print("item exists in database")   
+            return clothing_item.serialize 
+        
+        if delete_item == "true": #when user wants to delete item in closet
+            print("item dictionary")
+            print(item_dict)
+            user = models.User.query.get(user_id)
+            closet = (user.closets)[0]
+            closet_list = closet.items
+            for i in range(len(closet_list)):
+                if closet_list[i].closet_id == item_dict["closet_id"] and closet_list[i].name == item_dict["name"]:
+                    result = False
+                    item_names = []
+                    for item in closet_list[i].tags:
+                        item_names.append(item.name)
+                    
+                    for y in range(len(item_names)):
+                        for tag in item_dict["tags"]:
+                            if y == len(item_names) - 1 and item_names[y] == tag:
+                                # print("same")
+                                result = True
+                            if item_names[y] == tag:
+                                continue
+                    if result:
+                        deleted_item = closet_list[i]
+                        del closet_list[i]
+                        exists = models.ClothingItem.query.filter_by(id = deleted_item.id).first()
+                        db.session.delete(exists)
+                        db.session.commit()
+                        return {"deleted": "true"}
+                    else:
+                        print("Tags didn't align")
 
 
 @app.route("/gen-outfit", methods=["POST"])
