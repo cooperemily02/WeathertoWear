@@ -24,11 +24,11 @@ const schema = {
   "$defs": {
     "item-template": {
       "type": "object",
-      "title": "Item",
+      "title": "Outfit Clothing Item",
       "description": "Require an item in the outfit to have these tags:",
       "properties": {
         "tags": {
-          "title": "Item tags",
+          "title": "Clothing Item Tags",
           "type": "array", 
           "items": {
             "title": "Tag - ex \"hot\"",
@@ -56,7 +56,7 @@ export default function OutfitTemplateForm() {
         schema={schema}
         validator={validator}
         onSubmit={onSubmit}
-        formData={{'name': "", 'item-templates': [{'tags': ['', '']}]}}
+        formData={{'name': "", 'item-templates': [{'tags': ['', '']}, {'tags': ['', '']}]}}
         sx = {{padding: "5%", margin: "5%"}}
       />
     </div>
