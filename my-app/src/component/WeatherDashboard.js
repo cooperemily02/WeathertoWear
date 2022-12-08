@@ -94,9 +94,9 @@ export const WeatherDashboard = (props) => {
                 square = {false}
                 >
                     {console.log(weather)}
-                    <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather for <b>{weather.city_name}</b></Typography>
+                    {zipCode!==-1 && <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather for <b>{weather.city_name}</b></Typography> }
                     <DigitalClock />
-                    <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>
+                    {zipCode!==-1 && <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>}
                     <div style = {{float: "right", padding: "5%"}}>
                         {!(isNaN(weather.temp0)) &&
                         <>
