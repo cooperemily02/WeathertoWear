@@ -118,30 +118,22 @@ def Send_Laundry():
 @app.route("/dummy/userSignUp", methods=["POST"])
 def Return_New_User():
     if request.method == "POST":
-        # userExists = False
-        user = None
         print("JSON" + json.dumps(request.get_json()))
         name = request.get_json().get("name")
         password = request.get_json().get("password")
         email = request.get_json().get("email")
-        # id = request.get_json().get("id")
-        # in line below filter by the id
 
-        #TODO: Implement what's below in the models.User class (so it can be accessed without the api)
-        # (A method for authenticating & one for creating users), then use it here.
-        user = models.User.query.filter_by(
-            email=email).first()  # looks in databse and tries to get the first occurence of this name in it
-        if user is None:  # if the user is not in the database
-            hashed_pw = generate_password_hash(password)  # needed for login
-            print("hashed password")
-            print(hashed_pw)
-            # newUser = models.User(name=name, password_hash=password, email=email)  # add the id portion here
-            newUser = models.User(name=name, password_hash=hashed_pw, email=email)  # add the id portion here
-            db.session.add(newUser)
-            db.session.commit()
+        hashed_pw = models.User.authenticate_and_get(password)
+        user = None
+        user = models.User.query.filter_by(email=email).first()  # looks in databse and tries to get the first occurence of this name in it
+        if user is None:
+            newUser = models.User.new_user(name, hashed_pw, email)
             return {"exists": "false", "userName": newUser.name, "userId": newUser.id}
         else:
             return {"exists": "true", "userName": user.name, "userId": user.id}
+
+    #     #TODO: Implement what's below in the models.User class (so it can be accessed without the api)
+    #     # (A method for authenticating & one for creating users), then use it here.
 
 
 @app.route("/dummy/userLogin", methods=["POST"])
@@ -155,8 +147,7 @@ def Login():
         password = request.get_json().get("password")
         email = request.get_json().get("email")
         # in line below filter by the email
-        user = models.User.query.filter_by(
-            email=email).first()  # looks in databse and tries to get the first occurence of this email in it
+        user = models.User.query.filter_by(email=email).first()  # looks in databse and tries to get the first occurence of this email in it
         if user:  # if the user is  in the database
             user_exists = 'True'
             print("hashed password, login")

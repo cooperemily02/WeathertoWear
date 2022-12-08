@@ -100,12 +100,21 @@ class User(db.Model):
     closets = db.relationship("Closet", back_populates="user")
 
     @staticmethod
-    def new_user(name, password, email) -> User:
+    def new_user(name, password, email):
+        newUser = User(name=name, password_hash=password, email=email)  # add the id portion here
+        db.session.add(newUser)
+        db.session.commit()
+
         #TODO: implement signing up
         pass
 
     @staticmethod
-    def authenticate_and_get(name, password, email) -> User:
+    def authenticate_and_get(password):
+        hashed_pw = generate_password_hash(password)  # needed for login
+        print("hashed password")
+        print(hashed_pw)
+        return hashed_pw
+            # newUser = models.User(name=name, password_hash=password, email=email)  # add the id portion here
         #TODO: authenticate the password to the hash and return it if correct
         pass
 
