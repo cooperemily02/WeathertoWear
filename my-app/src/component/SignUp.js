@@ -23,40 +23,52 @@ export default function SignUp(props) {
     const name = data.get('name').toString();
     const email = data.get('email').toString();
     const password = data.get('password').toString();
+    console.log(password)
     const createdUser = {
       name: name,
       password: password,
       email: email
     }
-    try{
-      const response = await fetch("/dummy/userSignUp", {
-        method: 'POST',
-        credentials: "include",
-        body: JSON.stringify(createdUser),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      });
-      const json = await response.json();
-      console.log(json);
-      if (json.exists == "true"){
-        alert("This user already exists.");
-      }
-      if (json.exists == "false"){
-        setUser(json);
-        if (user.userId !== -1){
-          navigate('/homeDashboard');
+    if(validateEmail(email) && name!=="" && password!==""){
+      try{
+        const response = await fetch("/dummy/userSignUp", {
+          method: 'POST',
+          credentials: "include",
+          body: JSON.stringify(createdUser),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        });
+        const json = await response.json();
+        console.log(json);
+        if (json.exists == "true"){
+          alert("This user already exists.");
         }
+        if (json.exists == "false"){
+          setUser(json);
+          if (user.userId !== -1){
+            navigate('/homeDashboard');
+          }
+        }
+      } catch (error) {
+        console.log("hi error", error);
       }
-    } catch (error) {
-      console.log("hi error", error);
+    } else {
+      if (!validateEmail(email)){
+        alert("Entered email is not valid. Please enter a valid email.")
+      }
+      else if (name === ""){
+        alert("Please enter a name")
+      }
+      else if (password === ""){
+        alert("Please enter a password")
+      }
     }
-    // console.log({
-    //   email: data.email,
-    //   password: data.password,
-    // });
+}
+  const validateEmail = (email) => {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
   };
-  
 
   return (
     <ThemeProvider theme={theme}>
