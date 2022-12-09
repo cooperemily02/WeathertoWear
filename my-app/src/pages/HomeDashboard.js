@@ -6,6 +6,9 @@ import postData from "../utils";
 
 
 export const HomeDashboard = (props) => {
+    function isValidUSZip(sZip) {
+      return /^\d{5}(-\d{4})?$/.test(sZip);
+    }
     const [zipcode, setZipcode] = useState(-1)
     const [enteredZipcode, setEnteredZipcode] = useState("")
     const [fetchedOutfitData, setFetchedOutfitData] = useState({hasOutfit: false, fetchError: false})
@@ -45,9 +48,14 @@ export const HomeDashboard = (props) => {
       }
 
       const handleButtonClick = () => {
-        setZipcode(enteredZipcode)
-        fetchGeneratedOutfit()
-        fetchWeatherData()
+        if(isValidUSZip(enteredZipcode)){
+          setZipcode(enteredZipcode)
+          fetchGeneratedOutfit()
+          fetchWeatherData()
+        }
+        else{
+          alert("Entered ZipCode is invalid. Please try again.");
+        }
       }
       const fetchWeatherData = async () => {
         try {
@@ -72,7 +80,7 @@ export const HomeDashboard = (props) => {
         return (
         <>
             <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, {user.userName}</Typography>
-            {zipcode == -1 && 
+            
               <>
                 <div style = {{justifyContent: "center", alignItems: "center", textAlign: "center"}}>
                   <TextField id="outlined-basic" 
@@ -83,12 +91,12 @@ export const HomeDashboard = (props) => {
                   <Button variant="contained" onClick = {handleButtonClick} sx={{display: "block", justifyContent:"center", alignItems: "center", marginTop: "20px", marginInline: "auto", fontFamily: 'Caudex', backgroundColor: 'rgb(248, 196, 180)', ': hover': { backgroundColor: 'rgb(255, 180, 180)'}}}>Fetch Weather & Outfits!</Button>
                 </div>
               </>
-            }
+            
             <div>
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
             {console.log(fetchedOutfitData)}
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
-              <Outfit userId = {userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece}/>
+              <Outfit userId = {user.userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true &&
               <div> 
