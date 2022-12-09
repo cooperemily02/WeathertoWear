@@ -105,6 +105,8 @@ class User(db.Model):
         db.session.add(newUser)
         db.session.commit()
 
+        return newUser
+
         #TODO: implement signing up
         pass
 

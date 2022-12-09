@@ -123,10 +123,11 @@ def Return_New_User():
         password = request.get_json().get("password")
         email = request.get_json().get("email")
 
-        hashed_pw = models.User.authenticate_and_get(password)
+
         user = None
         user = models.User.query.filter_by(email=email).first()  # looks in databse and tries to get the first occurence of this name in it
         if user is None:
+            hashed_pw = models.User.authenticate_and_get(password)
             newUser = models.User.new_user(name, hashed_pw, email)
             return {"exists": "false", "userName": newUser.name, "userId": newUser.id}
         else:
