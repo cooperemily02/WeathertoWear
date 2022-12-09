@@ -181,7 +181,12 @@ const Closet = (props) => {
          },
       });
       const json = await response.json();
-      sortClothingItems(json)
+      if(json.length === 0){
+        setSortedClothingItems({Tops: [], Bottoms: [], Shoes: [], Outerwear: [], Other: []})
+      }
+      else {
+        sortClothingItems(json)
+      }
     } catch (error) {
       console.log("error", error);
     }
