@@ -2,6 +2,9 @@ from typing import List, Set, Tuple
 from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
+from werkzeug.security import check_password_hash, generate_password_hash
+
+
 db = SQLAlchemy()
 
 
@@ -28,7 +31,7 @@ class ClothingItem(db.Model):
         
     def setimg(self, file):
         if isinstance(file, str):
-            self.img = file # In this case 'file' is the path of the file
+            self.img
         else:
             upload_dir = "images"
             if not os.path.isdir(upload_dir):
@@ -82,11 +85,38 @@ class Tag(db.Model):
         return Tag.query.get(name)
 
 
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+
+#     def get_all_items(self):
+#         return [item for closet in self.closets for item in closet.items]
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False, unique=False)
+    password_hash = db.Column(db.String(20), nullable=False, unique=True)
+    email = db.Column(db.String(40), nullable=False, unique=True)
     outfit_templates = db.relationship('OutfitTemplate')
     closets = db.relationship("Closet", back_populates="user")
 
+    @staticmethod
+    def new_user(name, password, email):
+        hashed = generate_password_hash(password)
+        newUser = User(name=name, password_hash=hashed, email=email)  # add the id portion here
+        return newUser
+
+        #TODO: implement signing up
+        pass
+
+    @staticmethod
+    def authenticate_and_get(password):
+        hashed_pw = generate_password_hash(password)  # needed for login
+        print("hashed password")
+        print(hashed_pw)
+        return hashed_pw
+            # newUser = models.User(name=name, password_hash=password, email=email)  # add the id portion here
+        #TODO: authenticate the password to the hash and return it if correct
+        pass
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
@@ -146,7 +176,7 @@ class OutfitTemplate(db.Model):
 
     @property
     def serialize(self):
-        return {'name': self.name, 'id': self.id}
+        return {'name': self.name}
 
 
 template_tags = db.Table(
@@ -164,5 +194,6 @@ required_tags.
 """
 class ItemTemplate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
     required_tags = db.relationship("Tag", secondary=template_tags)
     outfit_template_id = db.Column(db.Integer, db.ForeignKey("outfit_template.id"))

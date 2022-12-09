@@ -11,7 +11,6 @@ import coat from "../static/coat.png";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
 import postData from "../utils"
-import Select from 'react-select';
 
 export const Outfit = (props) => {
     const outfit = props.outfit
@@ -59,17 +58,13 @@ export const Outfit = (props) => {
         return (
             <>
                 <Grid container justifyContent={"center"} sx={{pt: 10}}>
-                    <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)', py: 15}}>
+                    <Card variant={"outlined"} sx={{maxWidth: 800, px: 5, backgroundColor:'rgb(156, 180, 204)'}}>
                         <CardContent>
                             <Typography variant="h3" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', pt: 5}} >Here is your generated outfit for today: </Typography>
                             <IconButton color="primary" aria-label="" sx = {{justifyContent: "center"}} onClick = {generateOutfitFunction}>
                                 <RefreshIcon /> Refresh Outfit 
                             </IconButton>
                             {outfitItems}
-                            <Select
-                                options={props.templateOptions}
-                                onChange={(e) => props.onTemplateChange(e)}
-                            />
                         </CardContent>
                     </Card>   
                 </Grid>  
