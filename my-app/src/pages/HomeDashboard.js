@@ -7,11 +7,15 @@ import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 
 export const HomeDashboard = (props) => {
+    function isValidUSZip(sZip) {
+      return /^\d{5}(-\d{4})?$/.test(sZip);
+    }
     const [zipcode, setZipcode] = useState(-1)
     const [enteredZipcode, setEnteredZipcode] = useState("")
     const [fetchedOutfitData, setFetchedOutfitData] = useState({hasOutfit: false, fetchError: false})
     const [weather, setWeather] = useState(false)
-    const userId = props.userId
+    const user = props.user
+    const userId = user.userId
     let [outfit, setOutfit] = useState([]);
     const [templateOptions, setTemplateOptions] = useState([])
     const [templateId, setTemplateId] = useState(-1)
@@ -20,7 +24,7 @@ export const HomeDashboard = (props) => {
     //console.log(zipcode);
     const fetchGeneratedOutfit = async () => {
       const body = JSON.stringify({
-        user: userId,
+        user: user.userId,
         zipcode: enteredZipcode,
         template_id: templateId
       })
@@ -38,6 +42,7 @@ export const HomeDashboard = (props) => {
             setFetchedOutfitData({hasOutfit: true})
           } catch (error) {
             setFetchedOutfitData({hasOutfit: false, fetchError: true})
+            //handle error message - not working at the moment
             console.log("error", error);
           }
         };
@@ -46,11 +51,17 @@ export const HomeDashboard = (props) => {
       }
 
       const handleButtonClick = () => {
-        setZipcode(enteredZipcode)
-        setTemplateId(-1)
-        updateTemplateOptions()
-        fetchGeneratedOutfit()
-        fetchWeatherData()
+        if (isValidUSZip(enteredZipcode)) {
+          setZipcode(enteredZipcode)
+          setTemplateId(-1)
+          updateTemplateOptions()
+          fetchGeneratedOutfit()
+          fetchWeatherData()
+        }
+        else {
+          alert("Entered ZipCode is invalid. Please try again.");
+        }
+        
       }
       const fetchWeatherData = async () => {
         try {
@@ -87,7 +98,7 @@ export const HomeDashboard = (props) => {
 
         return (
         <>
-            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, Saif</Typography>
+            <Typography variant="h2" textAlign={'center'} sx={{color: 'white', fontFamily: 'Caudex', py: 15, mb:10, backgroundColor:'rgb(191, 172, 224)'}} >Hi, {user.userName}</Typography>
               <>
                 <div style = {{justifyContent: "center", alignItems: "center", textAlign: "center"}}>
                   <TextField id="outlined-basic" 
@@ -101,13 +112,14 @@ export const HomeDashboard = (props) => {
             
             <div>
             <WeatherDashboard zipCode = {zipcode} weather = { weather }/>
-              
+            {console.log(fetchedOutfitData)}
             {zipcode !== -1 && fetchedOutfitData.hasOutfit == true &&
-              <Outfit userId = {userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece} onTemplateChange={onTemplateChange} templateOptions={templateOptions}/>
+              <Outfit userId = {user.userId} outfit = {outfit} fetchedOutfitData = {fetchedOutfitData} generateOutfitFunction = {fetchGeneratedOutfit} updateSinglePiece={updateSinglePiece} onTemplateChange={onTemplateChange} templateOptions={templateOptions}/>
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
-                <h3> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </h3>
-            }
+              <div> 
+                <Typography variant="h5" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex'}}> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </Typography>
+              </div>            }
             </div> 
         </>
         );
