@@ -48,6 +48,7 @@ const schema = {
 export default function OutfitTemplateForm() {
   const onSubmit =  (e) => {
     console.log(e.formData);
+    alert("Outfit template has been created. Please head back to the home page to continue.");
     postData('outfit-template', e.formData).then(data => console.log(data))
   };
 
