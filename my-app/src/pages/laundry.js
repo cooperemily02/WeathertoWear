@@ -8,7 +8,8 @@ import { DryCleaning as DryCleaningIcon, Close as CloseIcon}from '@mui/icons-mat
 
 
 const Laundry = (props) => {
-  const userId = props.userId
+  const userId = props.user.userId
+  const userName = props.userName
     const [itemTypeToShow, setItemTypeToShow] = useState('All')
     const [openAlert, setOpenAlert] = React.useState(false);
     const [severity, setSeverity] = useState(undefined);
@@ -110,7 +111,7 @@ const Laundry = (props) => {
           {severity == 'success' ? "Your Laundry Is Washed and Ready!" : "Couldn't wash laundry. Try again later."}
         </Alert>
         </Collapse>
-        <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > User {props.userId}'s Laundry Bin </Typography>     
+        <Typography variant="h2" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex', pt: 35, paddingTop: "5px"}} > {props.user.userName}'s Laundry Bin </Typography>     
         <Paper elevation = {6} style = {{backgroundColor: "#f5f5f5", margin: "5px", width: "75%", display: "block", marginInline: "auto", justifyContent: "center", alignItems: "center", textAlign: "center", paddingBottom: "5%", paddingInline: "10%"}}>
         <Button startIcon={<DryCleaningIcon/>} onClick = {washLaundry} sx = {{color: "blue", justifyContent: "center", margin: "5%"}}>
           Do Laundry (send all items to closet)

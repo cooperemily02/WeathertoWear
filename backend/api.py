@@ -6,6 +6,10 @@ import weather
 import json
 import helpers
 import json
+
+from flask import Flask, flash, jsonify, request
+from werkzeug.security import check_password_hash, generate_password_hash
+
 import models
 import werkzeug.exceptions
 
@@ -13,7 +17,6 @@ app = Flask(__name__, static_folder="./build", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///dummy.db"
 
 db.init_app(app)  # Now we can use the database in our endpoints!
-import models
 
 
 @app.route("/")
@@ -104,13 +107,66 @@ def Send_Laundry():
 
     return selected_item.serialize
 
-@app.route("/dummy/userSignUp", methods=["GET"])
+# @app.route("/dummy/userSignUp", methods=["GET"])
+# def Return_New_User():
+#     if request.method == "GET":
+#         newUser = models.User()
+#         db.session.add(newUser)
+#         db.session.commit()
+#         return {"userId": newUser.id}
+
+@app.route("/dummy/userSignUp", methods=["POST"])
 def Return_New_User():
-    if request.method == "GET":
-        newUser = models.User()
-        db.session.add(newUser)
-        db.session.commit()
-        return {"userId": newUser.id}
+    if request.method == "POST":
+        print("JSON" + json.dumps(request.get_json()))
+        name = request.get_json().get("name")
+        password = request.get_json().get("password")
+        email = request.get_json().get("email")
+
+
+        user = None
+        user = models.User.query.filter_by(email=email).first()  # looks in databse and tries to get the first occurence of this name in it
+        if user is None:
+            newUser = models.User.new_user(name, password, email)
+            db.session.add(newUser)
+            db.session.commit()
+            return {"exists": "false", "userName": newUser.name, "userId": newUser.id}
+        else:
+            return {"exists": "true", "userName": user.name, "userId": user.id}
+
+    #     #TODO: Implement what's below in the models.User class (so it can be accessed without the api)
+    #     # (A method for authenticating & one for creating users), then use it here.
+
+
+@app.route("/dummy/userLogin", methods=["POST"])
+def Login():
+    #TODO implement & use the models.User authentication method here.
+    if request.method == "POST":
+        user = None
+        password_correct = 'False'
+        user_exists = 'False'
+        print("JSON" + json.dumps(request.get_json()))
+        password = request.get_json().get("password")
+        email = request.get_json().get("email")
+        # in line below filter by the email
+        user = models.User.query.filter_by(email=email).first()  # looks in databse and tries to get the first occurence of this email in it
+        if user:  # if the user is  in the database
+            user_exists = 'True'
+            print("hashed password, login")
+            print(user.password_hash)
+            # check if the password user submits, matches the one in the database:
+            # if password == user.password_hash:  # returns true if password of user in database is the same as the one they entered in the form
+            if check_password_hash(user.password_hash, password):
+                password_correct = 'True'
+                return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
+            else:
+                #TODO: I think it's wrong/unnecessary to return the name/id since the password is wrong here.
+                return {'password_correct': password_correct, 'user_exist': user_exists, "userName": user.name, "userId": user.id}
+        else:
+            # print('Error: that user doesnt exist, try again')
+            print("user exists variable")
+            print(user_exists)
+            return {'password_correct': password_correct, 'user_exist': user_exists}
 
 
 @app.route("/dummy/getForecast/<zipcode>", methods=["GET"])
@@ -265,7 +321,6 @@ def generate_outfit():
 
     outfit_template = models.OutfitTemplate.query.get(outfit_template_id)
 
-
     items, item_to_its_template = closet.find_matching_outfit(outfit_template)
     # Adding the template id's for future use:
     return [
@@ -282,7 +337,7 @@ def outfit_template():
         name=data['name'],
         user_id=1,
         item_templates=[
-            models.ItemTemplate(required_tags=[
+            models.ItemTemplate(name=template['name'], required_tags=[
                 models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']
             ])
             for template in data['item-templates']
