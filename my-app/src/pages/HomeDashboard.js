@@ -23,7 +23,7 @@ export const HomeDashboard = (props) => {
               method: "POST",
               credentials: "include",
               body: JSON.stringify({
-                user: user,
+                user: user.userId,
                 zipcode: enteredZipcode
                }),
                headers: {
