@@ -16,7 +16,6 @@ import logo from '../static/W2W.png'
 
 
 export const WeatherDashboard = (props) => {
-
         const zipCode = props.zipCode
         const setZipcode = props.setZipcode
         const weather = props.weather
@@ -62,11 +61,11 @@ export const WeatherDashboard = (props) => {
             setImg(weatherToImg.clouds)
         }
         else if (weather =="Clear"){
-            if (temp>=80){
-                setImg(weatherToImg.hotWeather)
+            if (temp>=75){
+                setImg(weatherToImg.hot)
             }
-            else if (temp<=50){
-                setImg(weatherToImg.coldWeather)
+            else if (temp<=45){
+                setImg(weatherToImg.cold)
             }
             else{
                 setImg(weatherToImg.clear)
@@ -94,10 +93,9 @@ export const WeatherDashboard = (props) => {
                 elevation={3}
                 square = {false}
                 >
-                    {console.log(weather)}
-                    <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather for <b>{weather.city_name}</b></Typography>
+                    {zipCode!==-1 && <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather for <b>{weather.city_name}</b></Typography> }
                     <DigitalClock />
-                    <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>
+                    {zipCode!==-1 && <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>}
                     <div style = {{float: "right", padding: "5%"}}>
                         {!(isNaN(weather.temp0)) &&
                         <>

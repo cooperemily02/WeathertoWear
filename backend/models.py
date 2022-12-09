@@ -91,6 +91,12 @@ class Tag(db.Model):
 #     def get_all_items(self):
 #         return [item for closet in self.closets for item in closet.items]
 
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+
+#     def get_all_items(self):
+#         return [item for closet in self.closets for item in closet.items]
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False, unique=False)

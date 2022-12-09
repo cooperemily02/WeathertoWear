@@ -46,6 +46,12 @@ const Closet = (props) => {
   var refetchItems = true
 
 
+  const resetItem = () => {
+    setItemName("")
+    setSelectedType("")
+    setAttributes([])
+  }
+
   const sortClothingItems = (items) => {
     const sortedItems = {Tops: [], Bottoms: [], Shoes: [], Outerwear: [], Other: []}
     items.forEach(item => {
@@ -102,12 +108,14 @@ const Closet = (props) => {
        .then((response) => response.json())
        .then((data) => {
           fetchClothingItems()
+          resetItem() 
           handleCloseModal()
           setSeverity('success')
           setOpenAlert(true)
           // Handle data
        })
        .catch((err) => {
+        resetItem() 
         handleCloseModal()
         setSeverity('error')
         setOpenAlert(true)
@@ -173,7 +181,12 @@ const Closet = (props) => {
          },
       });
       const json = await response.json();
-      sortClothingItems(json)
+      if(json.length === 0){
+        setSortedClothingItems({Tops: [], Bottoms: [], Shoes: [], Outerwear: [], Other: []})
+      }
+      else {
+        sortClothingItems(json)
+      }
     } catch (error) {
       console.log("error", error);
     }
