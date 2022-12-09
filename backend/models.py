@@ -101,10 +101,8 @@ class User(db.Model):
 
     @staticmethod
     def new_user(name, password, email):
-        newUser = User(name=name, password_hash=password, email=email)  # add the id portion here
-        db.session.add(newUser)
-        db.session.commit()
-
+        hashed = generate_password_hash(password)
+        newUser = User(name=name, password_hash=hashed, email=email)  # add the id portion here
         return newUser
 
         #TODO: implement signing up
