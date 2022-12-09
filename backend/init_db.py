@@ -46,6 +46,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     super_top = models.ClothingItem(name="super top", tags=[top, cold, hot, rainy, snowy])
     super_bottom = models.ClothingItem(name="super bottom", tags=[bottom, cold, hot, rainy, snowy])
     super_shoes = models.ClothingItem(name="super shoes", tags=[shoes, cold, hot, rainy, snowy])
+    super_coat = models.ClothingItem(name="super coat", tags=[outerwear, cold, hot, rainy, snowy])
 
     # add all to user1's closet
     closet = user1.default_closet()
