@@ -66,7 +66,9 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     rain_template.item_templates.extend([
         models.ItemTemplate(name="Rain Top", required_tags=[top, rainy]),
         models.ItemTemplate(name="Rain Bottom", required_tags=[bottom, rainy]),
-        models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy])
+        models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy]),
+        models.ItemTemplate(required_tags=[outerwear, rainy])
+
     ])
 
     # snow template, template 4:
@@ -92,6 +94,8 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(required_tags=[top, cold]),
         models.ItemTemplate(required_tags=[bottom, cold]),
         models.ItemTemplate(required_tags=[shoes, cold]),
+        models.ItemTemplate(required_tags=[outerwear, cold])
+
     ])
 
     #average template, template 7, not sure whether to use this:
