@@ -61,11 +61,11 @@ export const WeatherDashboard = (props) => {
             setImg(weatherToImg.clouds)
         }
         else if (weather =="Clear"){
-            if (temp>=80){
-                setImg(weatherToImg.hotWeather)
+            if (temp>=75){
+                setImg(weatherToImg.hot)
             }
-            else if (temp<=50){
-                setImg(weatherToImg.coldWeather)
+            else if (temp<=45){
+                setImg(weatherToImg.cold)
             }
             else{
                 setImg(weatherToImg.clear)
@@ -93,7 +93,6 @@ export const WeatherDashboard = (props) => {
                 elevation={3}
                 square = {false}
                 >
-                    {console.log(weather)}
                     {zipCode!==-1 && <Typography variant = "h3" fontFamily = 'Caudex'> Today's Weather for <b>{weather.city_name}</b></Typography> }
                     <DigitalClock />
                     {zipCode!==-1 && <img src={weatherImg} style = {{float: "left", width: "45%", padding: "5%"}}/>}
