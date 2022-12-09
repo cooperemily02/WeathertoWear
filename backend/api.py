@@ -373,5 +373,10 @@ def get_item_from_template():
     item_dict['item_template'] = data['item_template']
     return item_dict
 
+
+@app.errorhandler(404)   
+def not_found(e):   
+  return app.send_static_file('index.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
