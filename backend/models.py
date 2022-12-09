@@ -154,7 +154,7 @@ class Closet(db.Model):
         try:
             match = next(item for item in available_items if all(req_tag in item.tags for req_tag in req_tags))
         except StopIteration:
-            raise ValueError(f"No item matches {item_template} in closet{self.id}")
+            raise Exception("Unable to find item with required tags {item_template.required_tags}") 
         return match
 
 """
@@ -169,7 +169,7 @@ class OutfitTemplate(db.Model):
 
     # A *single* user should not have multiple templates with the same name.
     # (but name is not unique, as different users could easily pick the same name)
-    __table_args__ = (db.UniqueConstraint('name', 'user_id'), )
+    #__table_args__ = (db.UniqueConstraint('name', 'user_id'), )
 
     @property
     def serialize(self):
@@ -191,6 +191,6 @@ required_tags.
 """
 class ItemTemplate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=True)
     required_tags = db.relationship("Tag", secondary=template_tags)
     outfit_template_id = db.Column(db.Integer, db.ForeignKey("outfit_template.id"))
