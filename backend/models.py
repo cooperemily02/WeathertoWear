@@ -179,7 +179,7 @@ class OutfitTemplate(db.Model):
 
     @property
     def serialize(self):
-        return {'name': self.name}
+        return {'name': self.name, 'id': self.id}
 
 
 template_tags = db.Table(
