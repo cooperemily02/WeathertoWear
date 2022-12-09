@@ -160,7 +160,7 @@ class Closet(db.Model):
         try:
             match = next(item for item in available_items if all(req_tag in item.tags for req_tag in req_tags))
         except StopIteration:
-            raise Exception("Unable to find item with required tags {item_template.required_tags}") 
+            raise Exception(f"Unable to find item with required tags {item_template.required_tags}") 
         return match
 
 """
