@@ -110,6 +110,20 @@ class MyTestCase(unittest.TestCase):
         # UNFINISHED
         json_items = response.get_json()
         self.assertEqual(response.status_code, 200)
+    
+    def test_SignUp(self):
+        response = self.app.post(
+            "/dummy/userSignUp",
+            data = json.dumps({
+                'name' :'Robert',
+                'password' : 'nice',
+                'email' : 'Robert@gmail.com'
+            }),
+            content_type="application/json",            
+        )
+        print("SIGN UP RESPONSE")
+        print(response.get_json())
+        assert(response.status_code == 200)
 
 
 # running the class for testing, dont delete lines 21-22

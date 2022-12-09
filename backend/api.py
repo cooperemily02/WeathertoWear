@@ -118,7 +118,7 @@ def Send_Laundry():
 @app.route("/dummy/userSignUp", methods=["POST"])
 def Return_New_User():
     if request.method == "POST":
-        print("JSON" + json.dumps(request.get_json()))
+        # print("JSON" + json.dumps(request.get_json()))
         name = request.get_json().get("name")
         password = request.get_json().get("password")
         email = request.get_json().get("email")
