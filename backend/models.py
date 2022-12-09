@@ -109,14 +109,11 @@ class User(db.Model):
         pass
 
     @staticmethod
-    def authenticate_and_get(password):
-        hashed_pw = generate_password_hash(password)  # needed for login
-        print("hashed password")
-        print(hashed_pw)
-        return hashed_pw
-            # newUser = models.User(name=name, password_hash=password, email=email)  # add the id portion here
-        #TODO: authenticate the password to the hash and return it if correct
-        pass
+    def authenticate_and_get(email, password):
+        user = User.query.filter_by(email=email).first()  # looks in databse and tries to get the first occurence of this email in it
+        if check_password_hash(user.password_hash, password):
+            return user
+        return None
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
