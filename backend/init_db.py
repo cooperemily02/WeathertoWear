@@ -52,7 +52,6 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(name="Gym Top", required_tags=[top, gym_tag]),
         models.ItemTemplate(name="Gym Bottom", required_tags=[bottom, gym_tag])
     ])
-    user1.outfit_templates.append(gym_outfit_template)
 
     # Basic template, template 2:
     basic_template = models.OutfitTemplate(name='Basic Outfit')
@@ -61,7 +60,6 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(name="Basic Bottom", required_tags=[bottom]),
         models.ItemTemplate(name="Basic Bottom", required_tags=[shoes])
     ])
-    user1.outfit_templates.append(basic_template)
 
     # Rain template, template 3:
     rain_template = models.OutfitTemplate(name='Rain Outfit')
@@ -70,7 +68,6 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(name="Rain Bottom", required_tags=[bottom, rainy]),
         models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy])
     ])
-    user1.outfit_templates.append(rain_template)
 
     # snow template, template 4:
     snow_template = models.OutfitTemplate(name='Snow Outfit')
@@ -80,7 +77,6 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(required_tags=[shoes, snowy]),
         models.ItemTemplate(required_tags=[outerwear, snowy])
     ])
-    user1.outfit_templates.append(snow_template)
 
      # hot template, template 5:
     hot_template = models.OutfitTemplate(name='Hot Outfit')
@@ -89,7 +85,6 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(required_tags=[bottom, hot]),
         models.ItemTemplate(required_tags=[shoes, hot]),
     ])
-    user1.outfit_templates.append(hot_template)
 
      #cold template, template 6:
     cold_template = models.OutfitTemplate(name='Cold Outfit')
@@ -98,7 +93,6 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(required_tags=[bottom, cold]),
         models.ItemTemplate(required_tags=[shoes, cold]),
     ])
-    user1.outfit_templates.append(cold_template)
 
     #average template, template 7, not sure whether to use this:
     avg_template = models.OutfitTemplate(name='Average Outfit')
@@ -107,9 +101,9 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(required_tags=[bottom, average]),
         models.ItemTemplate(required_tags=[shoes, average]),
     ])
-    user1.outfit_templates.append(avg_template)
 
     # write to db
+    db.session.add_all([gym_outfit_template, basic_template, rain_template, snow_template, hot_template, cold_template, avg_template])
     db.session.add_all([closet, user1])
     db.session.commit()  # This writes the items to the database
 
@@ -120,6 +114,10 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     
     print("user1's outfit templates:")
     print(user1.outfit_templates)
+
+    print("models")
+    for template in models.OutfitTemplate.query.all():
+        print(template.serialize)
     
     print(f"Searching for a gym outfit in closet (id={closet.id}):")
     print(closet.find_matching_outfit(gym_outfit_template))
