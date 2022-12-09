@@ -14,6 +14,7 @@ export const HomeDashboard = (props) => {
     const [fetchedOutfitData, setFetchedOutfitData] = useState({hasOutfit: false, fetchError: false})
     const [weather, setWeather] = useState(false)
     const user = props.user
+    const userId = props.user.userId
     //console.log(user);
     let [outfit, setOutfit] = useState([]);
 
@@ -25,7 +26,7 @@ export const HomeDashboard = (props) => {
               method: "POST",
               credentials: "include",
               body: JSON.stringify({
-                user: user,
+                user: user.userId,
                 zipcode: enteredZipcode
                }),
                headers: {

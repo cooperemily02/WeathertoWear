@@ -2,6 +2,9 @@ from typing import List, Set, Tuple
 from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
+from werkzeug.security import check_password_hash, generate_password_hash
+
+
 db = SQLAlchemy()
 
 
@@ -102,6 +105,21 @@ class User(db.Model):
     outfit_templates = db.relationship('OutfitTemplate')
     closets = db.relationship("Closet", back_populates="user")
 
+    @staticmethod
+    def new_user(name, password, email):
+        hashed = generate_password_hash(password)
+        newUser = User(name=name, password_hash=hashed, email=email)  # add the id portion here
+        return newUser
+
+        #TODO: implement signing up
+        pass
+
+    @staticmethod
+    def authenticate_and_get(email, password):
+        user = User.query.filter_by(email=email).first()  # looks in databse and tries to get the first occurence of this email in it
+        if check_password_hash(user.password_hash, password):
+            return user
+        return None
 
     def get_all_items(self):
         return [item for closet in self.closets for item in closet.items]
