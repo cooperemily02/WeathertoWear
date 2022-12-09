@@ -49,24 +49,24 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     # Define an outfit template, template 1:
     gym_outfit_template = models.OutfitTemplate(name='Gym Outfit')
     gym_outfit_template.item_templates.extend([
-        models.ItemTemplate(name="Gym Top", required_tags=[top, gym_tag]),
-        models.ItemTemplate(name="Gym Bottom", required_tags=[bottom, gym_tag])
+        models.ItemTemplate(required_tags=[top, gym_tag]),
+        models.ItemTemplate(required_tags=[bottom, gym_tag])
     ])
 
     # Basic template, template 2:
     basic_template = models.OutfitTemplate(name='Basic Outfit')
     basic_template.item_templates.extend([
-        models.ItemTemplate(name="Basic Top", required_tags=[top]),
-        models.ItemTemplate(name="Basic Bottom", required_tags=[bottom]),
-        models.ItemTemplate(name="Basic Bottom", required_tags=[shoes])
+        models.ItemTemplate(required_tags=[top]),
+        models.ItemTemplate(required_tags=[bottom]),
+        models.ItemTemplate(required_tags=[shoes])
     ])
 
     # Rain template, template 3:
     rain_template = models.OutfitTemplate(name='Rain Outfit')
     rain_template.item_templates.extend([
-        models.ItemTemplate(name="Rain Top", required_tags=[top, rainy]),
-        models.ItemTemplate(name="Rain Bottom", required_tags=[bottom, rainy]),
-        models.ItemTemplate(name="Rain Bottom", required_tags=[shoes, rainy])
+        models.ItemTemplate(required_tags=[top, rainy]),
+        models.ItemTemplate(required_tags=[bottom, rainy]),
+        models.ItemTemplate(required_tags=[shoes, rainy])
     ])
 
     # snow template, template 4:
