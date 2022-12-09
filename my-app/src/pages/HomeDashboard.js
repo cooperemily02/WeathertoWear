@@ -87,7 +87,7 @@ export const HomeDashboard = (props) => {
       }
 
       const updateTemplateOptions = async () => {
-        const newTemplates = await postData('outfit-templates', {'user': 1})
+        const newTemplates = await postData('outfit-templates', {'user': user.userId})
         const newTemplateOptions = []
         newTemplates.forEach(element => {
           newTemplateOptions.push({label: element.name, value: element.id})

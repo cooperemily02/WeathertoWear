@@ -337,7 +337,7 @@ def outfit_template():
         name=data['name'],
         user_id=1,
         item_templates=[
-            models.ItemTemplate(name=template['name'], required_tags=[
+            models.ItemTemplate(required_tags=[
                 models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']
             ])
             for template in data['item-templates']

@@ -39,7 +39,7 @@ const schema = {
           "uniqueItems": true
         }
       },
-      "required": ["name", "tags"]
+      "required": ["tags"]
     }
   }
 } 

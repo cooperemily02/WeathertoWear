@@ -197,6 +197,5 @@ required_tags.
 """
 class ItemTemplate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=True)
     required_tags = db.relationship("Tag", secondary=template_tags)
     outfit_template_id = db.Column(db.Integer, db.ForeignKey("outfit_template.id"))
