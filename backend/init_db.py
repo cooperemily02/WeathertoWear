@@ -97,6 +97,8 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
         models.ItemTemplate(required_tags=[top, cold]),
         models.ItemTemplate(required_tags=[bottom, cold]),
         models.ItemTemplate(required_tags=[shoes, cold]),
+        models.ItemTemplate(required_tags=[outerwear, cold])
+
     ])
 
     #average template, template 7, not sure whether to use this:
