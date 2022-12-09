@@ -23,7 +23,7 @@ export const Outfit = (props) => {
 
         //TODO: replace hardcoded user
         const new_item = await postData('item-from-template', {
-            user: 1, item_template: item_template, excluded_item: excluded_item
+            user: userId, item_template: item_template, excluded_item: excluded_item
         })
         props.updateSinglePiece(index, new_item)
         console.log(new_item)
