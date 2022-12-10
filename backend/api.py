@@ -383,7 +383,7 @@ def outfit_template():
     # TODO: get user_id instead of hardcoding '1'
     outfit_template = models.OutfitTemplate(
         name=data["name"],
-        user_id=1,
+        user_id=data['user'],
         item_templates=[
             models.ItemTemplate(required_tags=[
                 models.Tag.get_or_create(name=tag_name) for tag_name in template['tags']

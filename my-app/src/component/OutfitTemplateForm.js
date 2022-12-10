@@ -45,9 +45,10 @@ const schema = {
 } 
 
 
-export default function OutfitTemplateForm() {
+export default function OutfitTemplateForm(props) {
   const onSubmit =  (e) => {
     console.log(e.formData);
+    e.formData['user'] = props.user.userId
     alert("Outfit template has been created. Please head back to the home page to continue.");
     postData('outfit-template', e.formData).then(data => console.log(data))
   };
