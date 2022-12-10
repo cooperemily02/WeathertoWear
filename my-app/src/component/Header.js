@@ -41,7 +41,7 @@ function Header(props) {
           element={Laundry({user: user})}
         />
         {/* <Route path="/faq" element={LaundryBin} /> */}
-        <Route path="/outfit-template-form" element={<OutfitTemplateForm/>}/>
+        <Route path="/outfit-template-form" element={<OutfitTemplateForm user={user}/>}/>
       </Routes>
     </>
   );
