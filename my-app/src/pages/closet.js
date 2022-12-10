@@ -50,6 +50,7 @@ const Closet = (props) => {
     setItemName("")
     setSelectedType("")
     setAttributes([])
+    setImageOfItem(undefined)
   }
 
   const sortClothingItems = (items) => {
