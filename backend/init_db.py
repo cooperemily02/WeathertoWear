@@ -26,7 +26,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     gym_tag = models.Tag(name="Gym")
 
     # summer outfit
-    tshirt = models.ClothingItem(name="t-shirt", tags=[top, cotton], img = "https://i.imgur.com/lx9198r.jpeg")
+    tshirt = models.ClothingItem(name="t-shirt", tags=[top, cotton])
     shorts = models.ClothingItem(name="shorts", tags=[bottom])
     sneakers = models.ClothingItem(name="sneakers", tags=[shoes])
 
@@ -46,10 +46,11 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
     super_top = models.ClothingItem(name="super top", tags=[top, cold, hot, rainy, snowy])
     super_bottom = models.ClothingItem(name="super bottom", tags=[bottom, cold, hot, rainy, snowy])
     super_shoes = models.ClothingItem(name="super shoes", tags=[shoes, cold, hot, rainy, snowy])
+    super_coat = models.ClothingItem(name="super coat", tags=[outerwear, cold, hot, rainy, snowy])
 
     # add all to user1's closet
     closet = user1.default_closet()
-    closet.items = [tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom, super_bottom, super_shoes, super_top]
+    closet.items = [tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom, super_bottom, super_shoes, super_top, super_coat]
 
     # Define an outfit template, template 1:
     gym_outfit_template = models.OutfitTemplate(name='Gym Outfit')

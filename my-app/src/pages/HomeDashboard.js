@@ -118,7 +118,7 @@ export const HomeDashboard = (props) => {
             }
             {fetchedOutfitData.hasOutfit == false && fetchedOutfitData.fetchError == true && 
               <div> 
-                <Typography variant="h5" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex'}}> Unable to fetch an outfit at the current time. Please try again later or submit a trouble ticket. </Typography>
+                <Typography variant="h5" textAlign={'center'} sx={{color: 'black', fontFamily: 'Caudex'}}> Unable to assemble a weather appropriate outfit given your current closet. Please add a variety of items and try again. </Typography>
               </div>            }
             </div> 
         </>

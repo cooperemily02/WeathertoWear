@@ -21,7 +21,8 @@ function ClothingItem(props) {
     const res = await fetch(imageUrl)
     const imageBlob = await res.blob();
     const imageObjectURL = URL.createObjectURL(imageBlob);
-    if (res.ok) {
+    // item.img is not always there, making the url point to 'images/undefined'
+    if (res.ok && imageUrl != '/images/undefined') {
       setImg(imageObjectURL);
     } else {
       item.tags.forEach(tag => {
