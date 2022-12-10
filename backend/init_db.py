@@ -50,7 +50,7 @@ with app.app_context():  # context is needed so sqlalchemy knows where to create
 
     # add all to user1's closet
     closet = user1.default_closet()
-    closet.items = [tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom, super_bottom, super_shoes, super_top]
+    closet.items = [tshirt, shorts, sneakers, rain_coat, boots, leggings, long_sleeve, gym_top, gym_bottom, super_bottom, super_shoes, super_top, super_coat]
 
     # Define an outfit template, template 1:
     gym_outfit_template = models.OutfitTemplate(name='Gym Outfit')
